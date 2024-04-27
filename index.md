@@ -9,6 +9,7 @@ Simple, but essential Bayesian optimization package.
 
 * [BayesO: GitHub Repository]({{ site.github.repo-bayeso }})
 * [BayesO Benchmarks: GitHub Repository]({{ site.github.repo-bench }})
+* [BayesO Metrics: GitHub Repository]({{ site.github.repo-metrics }})
 * [Batch BayesO: GitHub Repository]({{ site.github.repo-batch }})
 
 ## Installation
@@ -29,6 +30,15 @@ Similar to BayesO, command it to install a released version.
 
 ```shell
 $ pip install bayeso-benchmarks
+```
+
+* [BayesO Metrics]({{ site.github.repo-metrics }})
+
+Now, it is not released through the PyPI repository.
+Command it in the root directory of BayesO Metrics.
+
+```shell
+$ pip install .
 ```
 
 * [Batch BayesO]({{ site.github.repo-batch }})
@@ -63,4 +73,5 @@ You can look at the LICENSE files in the respective repositories.
 
 * [BayesO]({{ site.github.repo-bayeso }}/blob/main/LICENSE)
 * [BayesO Benchmarks]({{ site.github.repo-bench }}/blob/main/LICENSE)
+* [BayesO Metrics]({{ site.github.repo-metrics }}/blob/main/LICENSE)
 * [Batch BayesO]({{ site.github.repo-batch }}/blob/main/LICENSE)

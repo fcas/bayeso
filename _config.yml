@@ -17,9 +17,11 @@ author:
 
 version-bayeso:   0.6.0
 version-bench:    0.2.0
+version-metrics:  0.1.0
 version-batch:    0.1.0
 
 github:
   repo-bayeso:    https://github.com/jungtaekkim/bayeso
   repo-bench:     https://github.com/jungtaekkim/bayeso-benchmarks
+  repo-metrics:   https://github.com/jungtaekkim/bayeso-metrics
   repo-batch:     https://github.com/jungtaekkim/batch-bayeso
