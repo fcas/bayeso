@@ -17,7 +17,7 @@ packages = [
 
 [project]
 name = "bayeso"
-version = "0.6.0"
+version = "0.6.1"
 authors = [
     {name = "Jungtaek Kim", email = "jungtaek.kim.mail@gmail.com"},
 ]
