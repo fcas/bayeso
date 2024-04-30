@@ -62,7 +62,9 @@ class BayesianOptimization:
     :type num_samples_ao: int., optional
     :param str_exp: the name of experiment.
     :type str_exp: str., optional
-    :param debug: a flag for printing log messages.
+    :param verbose: a flag for printing log messages.
+    :type verbose: bool., optional
+    :param debug: a flag for printing more detailed log messages.
     :type debug: bool., optional
 
     """
@@ -86,6 +88,7 @@ class BayesianOptimization:
         str_modelselection_method: str=constants.STR_MODELSELECTION_METHOD,
         num_samples_ao: int=constants.NUM_SAMPLES_AO,
         str_exp: str=None,
+        verbose: bool=False,
         debug: bool=False,
     ):
         """
@@ -111,9 +114,10 @@ class BayesianOptimization:
         assert isinstance(str_modelselection_method, str)
         assert isinstance(num_samples_ao, int)
         assert isinstance(str_exp, (type(None), str))
+        assert isinstance(verbose, bool)
         assert isinstance(debug, bool)
 
-        assert len(range_X.shape) == 2
+        assert range_X.ndim == 2
         assert range_X.shape[1] == 2
         assert (range_X[:, 0] <= range_X[:, 1]).all()
         assert num_iter > 0
@@ -144,6 +148,7 @@ class BayesianOptimization:
             str_optimizer_method_bo, range_X.shape[0], debug)
         self.num_samples_ao = num_samples_ao
         self.str_exp = str_exp
+        self.verbose = verbose
         self.debug = debug
 
         if str_surrogate in constants.ALLOWED_SURROGATE_TREES:
@@ -341,8 +346,8 @@ class BayesianOptimization:
 
         assert isinstance(X, np.ndarray)
         assert isinstance(Y, np.ndarray)
-        assert len(X.shape) == 2
-        assert len(Y.shape) == 2
+        assert X.ndim == 2
+        assert Y.ndim == 2
         assert X.shape[0] == Y.shape[0]
         assert Y.shape[1] == 1
 
@@ -356,7 +361,8 @@ class BayesianOptimization:
 
         pbar = tqdm(range(0, self.num_iter))
         for ind_iter in pbar:
-            self.model_bo.logger.info('Iteration %d', ind_iter + 1)
+            if self.verbose:
+                self.model_bo.logger.info('Iteration %d', ind_iter + 1)
             time_iter_start = time.time()
 
             next_sample, dict_info = self.optimize_single_iteration(X_, Y_)
@@ -424,7 +430,7 @@ class BayesianOptimization:
         """
 
         assert isinstance(X, np.ndarray)
-        assert len(X.shape) == 2
+        assert X.ndim == 2
 
         Y = []
         time_initials = []
@@ -460,32 +466,33 @@ class BayesianOptimization:
 
         """
 
-        self.model_bo.logger.info('====================')
-        self.model_bo.logger.info('range_X:\n%s', utils_logger.get_str_array(self.range_X))
-        self.model_bo.logger.info('num_init: %d', num_init)
-        self.model_bo.logger.info('num_iter: %d', self.num_iter)
-        self.model_bo.logger.info('str_surrogate: %s', self.str_surrogate)
-        if self.str_surrogate in constants.ALLOWED_SURROGATE:
-            self.model_bo.logger.info('str_cov: %s', self.str_cov)
-        self.model_bo.logger.info('str_acq: %s', self.str_acq)
-        self.model_bo.logger.info('normalize_Y: %s', self.normalize_Y)
-        if self.str_surrogate in constants.ALLOWED_SURROGATE:
-            self.model_bo.logger.info('use_ard: %s', self.use_ard)
-        self.model_bo.logger.info('str_initial_method_bo: %s', self.str_initial_method_bo)
-        self.model_bo.logger.info('str_sampling_method_ao: %s', self.str_sampling_method_ao)
-        if self.str_surrogate in ['gp']:
-            self.model_bo.logger.info('str_optimizer_method_gp: %s', self.str_optimizer_method_gp)
-        if self.str_surrogate in ['tp']:
-            self.model_bo.logger.info('str_optimizer_method_tp: %s', self.str_optimizer_method_tp)
-        self.model_bo.logger.info('str_optimizer_method_bo: %s', self.str_optimizer_method_bo)
-        if self.str_surrogate in ['gp']:
-            self.model_bo.logger.info('str_mlm_method: %s', self.str_mlm_method)
-            self.model_bo.logger.info('str_modelselection_method: %s',
-                self.str_modelselection_method)
-        self.model_bo.logger.info('num_samples_ao: %d', self.num_samples_ao)
-        self.model_bo.logger.info('seed: %s', seed)
-        self.model_bo.logger.info('debug: %s', self.debug)
-        self.model_bo.logger.info('====================')
+        if self.verbose:
+            self.model_bo.logger.info('====================')
+            self.model_bo.logger.info('range_X:\n%s', utils_logger.get_str_array(self.range_X))
+            self.model_bo.logger.info('num_init: %d', num_init)
+            self.model_bo.logger.info('num_iter: %d', self.num_iter)
+            self.model_bo.logger.info('str_surrogate: %s', self.str_surrogate)
+            if self.str_surrogate in constants.ALLOWED_SURROGATE:
+                self.model_bo.logger.info('str_cov: %s', self.str_cov)
+            self.model_bo.logger.info('str_acq: %s', self.str_acq)
+            self.model_bo.logger.info('normalize_Y: %s', self.normalize_Y)
+            if self.str_surrogate in constants.ALLOWED_SURROGATE:
+                self.model_bo.logger.info('use_ard: %s', self.use_ard)
+            self.model_bo.logger.info('str_initial_method_bo: %s', self.str_initial_method_bo)
+            self.model_bo.logger.info('str_sampling_method_ao: %s', self.str_sampling_method_ao)
+            if self.str_surrogate in ['gp']:
+                self.model_bo.logger.info('str_optimizer_method_gp: %s', self.str_optimizer_method_gp)
+            if self.str_surrogate in ['tp']:
+                self.model_bo.logger.info('str_optimizer_method_tp: %s', self.str_optimizer_method_tp)
+            self.model_bo.logger.info('str_optimizer_method_bo: %s', self.str_optimizer_method_bo)
+            if self.str_surrogate in ['gp']:
+                self.model_bo.logger.info('str_mlm_method: %s', self.str_mlm_method)
+                self.model_bo.logger.info('str_modelselection_method: %s',
+                    self.str_modelselection_method)
+            self.model_bo.logger.info('num_samples_ao: %d', self.num_samples_ao)
+            self.model_bo.logger.info('seed: %s', seed)
+            self.model_bo.logger.info('debug: %s', self.debug)
+            self.model_bo.logger.info('====================')
 
     def optimize(self,
         num_init: int,

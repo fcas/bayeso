@@ -21,7 +21,8 @@ def run_single_round_with_all_initial_information(model_bo: bo.BO,
     num_iter: int,
     str_sampling_method_ao: str=constants.STR_SAMPLING_METHOD_AO,
     num_samples_ao: int=constants.NUM_SAMPLES_AO,
-    str_mlm_method: str=constants.STR_MLM_METHOD
+    str_mlm_method: str=constants.STR_MLM_METHOD,
+    verbose: bool=False,
 ) -> constants.TYPING_TUPLE_FIVE_ARRAYS:
     """
     It optimizes `fun_target` for `num_iter` iterations with given `model_bo`.
@@ -47,6 +48,8 @@ def run_single_round_with_all_initial_information(model_bo: bo.BO,
     :param str_mlm_method: the name of marginal likelihood maximization
         method for Gaussian process regression.
     :type str_mlm_method: str., optional
+    :param verbose: a flag for printing log messages.
+    :type verbose: bool., optional
 
     :returns: tuple of acquired examples, their function values, overall
         execution times per iteration, execution time consumed in Gaussian
@@ -68,8 +71,9 @@ def run_single_round_with_all_initial_information(model_bo: bo.BO,
     assert isinstance(str_sampling_method_ao, str)
     assert isinstance(num_samples_ao, int)
     assert isinstance(str_mlm_method, str)
-    assert len(X_train.shape) == 2
-    assert len(Y_train.shape) == 2
+    assert isinstance(verbose, bool)
+    assert X_train.ndim == 2
+    assert Y_train.ndim == 2
     assert X_train.shape[0] == Y_train.shape[0]
     assert Y_train.shape[1] == 1
     assert str_mlm_method in constants.ALLOWED_MLM_METHOD
@@ -82,7 +86,8 @@ def run_single_round_with_all_initial_information(model_bo: bo.BO,
     time_surrogate_final = []
     time_acq_final = []
     for ind_iter in range(0, num_iter):
-        model_bo.logger.info('Iteration %d', ind_iter + 1)
+        if verbose:
+            model_bo.logger.info('Iteration %d', ind_iter + 1)
         time_iter_start = time.time()
 
         next_point, dict_info = model_bo.optimize(X_final, Y_final,
@@ -136,6 +141,7 @@ def run_single_round_with_initial_inputs(model_bo: bo.BO,
     str_sampling_method_ao: str=constants.STR_SAMPLING_METHOD_AO,
     num_samples_ao: int=constants.NUM_SAMPLES_AO,
     str_mlm_method: str=constants.STR_MLM_METHOD,
+    verbose: bool=False,
 ) -> constants.TYPING_TUPLE_FIVE_ARRAYS:
     """
     It optimizes `fun_target` for `num_iter` iterations with given
@@ -160,6 +166,8 @@ def run_single_round_with_initial_inputs(model_bo: bo.BO,
     :param str_mlm_method: the name of marginal likelihood maximization
         method for Gaussian process regression.
     :type str_mlm_method: str., optional
+    :param verbose: a flag for printing log messages.
+    :type verbose: bool., optional
 
     :returns: tuple of acquired examples, their function values, overall
         execution times per iteration, execution time consumed in Gaussian
@@ -180,7 +188,8 @@ def run_single_round_with_initial_inputs(model_bo: bo.BO,
     assert isinstance(str_sampling_method_ao, str)
     assert isinstance(num_samples_ao, int)
     assert isinstance(str_mlm_method, str)
-    assert len(X_train.shape) == 2
+    assert isinstance(verbose, bool)
+    assert X_train.ndim == 2
     assert str_mlm_method in constants.ALLOWED_MLM_METHOD
 
     Y_train = []
@@ -203,7 +212,8 @@ def run_single_round_with_initial_inputs(model_bo: bo.BO,
             num_iter,
             str_sampling_method_ao=str_sampling_method_ao,
             num_samples_ao=num_samples_ao,
-            str_mlm_method=str_mlm_method
+            str_mlm_method=str_mlm_method,
+            verbose=verbose,
         )
     return X_final, Y_final, \
         np.concatenate((time_initials, time_all_final)), \
@@ -216,7 +226,8 @@ def run_single_round(model_bo: bo.BO, fun_target: constants.TYPING_CALLABLE,
     str_sampling_method_ao: str=constants.STR_SAMPLING_METHOD_AO,
     num_samples_ao: int=constants.NUM_SAMPLES_AO,
     str_mlm_method: str=constants.STR_MLM_METHOD,
-    seed: constants.TYPING_UNION_INT_NONE=None
+    seed: constants.TYPING_UNION_INT_NONE=None,
+    verbose: bool=False,
 ) -> constants.TYPING_TUPLE_FIVE_ARRAYS:
     """
     It optimizes `fun_target` for `num_iter` iterations with given
@@ -247,6 +258,8 @@ def run_single_round(model_bo: bo.BO, fun_target: constants.TYPING_CALLABLE,
     :type str_mlm_method: str., optional
     :param seed: None, or random seed.
     :type seed: NoneType or int., optional
+    :param verbose: a flag for printing log messages.
+    :type verbose: bool., optional
 
     :returns: tuple of acquired examples, their function values, overall
         execution times per iteration, execution time consumed in Gaussian
@@ -272,22 +285,24 @@ def run_single_round(model_bo: bo.BO, fun_target: constants.TYPING_CALLABLE,
     assert isinstance(num_samples_ao, int)
     assert isinstance(str_mlm_method, str)
     assert isinstance(seed, (int, type(None)))
+    assert isinstance(verbose, bool)
     assert str_initial_method_bo in constants.ALLOWED_INITIALIZING_METHOD_BO
     assert str_mlm_method in constants.ALLOWED_MLM_METHOD
 
-    model_bo.logger.info('range_X:\n%s', utils_logger.get_str_array(model_bo.range_X))
-    model_bo.logger.info('str_cov: %s', model_bo.str_cov)
-    model_bo.logger.info('str_acq: %s', model_bo.str_acq)
-    model_bo.logger.info('str_optimizer_method_gp: %s', model_bo.str_optimizer_method_gp)
-    model_bo.logger.info('str_optimizer_method_bo: %s', model_bo.str_optimizer_method_bo)
-    model_bo.logger.info('str_modelselection_method: %s', model_bo.str_modelselection_method)
-    model_bo.logger.info('num_init: %d', num_init)
-    model_bo.logger.info('num_iter: %d', num_iter)
-    model_bo.logger.info('str_initial_method_bo: %s', str_initial_method_bo)
-    model_bo.logger.info('str_sampling_method_ao: %s', str_sampling_method_ao)
-    model_bo.logger.info('num_samples_ao: %d', num_samples_ao)
-    model_bo.logger.info('str_mlm_method: %s', str_mlm_method)
-    model_bo.logger.info('seed: %s', seed)
+    if verbose:
+        model_bo.logger.info('range_X:\n%s', utils_logger.get_str_array(model_bo.range_X))
+        model_bo.logger.info('str_cov: %s', model_bo.str_cov)
+        model_bo.logger.info('str_acq: %s', model_bo.str_acq)
+        model_bo.logger.info('str_optimizer_method_gp: %s', model_bo.str_optimizer_method_gp)
+        model_bo.logger.info('str_optimizer_method_bo: %s', model_bo.str_optimizer_method_bo)
+        model_bo.logger.info('str_modelselection_method: %s', model_bo.str_modelselection_method)
+        model_bo.logger.info('num_init: %d', num_init)
+        model_bo.logger.info('num_iter: %d', num_iter)
+        model_bo.logger.info('str_initial_method_bo: %s', str_initial_method_bo)
+        model_bo.logger.info('str_sampling_method_ao: %s', str_sampling_method_ao)
+        model_bo.logger.info('num_samples_ao: %d', num_samples_ao)
+        model_bo.logger.info('str_mlm_method: %s', str_mlm_method)
+        model_bo.logger.info('seed: %s', seed)
 
     time_start = time.time()
 
@@ -300,7 +315,8 @@ def run_single_round(model_bo: bo.BO, fun_target: constants.TYPING_CALLABLE,
             model_bo, fun_target, X_init, num_iter,
             str_sampling_method_ao=str_sampling_method_ao,
             num_samples_ao=num_samples_ao,
-            str_mlm_method=str_mlm_method
+            str_mlm_method=str_mlm_method,
+            verbose=verbose,
         )
 
     time_end = time.time()
