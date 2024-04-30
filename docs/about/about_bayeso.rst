@@ -11,11 +11,11 @@ Supported Python Version
 
 We test our package in the following versions.
 
-- Python 3.7
 - Python 3.8
 - Python 3.9
 - Python 3.10
 - Python 3.11
+- Python 3.12
 
 Examples
 ========
