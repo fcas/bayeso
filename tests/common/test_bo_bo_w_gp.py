@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 16, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: April 30, 2024
 #
 """test_bo_bo_w_gp"""
 
@@ -15,7 +15,7 @@ from bayeso.utils import utils_covariance
 
 
 BO = package_target.BOwGP
-TEST_EPSILON = 1e-5
+
 
 def test_load_bo():
     # legitimate cases
@@ -115,7 +115,7 @@ def test_get_samples():
     truth_arr_initials = np.array([
         [0.000, -2.000, -5.000],
     ])
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials = model_bo.get_samples('grid', num_samples=3)
     truth_arr_initials = np.array([
@@ -147,10 +147,10 @@ def test_get_samples():
         [10.000, 2.000, 0.000],
         [10.000, 2.000, 5.000],
     ])
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
-    arr_initials_ = model_bo.get_samples('sobol', num_samples=3)
-    arr_initials = model_bo.get_samples('sobol', num_samples=3, seed=42)
+    arr_initials_ = model_bo.get_samples('sobol', num_samples=4)
+    arr_initials = model_bo.get_samples('sobol', num_samples=4, seed=42)
 
     print('sobol')
     for elem_1 in arr_initials:
@@ -164,18 +164,23 @@ def test_get_samples():
             3.06412766687572,
         ],
         [
-            8.698135614395142,
-            -0.250022292137146,
-            -0.012653172016143799,
+            8.69813535362482,
+            -0.2500223182141781,
+            -0.012653125450015068,
         ],
         [
-            5.779154300689697,
-            0.04064440727233887,
-            2.2647011280059814,
+            5.779154505580664,
+            0.04064444452524185,
+            2.2647008765488863,
+        ],
+        [
+            1.3686652854084969,
+            -1.0451578684151173,
+            -4.681709306314588,
         ],
     ])
 
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials_ = model_bo.get_samples('halton', num_samples=3)
     arr_initials = model_bo.get_samples('halton', num_samples=3, seed=42)
@@ -240,7 +245,7 @@ def test_get_samples():
             ],
         ])
 
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials_ = model_bo.get_samples('uniform', num_samples=3)
     arr_initials = model_bo.get_samples('uniform', num_samples=3, seed=42)
@@ -249,7 +254,7 @@ def test_get_samples():
         [5.98658484, -1.37592544, -3.4400548],
         [0.58083612, 1.46470458, 1.01115012],
     ])
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials_ = model_bo.get_samples('gaussian', num_samples=3)
     arr_initials = model_bo.get_samples('gaussian', num_samples=3, seed=42)
@@ -258,7 +263,7 @@ def test_get_samples():
         [8.807574641020064, -0.23415337472333597, -0.5853423923729514],
         [8.948032038768478, 0.7674347291529088, -1.1736859648373803],
     ])
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
 def test_get_initials():
     np.random.seed(42)
@@ -284,8 +289,8 @@ def test_get_initials():
     with pytest.raises(AssertionError) as error:
         model_bo.get_initials('abc', 10)
 
-    arr_initials = model_bo.get_initials('sobol', 3)
-    arr_initials = model_bo.get_initials('sobol', 3, seed=42)
+    arr_initials = model_bo.get_initials('sobol', 4)
+    arr_initials = model_bo.get_initials('sobol', 4, seed=42)
 
     print('sobol')
     for elem_1 in arr_initials:
@@ -299,18 +304,23 @@ def test_get_initials():
             3.06412766687572,
         ],
         [
-            8.698135614395142,
-            -0.250022292137146,
-            -0.012653172016143799,
+            8.69813535362482,
+            -0.2500223182141781,
+            -0.012653125450015068,
         ],
         [
-            5.779154300689697,
-            0.04064440727233887,
-            2.2647011280059814,
+            5.779154505580664,
+            0.04064444452524185,
+            2.2647008765488863,
+        ],
+        [
+            1.3686652854084969,
+            -1.0451578684151173,
+            -4.681709306314588,
         ],
     ])
 
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials = model_bo.get_initials('uniform', 3, seed=42)
     truth_arr_initials = np.array([
@@ -318,7 +328,7 @@ def test_get_initials():
         [5.98658484, -1.37592544, -3.4400548],
         [0.58083612, 1.46470458, 1.01115012],
     ])
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
 def test_optimize():
     np.random.seed(42)
@@ -381,9 +391,9 @@ def test_optimize():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -420,9 +430,9 @@ def test_optimize_str_acq():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -447,9 +457,9 @@ def test_optimize_str_acq():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -474,9 +484,9 @@ def test_optimize_str_acq():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -501,9 +511,9 @@ def test_optimize_str_acq():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -528,9 +538,9 @@ def test_optimize_str_acq():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -567,9 +577,9 @@ def test_optimize_str_optimize_method_bo():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -596,9 +606,9 @@ def test_optimize_str_optimize_method_bo():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -635,9 +645,9 @@ def test_optimize_str_mlm_method():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -662,9 +672,9 @@ def test_optimize_str_mlm_method():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -701,9 +711,9 @@ def test_optimize_str_modelselection_method():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -740,9 +750,9 @@ def test_optimize_use_ard():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -779,14 +789,14 @@ def test_optimize_use_ard():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
     assert isinstance(hyps['lengthscales'], np.ndarray)
-    assert len(hyps['lengthscales'].shape) == 1
+    assert hyps['lengthscales'].ndim == 1
     assert hyps['lengthscales'].shape[0] == 3
 
 def test_optimize_normalize_Y():
@@ -835,7 +845,7 @@ def test_compute_posteriors():
 
     cov_X_X, inv_cov_X_X, _ = covariance.get_kernel_inverse(X, hyps, model_bo.str_cov)
 
-    X_test = model_bo.get_samples('sobol', num_samples=10, seed=111)
+    X_test = model_bo.get_samples('sobol', num_samples=16, seed=111)
 
     with pytest.raises(AssertionError) as error:
         model_bo.compute_posteriors(1, Y, X_test, cov_X_X, inv_cov_X_X, hyps)
@@ -856,8 +866,8 @@ def test_compute_posteriors():
 
     pred_mean, pred_std = model_bo.compute_posteriors(X, Y, X_test, cov_X_X, inv_cov_X_X, hyps)
 
-    assert len(pred_mean.shape) == 1
-    assert len(pred_std.shape) == 1
+    assert pred_mean.ndim == 1
+    assert pred_std.ndim == 1
     assert pred_mean.shape[0] == pred_mean.shape[0] == X_test.shape[0]
 
 def test_compute_posteriors_set():
@@ -913,8 +923,8 @@ def test_compute_posteriors_set():
 
     pred_mean, pred_std = model_bo.compute_posteriors(X, Y, X_test[:, :, :dim_X], cov_X_X, inv_cov_X_X, hyps)
 
-    assert len(pred_mean.shape) == 1
-    assert len(pred_std.shape) == 1
+    assert pred_mean.ndim == 1
+    assert pred_std.ndim == 1
     assert pred_mean.shape[0] == pred_mean.shape[0] == X_test.shape[0]
 
 def test_compute_acquisitions():
@@ -934,7 +944,7 @@ def test_compute_acquisitions():
 
     cov_X_X, inv_cov_X_X, _ = covariance.get_kernel_inverse(X, hyps, model_bo.str_cov)
 
-    X_test = model_bo.get_samples('sobol', num_samples=10, seed=111)
+    X_test = model_bo.get_samples('sobol', num_samples=8, seed=111)
 
     truth_X_test = np.array([
         [
@@ -943,49 +953,39 @@ def test_compute_acquisitions():
             -3.654018910601735,
         ],
         [
-            5.692976117134094,
-            0.06583881378173828,
-            4.514206647872925,
+            5.6929760333150625,
+            0.06583871319890022,
+            4.514206442981958,
         ],
         [
-            9.900951385498047,
+            9.900951310992241,
             -1.9652910344302654,
-            -2.2755324840545654,
+            -2.275532428175211,
         ],
         [
-            2.2963321208953857,
-            1.359175443649292,
-            0.7950365543365479,
+            2.296332074329257,
+            1.3591753654181957,
+            0.795036694034934,
         ],
         [
             0.2561802417039871,
-            -1.420634150505066,
-            3.1929773092269897,
+            -1.420634139329195,
+            3.192977551370859,
         ],
         [
-            7.546542286872864,
-            1.778337001800537,
+            7.546542389318347,
+            1.7783369608223438,
             -4.986539306119084,
         ],
         [
-            6.796058416366577,
-            -0.127052903175354,
-            2.127595543861389,
+            6.79605845361948,
+            -0.12705285474658012,
+            2.1275955345481634,
         ],
         [
-            4.151194095611572,
-            0.5484802722930908,
-            -0.9542649984359741,
-        ],
-        [
-            4.554623663425446,
-            -1.7126559913158417,
-            1.575535535812378,
-        ],
-        [
-            6.998107433319092,
-            1.1039907932281494,
-            -0.24655908346176147,
+            4.1511941608041525,
+            0.5484802536666393,
+            -0.9542650915682316,
         ],
     ])
 
@@ -993,7 +993,7 @@ def test_compute_acquisitions():
         for elem_2 in elem_1:
             print(elem_2)
 
-    assert np.all(np.abs(X_test - truth_X_test) < TEST_EPSILON)
+    np.testing.assert_allclose(X_test, truth_X_test)
 
     with pytest.raises(AssertionError) as error:
         model_bo.compute_acquisitions(1, X, Y, cov_X_X, inv_cov_X_X, hyps)
@@ -1018,21 +1018,19 @@ def test_compute_acquisitions():
 
     truth_acqs = np.array([
         0.8049686141202866,
-        0.7893967936170049,
-        0.7893344548526326,
-        0.6000389921254741,
-        0.8103002530541231,
-        0.7893313332377416,
-        0.789470520859335,
-        0.7800155879443277,
-        0.7997704016015617,
-        0.7892647934229852,
+        0.7893967936446344,
+        0.7893344548527176,
+        0.6000390368336054,
+        0.8103002453939229,
+        0.7893313332382224,
+        0.7894705208469283,
+        0.7800155900459567,
     ])
 
     assert isinstance(acqs, np.ndarray)
-    assert len(acqs.shape) == 1
+    assert acqs.ndim == 1
     assert X_test.shape[0] == acqs.shape[0]
-    assert np.all(np.abs(acqs - truth_acqs) < TEST_EPSILON)
+    np.testing.assert_allclose(acqs, truth_acqs)
 
 def test_compute_acquisitions_set():
     np.random.seed(42)

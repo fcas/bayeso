@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: July 9, 2021
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: April 30, 2024
 #
 """test_wrappers_bo_function"""
 
@@ -146,7 +146,7 @@ def test_run_single_round():
         [-5.0, 5.0],
     ])
     dim_X = arr_range.shape[0]
-    num_X = 3
+    num_X = 4
     num_iter = 10
     fun_target = lambda x: x**2 - 2.0 * x + 1.0
     model_bo = bo.BO(arr_range, debug=True)

@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: July 8, 2021
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: April 30, 2024
 #
 """test_wrappers_bo_class"""
 
@@ -189,7 +189,7 @@ def test_optimize():
         [-5.0, 5.0],
     ])
     dim_X = range_.shape[0]
-    num_init = 3
+    num_init = 4
     num_iter = 5
     fun_target = lambda x: 2.0 * x + 1.0
 
@@ -219,7 +219,7 @@ def test_optimize_str_surrogate():
         [-5.0, 5.0],
     ])
     dim_X = range_.shape[0]
-    num_init = 3
+    num_init = 2
     num_iter = 5
     fun_target = lambda x: 2.0 * x + 1.0
 
