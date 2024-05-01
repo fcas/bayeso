@@ -61,11 +61,11 @@ $ pip uninstall bayeso
 ## Supported Python Version
 We test our package in the following versions.
 
-* Python 3.7
 * Python 3.8
 * Python 3.9
 * Python 3.10
 * Python 3.11
+* Python 3.12
 
 ## Examples and Tests
 We provide a [list of examples](EXAMPLES.md) and a [list of tests](TESTS.md).
