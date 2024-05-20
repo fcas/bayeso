@@ -91,28 +91,32 @@ def get_optimized_kernel(
         use_gradient = False
 
     if str_modelselection_method == "ml":
-        neg_log_ml_ = lambda hyps: gp_likelihood.neg_log_ml(
-            X_train,
-            Y_train,
-            hyps,
-            str_cov,
-            prior_mu_train,
-            use_ard=use_ard,
-            fix_noise=fix_noise,
-            use_gradient=use_gradient,
-            debug=debug,
-        )
+        def neg_log_ml_(hyps):
+            return gp_likelihood.neg_log_ml(
+                X_train,
+                Y_train,
+                hyps,
+                str_cov,
+                prior_mu_train,
+                use_ard=use_ard,
+                fix_noise=fix_noise,
+                use_gradient=use_gradient,
+                debug=debug,
+            )
+
     elif str_modelselection_method == "loocv":
         # TODO: add use_ard.
-        neg_log_ml_ = lambda hyps: gp_likelihood.neg_log_pseudo_l_loocv(
-            X_train,
-            Y_train,
-            hyps,
-            str_cov,
-            prior_mu_train,
-            fix_noise=fix_noise,
-            debug=debug,
-        )
+        def neg_log_ml_(hyps):
+            return gp_likelihood.neg_log_pseudo_l_loocv(
+                X_train,
+                Y_train,
+                hyps,
+                str_cov,
+                prior_mu_train,
+                fix_noise=fix_noise,
+                debug=debug,
+            )
+
         use_gradient = False
     else:  # pragma: no cover
         raise ValueError(

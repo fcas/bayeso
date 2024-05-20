@@ -83,17 +83,18 @@ def get_optimized_kernel(
         num_dim = X_train.shape[2]
         use_gradient = False
 
-    neg_log_ml_ = lambda hyps: tp_likelihood.neg_log_ml(
-        X_train,
-        Y_train,
-        hyps,
-        str_cov,
-        prior_mu_train,
-        fix_noise=fix_noise,
-        use_gradient=use_gradient,
-        use_ard=use_ard,
-        debug=debug,
-    )
+    def neg_log_ml_(hyps):
+        return tp_likelihood.neg_log_ml(
+            X_train,
+            Y_train,
+            hyps,
+            str_cov,
+            prior_mu_train,
+            fix_noise=fix_noise,
+            use_gradient=use_gradient,
+            use_ard=use_ard,
+            debug=debug,
+        )
 
     hyps_converted = utils_covariance.convert_hyps(
         str_cov,

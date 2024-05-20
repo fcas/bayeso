@@ -509,9 +509,12 @@ class BOwGP(base_bo.BaseBO):
         time_end_surrogate = time.time()
 
         time_start_acq = time.time()
-        fun_negative_acquisition = lambda X_test: -1.0 * self.compute_acquisitions(
-            X_test, X_train, Y_train, cov_X_X, inv_cov_X_X, hyps
-        )
+
+        def fun_negative_acquisition(X_test):
+            return -1.0 * self.compute_acquisitions(
+                X_test, X_train, Y_train, cov_X_X, inv_cov_X_X, hyps
+            )
+
         next_point, next_points = self._optimize(
             fun_negative_acquisition,
             str_sampling_method=str_sampling_method,
