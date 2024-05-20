@@ -171,7 +171,7 @@ def get_kernel_cholesky(X_train: np.ndarray, hyps: dict, str_cov: str,
 
     lower = None
 
-    for jitter_cov in [0.0, 1e-4, 1e-2, 1e-1, 1e0, 1e1, 1e2]:
+    for jitter_cov in [0.0, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3]:
         try:
             cov_X_X_ = cov_X_X + jitter_cov * np.eye(X_train.shape[0])
             lower = scipy.linalg.cholesky(cov_X_X_, lower=True)
