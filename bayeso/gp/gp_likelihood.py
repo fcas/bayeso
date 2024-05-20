@@ -16,13 +16,17 @@ from bayeso.utils import utils_common
 
 
 @utils_common.validate_types
-def neg_log_ml(X_train: np.ndarray, Y_train: np.ndarray, hyps: np.ndarray,
-    str_cov: str, prior_mu_train: np.ndarray,
-    use_ard: bool=constants.USE_ARD,
-    fix_noise: bool=constants.FIX_GP_NOISE,
-    use_cholesky: bool=True,
-    use_gradient: bool=True,
-    debug: bool=False
+def neg_log_ml(
+    X_train: np.ndarray,
+    Y_train: np.ndarray,
+    hyps: np.ndarray,
+    str_cov: str,
+    prior_mu_train: np.ndarray,
+    use_ard: bool = constants.USE_ARD,
+    fix_noise: bool = constants.FIX_GP_NOISE,
+    use_cholesky: bool = True,
+    use_gradient: bool = True,
+    debug: bool = False,
 ) -> constants.TYPING_UNION_FLOAT_FA:
     """
     This function computes a negative log marginal likelihood.
@@ -67,14 +71,21 @@ def neg_log_ml(X_train: np.ndarray, Y_train: np.ndarray, hyps: np.ndarray,
     assert isinstance(use_gradient, bool)
     assert len(prior_mu_train.shape) == 2
     assert X_train.shape[0] == Y_train.shape[0] == prior_mu_train.shape[0]
-    utils_covariance.check_str_cov('neg_log_ml', str_cov, X_train.shape)
+    utils_covariance.check_str_cov("neg_log_ml", str_cov, X_train.shape)
 
-    hyps = utils_covariance.restore_hyps(str_cov, hyps, use_ard=use_ard, fix_noise=fix_noise)
+    hyps = utils_covariance.restore_hyps(
+        str_cov, hyps, use_ard=use_ard, fix_noise=fix_noise
+    )
     new_Y_train = Y_train - prior_mu_train
     if use_cholesky:
-        cov_X_X, lower, grad_cov_X_X = covariance.get_kernel_cholesky(X_train,
-            hyps, str_cov, fix_noise=fix_noise, use_gradient=use_gradient,
-            debug=debug)
+        cov_X_X, lower, grad_cov_X_X = covariance.get_kernel_cholesky(
+            X_train,
+            hyps,
+            str_cov,
+            fix_noise=fix_noise,
+            use_gradient=use_gradient,
+            debug=debug,
+        )
 
         alpha = scipy.linalg.cho_solve((lower, True), new_Y_train)
 
@@ -85,22 +96,28 @@ def neg_log_ml(X_train: np.ndarray, Y_train: np.ndarray, hyps: np.ndarray,
             assert grad_cov_X_X is not None
 
             first_term_grad = np.einsum("ik,jk->ijk", alpha, alpha)
-            first_term_grad -= np.expand_dims(scipy.linalg.cho_solve((lower, True),
-                np.eye(cov_X_X.shape[0])), axis=2)
+            first_term_grad -= np.expand_dims(
+                scipy.linalg.cho_solve((lower, True), np.eye(cov_X_X.shape[0])), axis=2
+            )
             grad_log_ml_ = 0.5 * np.einsum("ijl,ijk->kl", first_term_grad, grad_cov_X_X)
             grad_log_ml_ = np.sum(grad_log_ml_, axis=1)
     else:
         # TODO: use_gradient is fixed.
         use_gradient = False
-        cov_X_X, inv_cov_X_X, grad_cov_X_X = covariance.get_kernel_inverse(X_train,
-            hyps, str_cov, fix_noise=fix_noise, use_gradient=use_gradient,
-            debug=debug)
+        cov_X_X, inv_cov_X_X, grad_cov_X_X = covariance.get_kernel_inverse(
+            X_train,
+            hyps,
+            str_cov,
+            fix_noise=fix_noise,
+            use_gradient=use_gradient,
+            debug=debug,
+        )
 
         first_term = -0.5 * np.dot(np.dot(new_Y_train.T, inv_cov_X_X), new_Y_train)
         sign_second_term, second_term = np.linalg.slogdet(cov_X_X)
 
         # TODO: It should be checked.
-        if sign_second_term <= 0: # pragma: no cover
+        if sign_second_term <= 0:  # pragma: no cover
             second_term = 0.0
 
         second_term = -0.5 * second_term
@@ -114,11 +131,16 @@ def neg_log_ml(X_train: np.ndarray, Y_train: np.ndarray, hyps: np.ndarray,
 
     return -1.0 * log_ml_
 
+
 @utils_common.validate_types
-def neg_log_pseudo_l_loocv(X_train: np.ndarray, Y_train: np.ndarray, hyps: np.ndarray,
-    str_cov: str, prior_mu_train: np.ndarray,
-    fix_noise: bool=constants.FIX_GP_NOISE,
-    debug: bool=False
+def neg_log_pseudo_l_loocv(
+    X_train: np.ndarray,
+    Y_train: np.ndarray,
+    hyps: np.ndarray,
+    str_cov: str,
+    prior_mu_train: np.ndarray,
+    fix_noise: bool = constants.FIX_GP_NOISE,
+    debug: bool = False,
 ) -> float:
     """
     It computes a negative log pseudo-likelihood using leave-one-out cross-validation.
@@ -152,29 +174,34 @@ def neg_log_pseudo_l_loocv(X_train: np.ndarray, Y_train: np.ndarray, hyps: np.nd
     assert isinstance(fix_noise, bool)
     assert len(prior_mu_train.shape) == 2
     assert X_train.shape[0] == Y_train.shape[0] == prior_mu_train.shape[0]
-    utils_covariance.check_str_cov('neg_log_pseudo_l_loocv', str_cov, X_train.shape)
+    utils_covariance.check_str_cov("neg_log_pseudo_l_loocv", str_cov, X_train.shape)
 
     num_data = X_train.shape[0]
     hyps = utils_covariance.restore_hyps(str_cov, hyps, fix_noise=fix_noise)
 
-    _, inv_cov_X_X, _ = covariance.get_kernel_inverse(X_train, hyps,
-        str_cov, fix_noise=fix_noise, debug=debug)
+    _, inv_cov_X_X, _ = covariance.get_kernel_inverse(
+        X_train, hyps, str_cov, fix_noise=fix_noise, debug=debug
+    )
 
     log_pseudo_l_ = 0.0
     for ind_data in range(0, num_data):
         # TODO: check this.
-#        cur_X_train = np.vstack((X_train[:ind_data], X_train[ind_data+1:]))
-#        cur_Y_train = np.vstack((Y_train[:ind_data], Y_train[ind_data+1:]))
+        #        cur_X_train = np.vstack((X_train[:ind_data], X_train[ind_data+1:]))
+        #        cur_Y_train = np.vstack((Y_train[:ind_data], Y_train[ind_data+1:]))
 
-#        cur_X_test = np.expand_dims(X_train[ind_data], axis=0)
+        #        cur_X_test = np.expand_dims(X_train[ind_data], axis=0)
         cur_Y_test = Y_train[ind_data]
 
-        cur_mu = np.squeeze(cur_Y_test) \
+        cur_mu = (
+            np.squeeze(cur_Y_test)
             - np.dot(inv_cov_X_X, Y_train)[ind_data] / inv_cov_X_X[ind_data, ind_data]
-        cur_sigma = np.sqrt(1.0 / (inv_cov_X_X[ind_data, ind_data] + constants.JITTER_COV))
+        )
+        cur_sigma = np.sqrt(
+            1.0 / (inv_cov_X_X[ind_data, ind_data] + constants.JITTER_COV)
+        )
 
         first_term = -0.5 * np.log(cur_sigma**2)
-        second_term = -0.5 * (np.squeeze(cur_Y_test - cur_mu))**2 / (cur_sigma**2)
+        second_term = -0.5 * (np.squeeze(cur_Y_test - cur_mu)) ** 2 / (cur_sigma**2)
         third_term = -0.5 * np.log(2.0 * np.pi)
         cur_log_pseudo_l_ = first_term + second_term + third_term
         log_pseudo_l_ += cur_log_pseudo_l_

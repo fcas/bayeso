@@ -12,13 +12,14 @@ from bayeso.utils import utils_bo
 from bayeso.utils import utils_plotting
 
 
-STR_FUN_TARGET = 'branin'
+STR_FUN_TARGET = "branin"
 
 obj_fun = Branin()
 
 
 def fun_target(X):
     return obj_fun.output(X)
+
 
 path_save = None
 
@@ -35,7 +36,7 @@ bounds = obj_fun.get_bounds()
 
 list_Y = []
 for ind_bo in range(0, num_bo):
-    print('BO Round', ind_bo + 1)
+    print("BO Round", ind_bo + 1)
     X, Y = ts.thompson_sampling_gp(bounds, fun_target, num_init, num_iter, debug=debug)
 
     print(X)
@@ -48,4 +49,11 @@ for ind_bo in range(0, num_bo):
 
 arr_Y = np.array(list_Y)
 arr_Y = np.expand_dims(np.squeeze(arr_Y), axis=0)
-utils_plotting.plot_minimum_vs_iter(arr_Y, [STR_FUN_TARGET], num_init, True, path_save=path_save, str_postfix=STR_FUN_TARGET)
+utils_plotting.plot_minimum_vs_iter(
+    arr_Y,
+    [STR_FUN_TARGET],
+    num_init,
+    True,
+    path_save=path_save,
+    str_postfix=STR_FUN_TARGET,
+)

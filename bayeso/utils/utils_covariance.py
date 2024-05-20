@@ -22,14 +22,17 @@ def _get_list_first() -> constants.TYPING_LIST[str]:
 
     """
 
-    list_first = ['eq', 'se', 'matern32', 'matern52']
-    list_first += ['set_' + str_ for str_ in list_first]
+    list_first = ["eq", "se", "matern32", "matern52"]
+    list_first += ["set_" + str_ for str_ in list_first]
     return list_first
 
+
 @utils_common.validate_types
-def get_hyps(str_cov: str, dim: int,
-    use_gp: bool=True,
-    use_ard: bool=True,
+def get_hyps(
+    str_cov: str,
+    dim: int,
+    use_gp: bool = True,
+    use_ard: bool = True,
 ) -> dict:
     """
     It returns a dictionary of default hyperparameters for covariance
@@ -59,28 +62,33 @@ def get_hyps(str_cov: str, dim: int,
     assert str_cov in constants.ALLOWED_COV
 
     hyps = {}
-    hyps['noise'] = constants.GP_NOISE
+    hyps["noise"] = constants.GP_NOISE
 
     if not use_gp:
-        hyps['dof'] = 5.0
+        hyps["dof"] = 5.0
 
     list_first = _get_list_first()
 
     if str_cov in list_first:
-        hyps['signal'] = 1.0
+        hyps["signal"] = 1.0
         if use_ard:
-            hyps['lengthscales'] = np.ones(dim)
+            hyps["lengthscales"] = np.ones(dim)
         else:
-            hyps['lengthscales'] = 1.0
+            hyps["lengthscales"] = 1.0
     else:
-        raise NotImplementedError('get_hyps: allowed str_cov, but it is not implemented.')
+        raise NotImplementedError(
+            "get_hyps: allowed str_cov, but it is not implemented."
+        )
     return hyps
 
+
 @utils_common.validate_types
-def get_range_hyps(str_cov: str, dim: int,
-    use_gp: bool=True,
-    use_ard: bool=True,
-    fix_noise: bool=False
+def get_range_hyps(
+    str_cov: str,
+    dim: int,
+    use_gp: bool = True,
+    use_ard: bool = True,
+    fix_noise: bool = False,
 ) -> constants.TYPING_LIST[list]:
     """
     It returns default optimization ranges of hyperparameters for Gaussian process regression.
@@ -121,22 +129,24 @@ def get_range_hyps(str_cov: str, dim: int,
         range_hyps += constants.RANGE_DOF
 
     if str_cov in list_first:
-        range_hyps += constants.RANGE_SIGNAL # for signal scale
-        if use_ard: # for lengthscales
+        range_hyps += constants.RANGE_SIGNAL  # for signal scale
+        if use_ard:  # for lengthscales
             for _ in range(0, dim):
                 range_hyps += constants.RANGE_LENGTHSCALES
         else:
             # INFO: dim is ignored.
             range_hyps += constants.RANGE_LENGTHSCALES
     else:
-        raise NotImplementedError('get_hyps: allowed str_cov, but it is not implemented.')
+        raise NotImplementedError(
+            "get_hyps: allowed str_cov, but it is not implemented."
+        )
 
     return range_hyps
 
+
 @utils_common.validate_types
-def convert_hyps(str_cov: str, hyps: dict,
-    use_gp: bool=True,
-    fix_noise: bool=False
+def convert_hyps(
+    str_cov: str, hyps: dict, use_gp: bool = True, fix_noise: bool = False
 ) -> np.ndarray:
     """
     It converts hyperparameters dictionary, `hyps` to numpy array.
@@ -165,33 +175,38 @@ def convert_hyps(str_cov: str, hyps: dict,
 
     list_hyps = []
     if not fix_noise:
-        list_hyps.append(hyps['noise'])
+        list_hyps.append(hyps["noise"])
 
     if not use_gp:
-        list_hyps.append(hyps['dof'])
+        list_hyps.append(hyps["dof"])
 
     list_first = _get_list_first()
 
     if str_cov in list_first:
-        list_hyps.append(hyps['signal'])
-        if isinstance(hyps['lengthscales'], np.ndarray):
-            for elem_lengthscale in hyps['lengthscales']:
+        list_hyps.append(hyps["signal"])
+        if isinstance(hyps["lengthscales"], np.ndarray):
+            for elem_lengthscale in hyps["lengthscales"]:
                 list_hyps.append(elem_lengthscale)
-        elif isinstance(hyps['lengthscales'], float):
-            list_hyps.append(hyps['lengthscales'])
-        else: # pragma: no cover
-            raise ValueError('covert_hyps: not allowed type for lengthscales.')
+        elif isinstance(hyps["lengthscales"], float):
+            list_hyps.append(hyps["lengthscales"])
+        else:  # pragma: no cover
+            raise ValueError("covert_hyps: not allowed type for lengthscales.")
     else:
-        raise NotImplementedError('convert_hyps: allowed str_cov, but it is not implemented.')
+        raise NotImplementedError(
+            "convert_hyps: allowed str_cov, but it is not implemented."
+        )
 
     return np.array(list_hyps)
 
+
 @utils_common.validate_types
-def restore_hyps(str_cov: str, hyps: np.ndarray,
-    use_gp: bool=True,
-    use_ard: bool=True,
-    fix_noise: bool=False,
-    noise: float=constants.GP_NOISE
+def restore_hyps(
+    str_cov: str,
+    hyps: np.ndarray,
+    use_gp: bool = True,
+    use_ard: bool = True,
+    fix_noise: bool = False,
+    noise: float = constants.GP_NOISE,
 ) -> dict:
     """
     It restores hyperparameters array, `hyps` to dictionary.
@@ -227,36 +242,39 @@ def restore_hyps(str_cov: str, hyps: np.ndarray,
 
     dict_hyps = {}
     if not fix_noise:
-        dict_hyps['noise'] = hyps[0]
+        dict_hyps["noise"] = hyps[0]
         ind_start = 1
     else:
-        dict_hyps['noise'] = noise
+        dict_hyps["noise"] = noise
         ind_start = 0
 
     if not use_gp:
-        dict_hyps['dof'] = hyps[ind_start]
+        dict_hyps["dof"] = hyps[ind_start]
         ind_start += 1
 
     list_first = _get_list_first()
 
     if str_cov in list_first:
-        dict_hyps['signal'] = hyps[ind_start]
+        dict_hyps["signal"] = hyps[ind_start]
 
         if use_ard:
             list_lengthscales = []
             for ind_elem in range(ind_start + 1, len(hyps)):
                 list_lengthscales.append(hyps[ind_elem])
-            dict_hyps['lengthscales'] = np.array(list_lengthscales)
+            dict_hyps["lengthscales"] = np.array(list_lengthscales)
         else:
             assert hyps.shape[0] == ind_start + 2
-            dict_hyps['lengthscales'] = hyps[ind_start + 1]
+            dict_hyps["lengthscales"] = hyps[ind_start + 1]
     else:
-        raise NotImplementedError('restore_hyps: allowed str_cov, but it is not implemented.')
+        raise NotImplementedError(
+            "restore_hyps: allowed str_cov, but it is not implemented."
+        )
     return dict_hyps
 
+
 @utils_common.validate_types
-def validate_hyps_dict(hyps: dict, str_cov: str, dim: int,
-    use_gp: bool=True
+def validate_hyps_dict(
+    hyps: dict, str_cov: str, dim: int, use_gp: bool = True
 ) -> constants.TYPING_TUPLE_DICT_BOOL:
     """
     It validates hyperparameters dictionary, `hyps`.
@@ -283,46 +301,50 @@ def validate_hyps_dict(hyps: dict, str_cov: str, dim: int,
     assert isinstance(use_gp, bool)
     assert str_cov in constants.ALLOWED_COV
 
-    if 'noise' not in hyps:
-        raise ValueError('validate_hyps_dict: invalid noise.')
+    if "noise" not in hyps:
+        raise ValueError("validate_hyps_dict: invalid noise.")
 
-    if not isinstance(hyps['noise'], float):
-        raise ValueError('validate_hyps_dict: invalid noise.')
+    if not isinstance(hyps["noise"], float):
+        raise ValueError("validate_hyps_dict: invalid noise.")
 
-    if np.abs(hyps['noise']) >= constants.BOUND_UPPER_GP_NOISE:
-        hyps['noise'] = constants.BOUND_UPPER_GP_NOISE
+    if np.abs(hyps["noise"]) >= constants.BOUND_UPPER_GP_NOISE:
+        hyps["noise"] = constants.BOUND_UPPER_GP_NOISE
 
     if not use_gp:
-        if 'dof' not in hyps:
-            raise ValueError('validate_hyps_dict: invalid dof.')
+        if "dof" not in hyps:
+            raise ValueError("validate_hyps_dict: invalid dof.")
 
-        if not isinstance(hyps['dof'], float):
-            raise ValueError('validate_hyps_dict: invalid dof.')
+        if not isinstance(hyps["dof"], float):
+            raise ValueError("validate_hyps_dict: invalid dof.")
 
-        if isinstance(hyps['dof'], float) and hyps['dof'] <= 2.0:
-            hyps['dof'] = 2.00001
+        if isinstance(hyps["dof"], float) and hyps["dof"] <= 2.0:
+            hyps["dof"] = 2.00001
 
-    if 'lengthscales' not in hyps:
-        raise ValueError('validate_hyps_dict: invalid lengthscales.')
+    if "lengthscales" not in hyps:
+        raise ValueError("validate_hyps_dict: invalid lengthscales.")
 
-    if isinstance(hyps['lengthscales'], np.ndarray) \
-        and hyps['lengthscales'].shape[0] != dim:
-        raise ValueError('validate_hyps_dict: invalid lengthscales.')
-    if not isinstance(hyps['lengthscales'], np.ndarray) \
-        and not isinstance(hyps['lengthscales'], float):
-        raise ValueError('validate_hyps_dict: invalid lengthscales.')
+    if (
+        isinstance(hyps["lengthscales"], np.ndarray)
+        and hyps["lengthscales"].shape[0] != dim
+    ):
+        raise ValueError("validate_hyps_dict: invalid lengthscales.")
+    if not isinstance(hyps["lengthscales"], np.ndarray) and not isinstance(
+        hyps["lengthscales"], float
+    ):
+        raise ValueError("validate_hyps_dict: invalid lengthscales.")
 
-    if 'signal' not in hyps:
-        raise ValueError('validate_hyps_dict: invalid signal.')
+    if "signal" not in hyps:
+        raise ValueError("validate_hyps_dict: invalid signal.")
 
-    if not isinstance(hyps['signal'], float):
-        raise ValueError('validate_hyps_dict: invalid signal.')
+    if not isinstance(hyps["signal"], float):
+        raise ValueError("validate_hyps_dict: invalid signal.")
 
     return hyps
 
+
 @utils_common.validate_types
-def validate_hyps_arr(hyps: np.ndarray, str_cov: str, dim: int,
-    use_gp: bool=True
+def validate_hyps_arr(
+    hyps: np.ndarray, str_cov: str, dim: int, use_gp: bool = True
 ) -> constants.TYPING_TUPLE_ARRAY_BOOL:
     """
     It validates hyperparameters array, `hyps`.
@@ -349,13 +371,14 @@ def validate_hyps_arr(hyps: np.ndarray, str_cov: str, dim: int,
     assert isinstance(use_gp, bool)
     assert str_cov in constants.ALLOWED_COV
 
-#    is_valid = True
+    #    is_valid = True
 
-    raise NotImplementedError('validate_hyps_arr in utils_covariance.py')
+    raise NotImplementedError("validate_hyps_arr in utils_covariance.py")
+
 
 @utils_common.validate_types
-def check_str_cov(str_fun: str, str_cov: str, shape_X1: tuple,
-    shape_X2: tuple=None
+def check_str_cov(
+    str_fun: str, str_cov: str, shape_X1: tuple, shape_X2: tuple = None
 ) -> constants.TYPE_NONE:
     """
     It is for validating the shape of X1 (and optionally the shape of X2).
@@ -389,7 +412,7 @@ def check_str_cov(str_fun: str, str_cov: str, shape_X1: tuple,
         assert len(shape_X1) == 3
         if shape_X2 is not None:
             assert len(shape_X2) == 3
-    elif str_cov in constants.ALLOWED_COV: # pragma: no cover
-        raise ValueError(f'{str_fun}: missing conditions for str_cov.')
+    elif str_cov in constants.ALLOWED_COV:  # pragma: no cover
+        raise ValueError(f"{str_fun}: missing conditions for str_cov.")
     else:
-        raise ValueError(f'{str_fun}: invalid str_cov.')
+        raise ValueError(f"{str_fun}: invalid str_cov.")

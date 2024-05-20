@@ -36,14 +36,15 @@ class BaseBO(abc.ABC):
 
     """
 
-    def __init__(self,
+    def __init__(
+        self,
         range_X: np.ndarray,
         str_surrogate: str,
         str_acq: str,
         str_optimizer_method_bo: str,
         normalize_Y: bool,
         str_exp: str,
-        debug: bool
+        debug: bool,
     ):
         """
         Constructor method
@@ -60,26 +61,32 @@ class BaseBO(abc.ABC):
         assert len(range_X.shape) == 2
         assert range_X.shape[1] == 2
         assert (range_X[:, 0] <= range_X[:, 1]).all()
-        assert str_surrogate in constants.ALLOWED_SURROGATE \
-            + constants.ALLOWED_SURROGATE_TREES
+        assert (
+            str_surrogate
+            in constants.ALLOWED_SURROGATE + constants.ALLOWED_SURROGATE_TREES
+        )
         assert str_acq in constants.ALLOWED_BO_ACQ
-        assert str_optimizer_method_bo in constants.ALLOWED_OPTIMIZER_METHOD_BO \
+        assert (
+            str_optimizer_method_bo
+            in constants.ALLOWED_OPTIMIZER_METHOD_BO
             + constants.ALLOWED_OPTIMIZER_METHOD_BO_TREES
+        )
 
         self.range_X = range_X
         self.num_dim = range_X.shape[0]
         self.str_surrogate = str_surrogate
         self.str_acq = str_acq
         self.str_optimizer_method_bo = utils_bo.check_optimizer_method_bo(
-            str_optimizer_method_bo, range_X.shape[0], debug)
+            str_optimizer_method_bo, range_X.shape[0], debug
+        )
         self.normalize_Y = normalize_Y
         self.str_exp = str_exp
         self.debug = debug
 
         if str_exp is not None:
-            self.logger = utils_logger.get_logger(f'bo_w_{str_surrogate}_{str_exp}')
+            self.logger = utils_logger.get_logger(f"bo_w_{str_surrogate}_{str_exp}")
         else:
-            self.logger = utils_logger.get_logger(f'bo_w_{str_surrogate}')
+            self.logger = utils_logger.get_logger(f"bo_w_{str_surrogate}")
 
     def _get_random_state(self, seed: constants.TYPING_UNION_INT_NONE):
         """
@@ -118,7 +125,7 @@ class BaseBO(abc.ABC):
             list_bounds.append(tuple(elem))
         return list_bounds
 
-    def _get_samples_grid(self, num_grids: int=constants.NUM_GRIDS_AO) -> np.ndarray:
+    def _get_samples_grid(self, num_grids: int = constants.NUM_GRIDS_AO) -> np.ndarray:
         """
         It returns grids of `self.range_X`.
 
@@ -137,8 +144,8 @@ class BaseBO(abc.ABC):
         initials = utils_common.get_grids(self.range_X, num_grids)
         return initials
 
-    def _get_samples_uniform(self, num_samples: int,
-        seed: constants.TYPING_UNION_INT_NONE=None
+    def _get_samples_uniform(
+        self, num_samples: int, seed: constants.TYPING_UNION_INT_NONE = None
     ) -> np.ndarray:
         """
         It returns `num_samples` examples uniformly sampled.
@@ -169,8 +176,8 @@ class BaseBO(abc.ABC):
         initials = np.array(list_initials)
         return initials
 
-    def _get_samples_gaussian(self, num_samples: int,
-        seed: constants.TYPING_UNION_INT_NONE=None
+    def _get_samples_gaussian(
+        self, num_samples: int, seed: constants.TYPING_UNION_INT_NONE = None
     ) -> np.ndarray:
         """
         It returns `num_samples` examples sampled from Gaussian distribution.
@@ -208,8 +215,8 @@ class BaseBO(abc.ABC):
         initials = np.array(list_initials)
         return initials
 
-    def _get_samples_sobol(self, num_samples: int,
-        seed: constants.TYPING_UNION_INT_NONE=None
+    def _get_samples_sobol(
+        self, num_samples: int, seed: constants.TYPING_UNION_INT_NONE = None
     ) -> np.ndarray:
         """
         It returns `num_samples` examples sampled from Sobol' sequence.
@@ -232,12 +239,14 @@ class BaseBO(abc.ABC):
         sampler = scsqmc.Sobol(self.num_dim, scramble=True, seed=seed)
         samples = sampler.random(num_samples)
 
-        samples = samples * (self.range_X[:, 1].flatten() - self.range_X[:, 0].flatten()) \
+        samples = (
+            samples * (self.range_X[:, 1].flatten() - self.range_X[:, 0].flatten())
             + self.range_X[:, 0].flatten()
+        )
         return samples
 
-    def _get_samples_halton(self, num_samples: int,
-        seed: constants.TYPING_UNION_INT_NONE=None
+    def _get_samples_halton(
+        self, num_samples: int, seed: constants.TYPING_UNION_INT_NONE = None
     ) -> np.ndarray:
         """
         It returns `num_samples` examples sampled by Halton algorithm.
@@ -260,13 +269,17 @@ class BaseBO(abc.ABC):
         sampler = scsqmc.Halton(self.num_dim, scramble=True, seed=seed)
         samples = sampler.random(num_samples)
 
-        samples = samples * (self.range_X[:, 1].flatten() - self.range_X[:, 0].flatten()) \
+        samples = (
+            samples * (self.range_X[:, 1].flatten() - self.range_X[:, 0].flatten())
             + self.range_X[:, 0].flatten()
+        )
         return samples
 
-    def get_samples(self, str_sampling_method: str,
-        num_samples: int=constants.NUM_SAMPLES_AO,
-        seed: constants.TYPING_UNION_INT_NONE=None,
+    def get_samples(
+        self,
+        str_sampling_method: str,
+        num_samples: int = constants.NUM_SAMPLES_AO,
+        seed: constants.TYPING_UNION_INT_NONE = None,
     ) -> np.ndarray:
         """
         It returns `num_samples` examples, sampled by a sampling method `str_sampling_method`.
@@ -290,29 +303,34 @@ class BaseBO(abc.ABC):
         assert isinstance(seed, (int, constants.TYPE_NONE))
         assert str_sampling_method in constants.ALLOWED_SAMPLING_METHOD
 
-        if str_sampling_method == 'grid':
+        if str_sampling_method == "grid":
             if self.debug:
-                self.logger.debug('For this option, num_samples is used as num_grids.')
+                self.logger.debug("For this option, num_samples is used as num_grids.")
             samples = self._get_samples_grid(num_grids=num_samples)
-        elif str_sampling_method == 'uniform':
+        elif str_sampling_method == "uniform":
             samples = self._get_samples_uniform(num_samples, seed=seed)
-        elif str_sampling_method == 'gaussian':
+        elif str_sampling_method == "gaussian":
             samples = self._get_samples_gaussian(num_samples, seed=seed)
-        elif str_sampling_method == 'sobol':
+        elif str_sampling_method == "sobol":
             samples = self._get_samples_sobol(num_samples, seed=seed)
-        elif str_sampling_method == 'halton':
+        elif str_sampling_method == "halton":
             samples = self._get_samples_halton(num_samples, seed=seed)
         else:
-            raise NotImplementedError('get_samples: allowed str_sampling_method,\
-                but it is not implemented.')
+            raise NotImplementedError(
+                "get_samples: allowed str_sampling_method,\
+                but it is not implemented."
+            )
 
         if self.debug:
-            self.logger.debug('samples:\n%s', utils_logger.get_str_array(samples))
+            self.logger.debug("samples:\n%s", utils_logger.get_str_array(samples))
 
         return samples
 
-    def get_initials(self, str_initial_method: str, num_initials: int,
-        seed: constants.TYPING_UNION_INT_NONE=None,
+    def get_initials(
+        self,
+        str_initial_method: str,
+        num_initials: int,
+        seed: constants.TYPING_UNION_INT_NONE = None,
     ) -> np.ndarray:
         """
         It returns `num_initials` examples, sampled by a sampling method `str_initial_method`.
@@ -339,21 +357,21 @@ class BaseBO(abc.ABC):
         return self.get_samples(str_initial_method, num_samples=num_initials, seed=seed)
 
     @abc.abstractmethod
-    def compute_posteriors(self): # pragma: no cover
+    def compute_posteriors(self):  # pragma: no cover
         """
         It is an abstract method.
 
         """
 
     @abc.abstractmethod
-    def compute_acquisitions(self): # pragma: no cover
+    def compute_acquisitions(self):  # pragma: no cover
         """
         It is an abstract method.
 
         """
 
     @abc.abstractmethod
-    def optimize(self): # pragma: no cover
+    def optimize(self):  # pragma: no cover
         """
         It is an abstract method.
 

@@ -13,8 +13,11 @@ from bayeso.utils import utils_common
 
 
 @utils_common.validate_types
-def pi(pred_mean: np.ndarray, pred_std: np.ndarray, Y_train: np.ndarray,
-    jitter: float=constants.JITTER_ACQ
+def pi(
+    pred_mean: np.ndarray,
+    pred_std: np.ndarray,
+    Y_train: np.ndarray,
+    jitter: float = constants.JITTER_ACQ,
 ) -> np.ndarray:
     """
     It is a probability of improvement criterion.
@@ -46,13 +49,17 @@ def pi(pred_mean: np.ndarray, pred_std: np.ndarray, Y_train: np.ndarray,
     assert len(Y_train.shape) == 2
     assert pred_mean.shape[0] == pred_std.shape[0]
 
-    with np.errstate(divide='ignore'):
+    with np.errstate(divide="ignore"):
         val_z = (np.min(Y_train) - pred_mean) / (pred_std + jitter)
     return scipy.stats.norm.cdf(val_z)
 
+
 @utils_common.validate_types
-def ei(pred_mean: np.ndarray, pred_std: np.ndarray, Y_train: np.ndarray,
-    jitter: float=constants.JITTER_ACQ
+def ei(
+    pred_mean: np.ndarray,
+    pred_std: np.ndarray,
+    Y_train: np.ndarray,
+    jitter: float = constants.JITTER_ACQ,
 ) -> np.ndarray:
     """
     It is an expected improvement criterion.
@@ -82,16 +89,20 @@ def ei(pred_mean: np.ndarray, pred_std: np.ndarray, Y_train: np.ndarray,
     assert len(Y_train.shape) == 2
     assert pred_mean.shape[0] == pred_std.shape[0]
 
-    with np.errstate(divide='ignore'):
+    with np.errstate(divide="ignore"):
         val_z = (np.min(Y_train) - pred_mean) / (pred_std + jitter)
-    return (np.min(Y_train) - pred_mean) * scipy.stats.norm.cdf(val_z) \
-        + pred_std * scipy.stats.norm.pdf(val_z)
+    return (np.min(Y_train) - pred_mean) * scipy.stats.norm.cdf(
+        val_z
+    ) + pred_std * scipy.stats.norm.pdf(val_z)
+
 
 @utils_common.validate_types
-def ucb(pred_mean: np.ndarray, pred_std: np.ndarray,
-    Y_train: constants.TYPING_UNION_ARRAY_NONE=None,
-    kappa: float=2.0,
-    increase_kappa: bool=True
+def ucb(
+    pred_mean: np.ndarray,
+    pred_std: np.ndarray,
+    Y_train: constants.TYPING_UNION_ARRAY_NONE = None,
+    kappa: float = 2.0,
+    increase_kappa: bool = True,
 ) -> np.ndarray:
     """
     It is a Gaussian process upper confidence bound criterion.
@@ -136,9 +147,14 @@ def ucb(pred_mean: np.ndarray, pred_std: np.ndarray,
         kappa_ = kappa
     return -pred_mean + kappa_ * pred_std
 
+
 @utils_common.validate_types
-def aei(pred_mean: np.ndarray, pred_std: np.ndarray, Y_train: np.ndarray, noise: float,
-    jitter: float=constants.JITTER_ACQ
+def aei(
+    pred_mean: np.ndarray,
+    pred_std: np.ndarray,
+    Y_train: np.ndarray,
+    noise: float,
+    jitter: float = constants.JITTER_ACQ,
 ) -> np.ndarray:
     """
     It is an augmented expected improvement criterion.
@@ -171,12 +187,14 @@ def aei(pred_mean: np.ndarray, pred_std: np.ndarray, Y_train: np.ndarray, noise:
     assert len(Y_train.shape) == 2
     assert pred_mean.shape[0] == pred_std.shape[0]
 
-    with np.errstate(divide='ignore'):
+    with np.errstate(divide="ignore"):
         val_z = (np.min(Y_train) - pred_mean) / (pred_std + jitter)
-    val_ei = (np.min(Y_train) - pred_mean) * scipy.stats.norm.cdf(val_z) \
-        + pred_std * scipy.stats.norm.pdf(val_z)
+    val_ei = (np.min(Y_train) - pred_mean) * scipy.stats.norm.cdf(
+        val_z
+    ) + pred_std * scipy.stats.norm.pdf(val_z)
     val_aei = val_ei * (1.0 - noise / np.sqrt(pred_std**2 + noise**2))
     return val_aei
+
 
 @utils_common.validate_types
 def pure_exploit(pred_mean: np.ndarray) -> np.ndarray:
@@ -197,6 +215,7 @@ def pure_exploit(pred_mean: np.ndarray) -> np.ndarray:
     assert len(pred_mean.shape) == 1
 
     return -pred_mean
+
 
 @utils_common.validate_types
 def pure_explore(pred_std: np.ndarray) -> np.ndarray:

@@ -16,19 +16,19 @@ JITTER_LOG = 1e-7
 
 TOLERANCE_DUPLICATED_ACQ = 1e-8
 
-STR_SURROGATE = 'gp'
-STR_SURROGATE_TREES = 'rf'
-STR_OPTIMIZER_METHOD_GP = 'BFGS'
-STR_OPTIMIZER_METHOD_TP = 'SLSQP'
-STR_COV = 'matern52'
-STR_BO_ACQ = 'ei'
-STR_INITIALIZING_METHOD_BO = 'sobol'
-STR_OPTIMIZER_METHOD_AO = 'L-BFGS-B'
-STR_SAMPLING_METHOD_AO = 'sobol'
-STR_OPTIMIZER_METHOD_AO_TREES = 'random_search'
-STR_SAMPLING_METHOD_AO_TREES = 'uniform'
-STR_MLM_METHOD = 'regular'
-STR_MODELSELECTION_METHOD = 'ml'
+STR_SURROGATE = "gp"
+STR_SURROGATE_TREES = "rf"
+STR_OPTIMIZER_METHOD_GP = "BFGS"
+STR_OPTIMIZER_METHOD_TP = "SLSQP"
+STR_COV = "matern52"
+STR_BO_ACQ = "ei"
+STR_INITIALIZING_METHOD_BO = "sobol"
+STR_OPTIMIZER_METHOD_AO = "L-BFGS-B"
+STR_SAMPLING_METHOD_AO = "sobol"
+STR_OPTIMIZER_METHOD_AO_TREES = "random_search"
+STR_SAMPLING_METHOD_AO_TREES = "uniform"
+STR_MLM_METHOD = "regular"
+STR_MODELSELECTION_METHOD = "ml"
 
 NUM_GRIDS_AO = 50
 NUM_SAMPLES_AO = 128
@@ -54,63 +54,67 @@ RANGE_SHADE = 1.96
 NUM_DATA_PER_SPLIT_TREES = 100
 
 ALLOWED_OPTIMIZER_METHOD_GP = [
-    'BFGS',
-    'L-BFGS-B',
-    'Nelder-Mead',
-    'SLSQP',
-    'SLSQP-Bounded',
+    "BFGS",
+    "L-BFGS-B",
+    "Nelder-Mead",
+    "SLSQP",
+    "SLSQP-Bounded",
 ]
-ALLOWED_OPTIMIZER_METHOD_TP = ['L-BFGS-B', 'SLSQP']
-ALLOWED_OPTIMIZER_METHOD_BO = ['L-BFGS-B', 'DIRECT', 'CMA-ES']
-ALLOWED_OPTIMIZER_METHOD_BO_TREES = ['random_search']
+ALLOWED_OPTIMIZER_METHOD_TP = ["L-BFGS-B", "SLSQP"]
+ALLOWED_OPTIMIZER_METHOD_BO = ["L-BFGS-B", "DIRECT", "CMA-ES"]
+ALLOWED_OPTIMIZER_METHOD_BO_TREES = ["random_search"]
 
 # INFO: Do not use _ (underscore) in base str_cov.
-ALLOWED_COV_BASE = ['eq', 'se', 'matern32', 'matern52']
-ALLOWED_COV_SET = ['set_' + str_cov for str_cov in ALLOWED_COV_BASE]
+ALLOWED_COV_BASE = ["eq", "se", "matern32", "matern52"]
+ALLOWED_COV_SET = ["set_" + str_cov for str_cov in ALLOWED_COV_BASE]
 ALLOWED_COV = ALLOWED_COV_BASE + ALLOWED_COV_SET
-ALLOWED_BO_ACQ = ['pi', 'ei', 'ucb', 'aei', 'pure_exploit', 'pure_explore']
-ALLOWED_INITIALIZING_METHOD_BO = ['uniform', 'gaussian', 'sobol', 'halton']
-ALLOWED_SAMPLING_METHOD = ALLOWED_INITIALIZING_METHOD_BO + ['grid']
-ALLOWED_MLM_METHOD = ['regular', 'combined', 'converged']
-ALLOWED_MODELSELECTION_METHOD = ['ml', 'loocv']
-ALLOWED_SURROGATE = ['gp', 'tp']
-ALLOWED_SURROGATE_TREES = ['rf']
+ALLOWED_BO_ACQ = ["pi", "ei", "ucb", "aei", "pure_exploit", "pure_explore"]
+ALLOWED_INITIALIZING_METHOD_BO = ["uniform", "gaussian", "sobol", "halton"]
+ALLOWED_SAMPLING_METHOD = ALLOWED_INITIALIZING_METHOD_BO + ["grid"]
+ALLOWED_MLM_METHOD = ["regular", "combined", "converged"]
+ALLOWED_MODELSELECTION_METHOD = ["ml", "loocv"]
+ALLOWED_SURROGATE = ["gp", "tp"]
+ALLOWED_SURROGATE_TREES = ["rf"]
 
-COLORS = np.array([
-    'red',
-    'green',
-    'blue',
-    'orange',
-    'olive',
-    'purple',
-    'darkred',
-    'limegreen',
-    'deepskyblue',
-    'lightsalmon',
-    'aquamarine',
-    'navy',
-    'rosybrown',
-    'darkkhaki',
-    'darkslategray',
-])
+COLORS = np.array(
+    [
+        "red",
+        "green",
+        "blue",
+        "orange",
+        "olive",
+        "purple",
+        "darkred",
+        "limegreen",
+        "deepskyblue",
+        "lightsalmon",
+        "aquamarine",
+        "navy",
+        "rosybrown",
+        "darkkhaki",
+        "darkslategray",
+    ]
+)
 
-MARKERS = np.array([
-    '.',
-    'x',
-    '*',
-    '+',
-    '^',
-    'v',
-    '<',
-    '>',
-    'd',
-    ',',
-    '8',
-    'h',
-    '1',
-    '2',
-    '3',
-])
+MARKERS = np.array(
+    [
+        ".",
+        "x",
+        "*",
+        "+",
+        "^",
+        "v",
+        "<",
+        ">",
+        "d",
+        ",",
+        "8",
+        "h",
+        "1",
+        "2",
+        "3",
+    ]
+)
 
 TYPE_NONE = type(None)
 TYPE_ARR = np.ndarray
@@ -125,7 +129,9 @@ TYPING_TUPLE_TWO_ARRAYS = typing.Tuple[TYPE_ARR, TYPE_ARR]
 TYPING_TUPLE_TWO_ARRAYS_DICT = typing.Tuple[TYPE_ARR, TYPE_ARR, dict]
 TYPING_TUPLE_TWO_FLOATS = typing.Tuple[float, float]
 TYPING_TUPLE_THREE_ARRAYS = typing.Tuple[TYPE_ARR, TYPE_ARR, TYPE_ARR]
-TYPING_TUPLE_FIVE_ARRAYS = typing.Tuple[TYPE_ARR, TYPE_ARR, TYPE_ARR, TYPE_ARR, TYPE_ARR]
+TYPING_TUPLE_FIVE_ARRAYS = typing.Tuple[
+    TYPE_ARR, TYPE_ARR, TYPE_ARR, TYPE_ARR, TYPE_ARR
+]
 TYPING_TUPLE_FLOAT_THREE_ARRAYS = typing.Tuple[float, TYPE_ARR, TYPE_ARR, TYPE_ARR]
 TYPING_TUPLE_FLOAT_ARRAY = typing.Tuple[float, TYPE_ARR]
 TYPING_TUPLE_INT_FLOAT_TUPLE = typing.Tuple[int, float, typing.Tuple]

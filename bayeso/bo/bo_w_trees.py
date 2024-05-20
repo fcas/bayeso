@@ -36,13 +36,15 @@ class BOwTrees(base_bo.BaseBO):
 
     """
 
-    def __init__(self, range_X: np.ndarray,
-        str_surrogate: str=constants.STR_SURROGATE_TREES,
-        str_acq: str=constants.STR_BO_ACQ,
-        normalize_Y: bool=constants.NORMALIZE_RESPONSE,
-        str_optimizer_method_bo: str=constants.STR_OPTIMIZER_METHOD_AO_TREES,
-        str_exp: str=None,
-        debug: bool=False
+    def __init__(
+        self,
+        range_X: np.ndarray,
+        str_surrogate: str = constants.STR_SURROGATE_TREES,
+        str_acq: str = constants.STR_BO_ACQ,
+        normalize_Y: bool = constants.NORMALIZE_RESPONSE,
+        str_optimizer_method_bo: str = constants.STR_OPTIMIZER_METHOD_AO_TREES,
+        str_exp: str = None,
+        debug: bool = False,
     ):
         """
         Constructor method
@@ -63,10 +65,20 @@ class BOwTrees(base_bo.BaseBO):
         assert str_acq in constants.ALLOWED_BO_ACQ
         assert str_optimizer_method_bo in constants.ALLOWED_OPTIMIZER_METHOD_BO_TREES
 
-        super().__init__(range_X, str_surrogate, str_acq,
-            str_optimizer_method_bo, normalize_Y, str_exp, debug)
+        super().__init__(
+            range_X,
+            str_surrogate,
+            str_acq,
+            str_optimizer_method_bo,
+            normalize_Y,
+            str_exp,
+            debug,
+        )
 
-    def get_trees(self, X_train, Y_train,
+    def get_trees(
+        self,
+        X_train,
+        Y_train,
         num_trees=100,
         depth_max=5,
         size_min_leaf=1,
@@ -104,18 +116,21 @@ class BOwTrees(base_bo.BaseBO):
 
         num_features = int(np.sqrt(self.num_dim))
 
-        if self.str_surrogate == 'rf':
+        if self.str_surrogate == "rf":
             from bayeso.trees import trees_random_forest
+
             trees = trees_random_forest.get_random_forest(
                 X_train, Y_train, num_trees, depth_max, size_min_leaf, num_features
             )
         else:
-            raise NotImplementedError('allowed str_surrogate, but it is not implemented.')
+            raise NotImplementedError(
+                "allowed str_surrogate, but it is not implemented."
+            )
 
         return trees
 
-    def compute_posteriors(self,
-        X: np.ndarray, trees: constants.TYPING_LIST
+    def compute_posteriors(
+        self, X: np.ndarray, trees: constants.TYPING_LIST
     ) -> np.ndarray:
         """
         It returns posterior mean and standard deviation functions over `X`.
@@ -145,9 +160,12 @@ class BOwTrees(base_bo.BaseBO):
 
         return pred_mean, pred_std
 
-    def compute_acquisitions(self, X: np.ndarray,
-        X_train: np.ndarray, Y_train: np.ndarray,
-        trees: constants.TYPING_LIST
+    def compute_acquisitions(
+        self,
+        X: np.ndarray,
+        X_train: np.ndarray,
+        Y_train: np.ndarray,
+        trees: constants.TYPING_LIST,
     ) -> np.ndarray:
         """
         It computes acquisition function values over 'X',
@@ -183,7 +201,9 @@ class BOwTrees(base_bo.BaseBO):
 
         assert X.shape[1] == X_train.shape[1] == self.num_dim
 
-        fun_acquisition = utils_bo.choose_fun_acquisition(self.str_acq, constants.GP_NOISE)
+        fun_acquisition = utils_bo.choose_fun_acquisition(
+            self.str_acq, constants.GP_NOISE
+        )
 
         pred_mean, pred_std = self.compute_posteriors(X, trees)
 
@@ -194,10 +214,13 @@ class BOwTrees(base_bo.BaseBO):
 
         return acquisitions
 
-    def optimize(self, X_train: np.ndarray, Y_train: np.ndarray,
-        str_sampling_method: str=constants.STR_SAMPLING_METHOD_AO_TREES,
-        num_samples: int=constants.NUM_SAMPLES_AO_TREES,
-        seed: int=None,
+    def optimize(
+        self,
+        X_train: np.ndarray,
+        Y_train: np.ndarray,
+        str_sampling_method: str = constants.STR_SAMPLING_METHOD_AO_TREES,
+        num_samples: int = constants.NUM_SAMPLES_AO_TREES,
+        seed: int = None,
     ) -> constants.TYPING_TUPLE_ARRAY_DICT:
         """
         It computes acquired example, candidates of acquired examples,
@@ -242,7 +265,7 @@ class BOwTrees(base_bo.BaseBO):
 
         if self.normalize_Y:
             if self.debug:
-                self.logger.debug('Responses are normalized.')
+                self.logger.debug("Responses are normalized.")
 
             Y_train = utils_bo.normalize_min_max(Y_train)
 
@@ -251,9 +274,13 @@ class BOwTrees(base_bo.BaseBO):
         time_end_surrogate = time.time()
 
         time_start_acq = time.time()
-        next_points = self.get_samples(str_sampling_method, num_samples=num_samples, seed=seed)
+        next_points = self.get_samples(
+            str_sampling_method, num_samples=num_samples, seed=seed
+        )
 
-        next_points = utils_bo.check_points_in_bounds(next_points, np.array(self._get_bounds()))
+        next_points = utils_bo.check_points_in_bounds(
+            next_points, np.array(self._get_bounds())
+        )
 
         fun_negative_acquisition = lambda X_test: -1.0 * self.compute_acquisitions(
             X_test, X_train, Y_train, trees
@@ -267,17 +294,19 @@ class BOwTrees(base_bo.BaseBO):
         time_end = time.time()
 
         dict_info = {
-            'next_points': next_points,
-            'acquisitions': acquisitions,
-            'Y_original': Y_train_orig,
-            'Y_normalized': Y_train,
-            'trees': trees,
-            'time_surrogate': time_end_surrogate - time_start_surrogate,
-            'time_acq': time_end_acq - time_start_acq,
-            'time_overall': time_end - time_start,
+            "next_points": next_points,
+            "acquisitions": acquisitions,
+            "Y_original": Y_train_orig,
+            "Y_normalized": Y_train,
+            "trees": trees,
+            "time_surrogate": time_end_surrogate - time_start_surrogate,
+            "time_acq": time_end_acq - time_start_acq,
+            "time_overall": time_end - time_start,
         }
 
         if self.debug:
-            self.logger.debug('overall time consumed to acquire: %.4f sec.', time_end - time_start)
+            self.logger.debug(
+                "overall time consumed to acquire: %.4f sec.", time_end - time_start
+            )
 
         return next_point, dict_info

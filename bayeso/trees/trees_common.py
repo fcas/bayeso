@@ -32,6 +32,7 @@ def get_inputs_from_leaf(leaf: list) -> np.ndarray:
     X = [bx for bx, by in leaf]
     return np.array(X)
 
+
 @utils_common.validate_types
 def get_outputs_from_leaf(leaf: list) -> np.ndarray:
     """
@@ -51,6 +52,7 @@ def get_outputs_from_leaf(leaf: list) -> np.ndarray:
 
     Y = [by for bx, by in leaf]
     return np.array(Y)
+
 
 @utils_common.validate_types
 def _mse(Y: np.ndarray) -> float:
@@ -73,11 +75,12 @@ def _mse(Y: np.ndarray) -> float:
 
     if Y.shape[0] > 0:
         mean = np.mean(Y, axis=0)
-        mse_ = np.mean((Y - mean)**2)
+        mse_ = np.mean((Y - mean) ** 2)
     else:
         mse_ = 1e8
 
     return mse_
+
 
 @utils_common.validate_types
 def mse(left_right: tuple) -> float:
@@ -106,10 +109,10 @@ def mse(left_right: tuple) -> float:
 
     return mse_left + mse_right
 
+
 @utils_common.validate_types
 def subsample(
-    X: np.ndarray, Y: np.ndarray,
-    ratio_sampling: float, replace_samples: bool
+    X: np.ndarray, Y: np.ndarray, ratio_sampling: float, replace_samples: bool
 ) -> constants.TYPING_TUPLE_TWO_ARRAYS:
     """
     It subsamples a bootstrap sample.
@@ -155,10 +158,10 @@ def subsample(
 
     return X_, Y_
 
+
 @utils_common.validate_types
 def _split_left_right(
-    X: np.ndarray, Y: np.ndarray,
-    dim_to_split: int, val_to_split: float
+    X: np.ndarray, Y: np.ndarray, dim_to_split: int, val_to_split: float
 ) -> tuple:
     """
     It splits `X` and `Y` to left and right leaves.
@@ -197,8 +200,10 @@ def _split_left_right(
 
     return left, right
 
+
 @utils_common.validate_types
-def _split_deterministic(X: np.ndarray, Y: np.ndarray, dim_to_split: int
+def _split_deterministic(
+    X: np.ndarray, Y: np.ndarray, dim_to_split: int
 ) -> constants.TYPING_TUPLE_INT_FLOAT_TUPLE:
     candidates_loc = np.sort(np.unique(X[:, dim_to_split]))
     num_evaluations = 1
@@ -211,11 +216,12 @@ def _split_deterministic(X: np.ndarray, Y: np.ndarray, dim_to_split: int
     cur_left_right = None
 
     indices_loc = np.random.choice(
-        num_evaluations, np.minimum(20, num_evaluations), replace=False)
+        num_evaluations, np.minimum(20, num_evaluations), replace=False
+    )
 
     for ind_loc in indices_loc:
         if candidates_loc.shape[0] > 1:
-            val_to_split = np.mean(candidates_loc[ind_loc:ind_loc+2])
+            val_to_split = np.mean(candidates_loc[ind_loc : ind_loc + 2])
         else:
             val_to_split = X[0, dim_to_split]
 
@@ -230,8 +236,10 @@ def _split_deterministic(X: np.ndarray, Y: np.ndarray, dim_to_split: int
 
     return cur_ind, cur_val, cur_score, cur_left_right
 
+
 @utils_common.validate_types
-def _split_random(X: np.ndarray, Y: np.ndarray, dim_to_split: int
+def _split_random(
+    X: np.ndarray, Y: np.ndarray, dim_to_split: int
 ) -> constants.TYPING_TUPLE_INT_FLOAT_TUPLE:
     candidates_loc = np.sort(np.unique(X[:, dim_to_split]))
 
@@ -248,10 +256,10 @@ def _split_random(X: np.ndarray, Y: np.ndarray, dim_to_split: int
 
     return dim_to_split, val_to_split, score, left_right
 
+
 @utils_common.validate_types
 def _split(
-    X: np.ndarray, Y: np.ndarray,
-    num_features: int, split_random_location: bool
+    X: np.ndarray, Y: np.ndarray, num_features: int, split_random_location: bool
 ) -> dict:
     """
     It splits `X` and `Y` to left and right leaves as a dictionary
@@ -295,11 +303,9 @@ def _split(
         dim_to_split = int(ind)
 
         if split_random_location:
-            _ind, _val, _score, _left_right = _split_random(
-                X, Y, dim_to_split)
+            _ind, _val, _score, _left_right = _split_random(X, Y, dim_to_split)
         else:
-            _ind, _val, _score, _left_right = _split_deterministic(
-                X, Y, dim_to_split)
+            _ind, _val, _score, _left_right = _split_deterministic(X, Y, dim_to_split)
 
         if _score < cur_score:
             cur_ind = _ind
@@ -307,11 +313,8 @@ def _split(
             cur_score = _score
             cur_left_right = _left_right
 
-    return {
-        'index': cur_ind,
-        'value': cur_val,
-        'left_right': cur_left_right
-    }
+    return {"index": cur_ind, "value": cur_val, "left_right": cur_left_right}
+
 
 @utils_common.validate_types
 def split(
@@ -320,7 +323,7 @@ def split(
     size_min_leaf: int,
     num_features: int,
     split_random_location: bool,
-    cur_depth: int
+    cur_depth: int,
 ) -> constants.TYPE_NONE:
     """
     It splits a root node to construct a tree.
@@ -354,38 +357,51 @@ def split(
 
     assert cur_depth > 0
 
-    left, right = node['left_right']
-    del node['left_right']
+    left, right = node["left_right"]
+    del node["left_right"]
 
-    if not left or not right: # pragma: no cover
-        node['left'] = node['right'] = left + right
+    if not left or not right:  # pragma: no cover
+        node["left"] = node["right"] = left + right
         return
 
     if cur_depth >= depth_max:
-        node['left'], node['right'] = left, right
+        node["left"], node["right"] = left, right
         return
 
     ##
     if len(left) <= size_min_leaf:
-        node['left'] = left
+        node["left"] = left
     else:
         X_left = get_inputs_from_leaf(left)
         Y_left = get_outputs_from_leaf(left)
 
-        node['left'] = _split(X_left, Y_left, num_features, split_random_location)
-        split(node['left'], depth_max, size_min_leaf, num_features,
-            split_random_location, cur_depth + 1)
+        node["left"] = _split(X_left, Y_left, num_features, split_random_location)
+        split(
+            node["left"],
+            depth_max,
+            size_min_leaf,
+            num_features,
+            split_random_location,
+            cur_depth + 1,
+        )
 
     ##
     if len(right) <= size_min_leaf:
-        node['right'] = right
+        node["right"] = right
     else:
         X_right = get_inputs_from_leaf(right)
         Y_right = get_outputs_from_leaf(right)
 
-        node['right'] = _split(X_right, Y_right, num_features, split_random_location)
-        split(node['right'], depth_max, size_min_leaf, num_features,
-            split_random_location, cur_depth + 1)
+        node["right"] = _split(X_right, Y_right, num_features, split_random_location)
+        split(
+            node["right"],
+            depth_max,
+            size_min_leaf,
+            num_features,
+            split_random_location,
+            cur_depth + 1,
+        )
+
 
 @utils_common.validate_types
 def _predict_by_tree(bx: np.ndarray, tree: dict) -> constants.TYPING_TUPLE_TWO_FLOATS:
@@ -409,21 +425,24 @@ def _predict_by_tree(bx: np.ndarray, tree: dict) -> constants.TYPING_TUPLE_TWO_F
 
     assert len(bx.shape) == 1
 
-    if bx[tree['index']] < tree['value']:
-        if isinstance(tree['left'], dict):
-            return _predict_by_tree(bx, tree['left'])
+    if bx[tree["index"]] < tree["value"]:
+        if isinstance(tree["left"], dict):
+            return _predict_by_tree(bx, tree["left"])
 
-        cur_Y = get_outputs_from_leaf(tree['left'])
+        cur_Y = get_outputs_from_leaf(tree["left"])
         return np.mean(cur_Y), np.std(cur_Y)
 
-    if isinstance(tree['right'], dict):
-        return _predict_by_tree(bx, tree['right'])
+    if isinstance(tree["right"], dict):
+        return _predict_by_tree(bx, tree["right"])
 
-    cur_Y = get_outputs_from_leaf(tree['right'])
+    cur_Y = get_outputs_from_leaf(tree["right"])
     return np.mean(cur_Y), np.std(cur_Y)
 
+
 @utils_common.validate_types
-def _predict_by_trees(bx: np.ndarray, list_trees: list) -> constants.TYPING_TUPLE_TWO_FLOATS:
+def _predict_by_trees(
+    bx: np.ndarray, list_trees: list
+) -> constants.TYPING_TUPLE_TWO_FLOATS:
     """
     It predicts a posterior distribution over `bx`, given `list_trees`.
 
@@ -458,8 +477,11 @@ def _predict_by_trees(bx: np.ndarray, list_trees: list) -> constants.TYPING_TUPL
 
     return mu, sigma
 
+
 @utils_common.validate_types
-def unit_predict_by_trees(X: np.ndarray, list_trees: list) -> constants.TYPING_TUPLE_TWO_ARRAYS:
+def unit_predict_by_trees(
+    X: np.ndarray, list_trees: list
+) -> constants.TYPING_TUPLE_TWO_ARRAYS:
     """
     It predicts a posterior distribution over `X`, given `list_trees`.
 
@@ -493,8 +515,11 @@ def unit_predict_by_trees(X: np.ndarray, list_trees: list) -> constants.TYPING_T
 
     return preds_mu, preds_sigma
 
+
 @utils_common.validate_types
-def predict_by_trees(X: np.ndarray, list_trees: list) -> constants.TYPING_TUPLE_TWO_ARRAYS:
+def predict_by_trees(
+    X: np.ndarray, list_trees: list
+) -> constants.TYPING_TUPLE_TWO_ARRAYS:
     """
     It predicts a posterior distribution over `X`, given `list_trees`,
     using `multiprocessing`.
@@ -526,7 +551,9 @@ def predict_by_trees(X: np.ndarray, list_trees: list) -> constants.TYPING_TUPLE_
         list_Xs = np.array_split(X, int(np.ceil(num_data / num_data_per_split)))
 
         with multiprocessing.Pool(num_cpu) as p:
-            results = p.starmap(unit_predict_by_trees, zip(list_Xs, itertools.repeat(list_trees)))
+            results = p.starmap(
+                unit_predict_by_trees, zip(list_Xs, itertools.repeat(list_trees))
+            )
 
         list_preds_mu, list_preds_sigma = zip(*results)
 
@@ -535,11 +562,10 @@ def predict_by_trees(X: np.ndarray, list_trees: list) -> constants.TYPING_TUPLE_
 
     return preds_mu, preds_sigma
 
+
 @utils_common.validate_types
 def compute_sigma(
-    preds_mu_leaf: np.ndarray,
-    preds_sigma_leaf: np.ndarray,
-    min_sigma: float=0.0
+    preds_mu_leaf: np.ndarray, preds_sigma_leaf: np.ndarray, min_sigma: float = 0.0
 ) -> np.ndarray:
     """
     It computes predictive standard deviation estimates.
@@ -566,10 +592,12 @@ def compute_sigma(
     assert len(preds_sigma_leaf.shape) == 1
     assert preds_mu_leaf.shape[0] == preds_sigma_leaf.shape[0]
 
-    preds_sigma_leaf_ = np.maximum(preds_sigma_leaf, np.zeros(preds_sigma_leaf.shape) + min_sigma)
+    preds_sigma_leaf_ = np.maximum(
+        preds_sigma_leaf, np.zeros(preds_sigma_leaf.shape) + min_sigma
+    )
 
     sigma = np.mean(preds_mu_leaf**2 + preds_sigma_leaf_**2)
-    sigma -= np.mean(preds_mu_leaf)**2
+    sigma -= np.mean(preds_mu_leaf) ** 2
 
     sigma = max(sigma, 0.0)
     sigma = np.sqrt(sigma)

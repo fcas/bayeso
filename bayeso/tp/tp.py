@@ -16,12 +16,12 @@ from bayeso.utils import utils_covariance
 from bayeso.utils import utils_common
 from bayeso.utils import utils_logger
 
-logger = utils_logger.get_logger('tp')
+logger = utils_logger.get_logger("tp")
 
 
 @utils_common.validate_types
-def sample_functions(nu: float, mu: np.ndarray, Sigma: np.ndarray,
-    num_samples: int=1
+def sample_functions(
+    nu: float, mu: np.ndarray, Sigma: np.ndarray, num_samples: int = 1
 ) -> np.ndarray:
     """
     It samples `num_samples` functions from multivariate Student-$t$ distribution (nu, mu, Sigma).
@@ -62,12 +62,18 @@ def sample_functions(nu: float, mu: np.ndarray, Sigma: np.ndarray,
 
     return samples
 
+
 @utils_common.validate_types
-def predict_with_cov(X_train: np.ndarray, Y_train: np.ndarray, X_test: np.ndarray,
-    cov_X_X: np.ndarray, inv_cov_X_X: np.ndarray, hyps: dict,
-    str_cov: str=constants.STR_COV,
-    prior_mu: constants.TYPING_UNION_CALLABLE_NONE=None,
-    debug: bool=False
+def predict_with_cov(
+    X_train: np.ndarray,
+    Y_train: np.ndarray,
+    X_test: np.ndarray,
+    cov_X_X: np.ndarray,
+    inv_cov_X_X: np.ndarray,
+    hyps: dict,
+    str_cov: str = constants.STR_COV,
+    prior_mu: constants.TYPING_UNION_CALLABLE_NONE = None,
+    debug: bool = False,
 ) -> constants.TYPING_TUPLE_FLOAT_THREE_ARRAYS:
     """
     This function returns degree of freedom, posterior mean,
@@ -113,8 +119,9 @@ def predict_with_cov(X_train: np.ndarray, Y_train: np.ndarray, X_test: np.ndarra
     assert len(cov_X_X.shape) == 2
     assert len(inv_cov_X_X.shape) == 2
     assert (np.array(cov_X_X.shape) == np.array(inv_cov_X_X.shape)).all()
-    utils_covariance.check_str_cov('predict_with_cov', str_cov,
-        X_train.shape, shape_X2=X_test.shape)
+    utils_covariance.check_str_cov(
+        "predict_with_cov", str_cov, X_train.shape, shape_X2=X_test.shape
+    )
 
     prior_mu_train = utils_gp.get_prior_mu(prior_mu, X_train)
     prior_mu_test = utils_gp.get_prior_mu(prior_mu, X_test)
@@ -124,7 +131,7 @@ def predict_with_cov(X_train: np.ndarray, Y_train: np.ndarray, X_test: np.ndarra
 
     num_X = X_train.shape[0]
     new_Y_train = Y_train - prior_mu_train
-    nu = hyps['dof']
+    nu = hyps["dof"]
     beta = np.squeeze(np.dot(np.dot(new_Y_train.T, inv_cov_X_X), new_Y_train))
 
     nu_Xs = nu + float(num_X)
@@ -136,11 +143,16 @@ def predict_with_cov(X_train: np.ndarray, Y_train: np.ndarray, X_test: np.ndarra
 
     return nu_Xs, mu_Xs, sigma_Xs, Sigma_Xs
 
+
 @utils_common.validate_types
-def predict_with_hyps(X_train: np.ndarray, Y_train: np.ndarray, X_test: np.ndarray, hyps: dict,
-    str_cov: str=constants.STR_COV,
-    prior_mu: constants.TYPING_UNION_CALLABLE_NONE=None,
-    debug: bool=False
+def predict_with_hyps(
+    X_train: np.ndarray,
+    Y_train: np.ndarray,
+    X_test: np.ndarray,
+    hyps: dict,
+    str_cov: str = constants.STR_COV,
+    prior_mu: constants.TYPING_UNION_CALLABLE_NONE = None,
+    debug: bool = False,
 ) -> constants.TYPING_TUPLE_FLOAT_THREE_ARRAYS:
     """
     This function returns degree of freedom, posterior mean,
@@ -177,24 +189,38 @@ def predict_with_hyps(X_train: np.ndarray, Y_train: np.ndarray, X_test: np.ndarr
 
     utils_gp.validate_common_args(X_train, Y_train, str_cov, prior_mu, debug, X_test)
     assert isinstance(hyps, dict)
-    utils_covariance.check_str_cov('predict_with_hyps', str_cov, X_train.shape,
-        shape_X2=X_test.shape)
+    utils_covariance.check_str_cov(
+        "predict_with_hyps", str_cov, X_train.shape, shape_X2=X_test.shape
+    )
 
-    cov_X_X, inv_cov_X_X, _ = covariance.get_kernel_inverse(X_train,
-        hyps, str_cov, debug=debug)
-    nu_Xs, mu_Xs, sigma_Xs, Sigma_Xs = predict_with_cov(X_train, Y_train, X_test,
-        cov_X_X, inv_cov_X_X, hyps, str_cov=str_cov,
-        prior_mu=prior_mu, debug=debug)
+    cov_X_X, inv_cov_X_X, _ = covariance.get_kernel_inverse(
+        X_train, hyps, str_cov, debug=debug
+    )
+    nu_Xs, mu_Xs, sigma_Xs, Sigma_Xs = predict_with_cov(
+        X_train,
+        Y_train,
+        X_test,
+        cov_X_X,
+        inv_cov_X_X,
+        hyps,
+        str_cov=str_cov,
+        prior_mu=prior_mu,
+        debug=debug,
+    )
 
     return nu_Xs, mu_Xs, sigma_Xs, Sigma_Xs
 
+
 @utils_common.validate_types
-def predict_with_optimized_hyps(X_train: np.ndarray, Y_train: np.ndarray, X_test: np.ndarray,
-    str_cov: str=constants.STR_COV,
-    str_optimizer_method: str=constants.STR_OPTIMIZER_METHOD_TP,
-    prior_mu: constants.TYPING_UNION_CALLABLE_NONE=None,
-    fix_noise: float=constants.FIX_GP_NOISE,
-    debug: bool=False
+def predict_with_optimized_hyps(
+    X_train: np.ndarray,
+    Y_train: np.ndarray,
+    X_test: np.ndarray,
+    str_cov: str = constants.STR_COV,
+    str_optimizer_method: str = constants.STR_OPTIMIZER_METHOD_TP,
+    prior_mu: constants.TYPING_UNION_CALLABLE_NONE = None,
+    fix_noise: float = constants.FIX_GP_NOISE,
+    debug: bool = False,
 ) -> constants.TYPING_TUPLE_FLOAT_THREE_ARRAYS:
     """
     This function returns degree of freedom, posterior mean,
@@ -234,20 +260,35 @@ def predict_with_optimized_hyps(X_train: np.ndarray, Y_train: np.ndarray, X_test
     utils_gp.validate_common_args(X_train, Y_train, str_cov, prior_mu, debug, X_test)
     assert isinstance(str_optimizer_method, str)
     assert isinstance(fix_noise, bool)
-    utils_covariance.check_str_cov('predict_with_optimized_kernel', str_cov,
-        X_train.shape, shape_X2=X_test.shape)
+    utils_covariance.check_str_cov(
+        "predict_with_optimized_kernel", str_cov, X_train.shape, shape_X2=X_test.shape
+    )
     assert str_optimizer_method in constants.ALLOWED_OPTIMIZER_METHOD_GP
 
     time_start = time.time()
 
-    cov_X_X, inv_cov_X_X, hyps = tp_kernel.get_optimized_kernel(X_train, Y_train,
-        prior_mu, str_cov, str_optimizer_method=str_optimizer_method,
-        fix_noise=fix_noise, debug=debug)
-    nu_Xs, mu_Xs, sigma_Xs, Sigma_Xs = predict_with_cov(X_train, Y_train, X_test,
-        cov_X_X, inv_cov_X_X, hyps, str_cov=str_cov, prior_mu=prior_mu,
-        debug=debug)
+    cov_X_X, inv_cov_X_X, hyps = tp_kernel.get_optimized_kernel(
+        X_train,
+        Y_train,
+        prior_mu,
+        str_cov,
+        str_optimizer_method=str_optimizer_method,
+        fix_noise=fix_noise,
+        debug=debug,
+    )
+    nu_Xs, mu_Xs, sigma_Xs, Sigma_Xs = predict_with_cov(
+        X_train,
+        Y_train,
+        X_test,
+        cov_X_X,
+        inv_cov_X_X,
+        hyps,
+        str_cov=str_cov,
+        prior_mu=prior_mu,
+        debug=debug,
+    )
 
     time_end = time.time()
     if debug:
-        logger.debug('time consumed to construct tpr: %.4f sec.', time_end - time_start)
+        logger.debug("time consumed to construct tpr: %.4f sec.", time_end - time_start)
     return nu_Xs, mu_Xs, sigma_Xs, Sigma_Xs

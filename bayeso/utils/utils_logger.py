@@ -33,12 +33,14 @@ def get_logger(str_name: str) -> logging.Logger:
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
 
-    formatter = logging.Formatter('[%(levelname)s-%(name)s-%(asctime)s] %(message)s',
-        datefmt='%m/%d/%Y-%H:%M:%S')
+    formatter = logging.Formatter(
+        "[%(levelname)s-%(name)s-%(asctime)s] %(message)s", datefmt="%m/%d/%Y-%H:%M:%S"
+    )
     ch.setFormatter(formatter)
 
     logger.addHandler(ch)
     return logger
+
 
 @utils_common.validate_types
 def get_str_array_1d(arr: np.ndarray) -> str:
@@ -62,15 +64,16 @@ def get_str_array_1d(arr: np.ndarray) -> str:
 
     for elem in arr:
         if isinstance(elem, float):
-            elem_ = f'{elem:.3f}'
+            elem_ = f"{elem:.3f}"
         else:
-            elem_ = f'{elem}'
+            elem_ = f"{elem}"
 
         list_str.append(elem_)
 
-    str_arr = ', '.join(list_str)
-    str_arr = '[' + str_arr + ']'
+    str_arr = ", ".join(list_str)
+    str_arr = "[" + str_arr + "]"
     return str_arr
+
 
 @utils_common.validate_types
 def get_str_array_2d(arr: np.ndarray) -> str:
@@ -92,9 +95,10 @@ def get_str_array_2d(arr: np.ndarray) -> str:
 
     list_str = [get_str_array_1d(elem) for elem in arr]
 
-    str_arr = ',\n'.join(list_str)
-    str_arr = '[' + str_arr + ']'
+    str_arr = ",\n".join(list_str)
+    str_arr = "[" + str_arr + "]"
     return str_arr
+
 
 @utils_common.validate_types
 def get_str_array_3d(arr: np.ndarray) -> str:
@@ -116,9 +120,10 @@ def get_str_array_3d(arr: np.ndarray) -> str:
 
     list_str = [get_str_array_2d(elem) for elem in arr]
 
-    str_arr = ',\n'.join(list_str)
-    str_arr = '[' + str_arr + ']'
+    str_arr = ",\n".join(list_str)
+    str_arr = "[" + str_arr + "]"
     return str_arr
+
 
 @utils_common.validate_types
 def get_str_array(arr: np.ndarray) -> str:
@@ -146,9 +151,10 @@ def get_str_array(arr: np.ndarray) -> str:
     elif len_arr == 3:
         str_arr = get_str_array_3d(arr)
     else:
-        raise NotImplementedError('invalid len_arr.')
+        raise NotImplementedError("invalid len_arr.")
 
     return str_arr
+
 
 @utils_common.validate_types
 def get_str_hyps(hyps: dict) -> str:
@@ -173,12 +179,12 @@ def get_str_hyps(hyps: dict) -> str:
         if isinstance(val, np.ndarray):
             str_val = get_str_array(val)
         elif isinstance(val, float):
-            str_val = f'{val:.3f}'
+            str_val = f"{val:.3f}"
         else:
-            str_val = f'{val}'
+            str_val = f"{val}"
 
         list_str.append(f"'{key}': {str_val}")
 
-    str_hyps = ', '.join(list_str)
-    str_hyps = '{' + str_hyps + '}'
+    str_hyps = ", ".join(list_str)
+    str_hyps = "{" + str_hyps + "}"
     return str_hyps

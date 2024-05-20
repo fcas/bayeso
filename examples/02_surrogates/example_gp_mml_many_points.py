@@ -19,12 +19,22 @@ def main(path_save):
     X_test = X_test.reshape((num_test, 1))
     Y_test = np.cos(X_test) + 10.0
 
-    mu, sigma, Sigma = gp.predict_with_optimized_hyps(X_train, Y_train, X_test, debug=True)
-    utils_plotting.plot_gp_via_distribution(X_train, Y_train, X_test, mu, sigma,
-        Y_test=Y_test, path_save=path_save, str_postfix='test_optimized_many_points')
+    mu, sigma, Sigma = gp.predict_with_optimized_hyps(
+        X_train, Y_train, X_test, debug=True
+    )
+    utils_plotting.plot_gp_via_distribution(
+        X_train,
+        Y_train,
+        X_test,
+        mu,
+        sigma,
+        Y_test=Y_test,
+        path_save=path_save,
+        str_postfix="test_optimized_many_points",
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     path_save = None
 
     if path_save is not None and not os.path.isdir(path_save):

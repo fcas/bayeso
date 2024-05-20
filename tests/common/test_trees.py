@@ -12,6 +12,7 @@ def test_import_get_generic_trees():
     print(get_generic_trees)
     print(bayeso.trees.get_generic_trees)
 
+
 def test_import_get_random_forest():
     from bayeso.trees import get_random_forest
     import bayeso.trees

@@ -12,7 +12,9 @@ from bayeso import constants
 
 
 @utils_common.validate_types
-def get_prior_mu(prior_mu: constants.TYPING_UNION_CALLABLE_NONE, X: np.ndarray) -> np.ndarray:
+def get_prior_mu(
+    prior_mu: constants.TYPING_UNION_CALLABLE_NONE, X: np.ndarray
+) -> np.ndarray:
     """
     It computes the prior mean function values over inputs X.
 
@@ -40,11 +42,15 @@ def get_prior_mu(prior_mu: constants.TYPING_UNION_CALLABLE_NONE, X: np.ndarray) 
         assert X.shape[0] == prior_mu_X.shape[0]
     return prior_mu_X
 
+
 @utils_common.validate_types
-def validate_common_args(X_train: np.ndarray, Y_train: np.ndarray,
-    str_cov: str, prior_mu: constants.TYPING_UNION_CALLABLE_NONE,
+def validate_common_args(
+    X_train: np.ndarray,
+    Y_train: np.ndarray,
+    str_cov: str,
+    prior_mu: constants.TYPING_UNION_CALLABLE_NONE,
     debug: bool,
-    X_test: constants.TYPING_UNION_ARRAY_NONE=None,
+    X_test: constants.TYPING_UNION_ARRAY_NONE = None,
 ) -> constants.TYPE_NONE:
     """
     It validates the common arguments for various functions.

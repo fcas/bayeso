@@ -26,13 +26,14 @@ def validate_types(func: constants.TYPING_CALLABLE) -> constants.TYPING_CALLABLE
 
     annos = func.__annotations__
     assert len(annos) == func.__code__.co_argcount + 1
-#    arg_names = func.__code__.co_varnames[:func.__code__.co_argcount]
+    #    arg_names = func.__code__.co_varnames[:func.__code__.co_argcount]
 
     @functools.wraps(func)
-    def _validate_types(*args, **kwargs): # pragma: no cover
+    def _validate_types(*args, **kwargs):  # pragma: no cover
         return func(*args, **kwargs)
 
     return _validate_types
+
 
 @validate_types
 def get_grids(ranges: np.ndarray, num_grids: int) -> np.ndarray:
@@ -63,13 +64,16 @@ def get_grids(ranges: np.ndarray, num_grids: int) -> np.ndarray:
     list_grids_mesh = list(np.meshgrid(*list_grids))
     list_grids = []
     for elem in list_grids_mesh:
-        list_grids.append(elem.flatten(order='C'))
+        list_grids.append(elem.flatten(order="C"))
     arr_grids = np.vstack(tuple(list_grids))
     arr_grids = arr_grids.T
     return arr_grids
 
+
 @validate_types
-def get_minimum(Y_all: np.ndarray, num_init: int) -> constants.TYPING_TUPLE_THREE_ARRAYS:
+def get_minimum(
+    Y_all: np.ndarray, num_init: int
+) -> constants.TYPING_TUPLE_THREE_ARRAYS:
     """
     It returns accumulated minima at each iteration, their arithmetic means
     over rounds, and their standard deviations over rounds, which is widely
@@ -124,6 +128,7 @@ def get_minimum(Y_all: np.ndarray, num_init: int) -> constants.TYPING_TUPLE_THRE
     sem_minima = std_minima / np.sqrt(num_rounds)
 
     return minima, mean_minima, std_minima, sem_minima
+
 
 @validate_types
 def get_time(time_all: np.ndarray, num_init: int, include_init: bool) -> np.ndarray:

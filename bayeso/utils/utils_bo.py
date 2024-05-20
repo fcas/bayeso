@@ -5,13 +5,14 @@
 """It is utilities for Bayesian optimization."""
 
 import numpy as np
+
 try:
     from scipydirect import minimize as directminimize
-except: # pragma: no cover
+except:  # pragma: no cover
     directminimize = None
 try:
     import cma
-except: # pragma: no cover
+except:  # pragma: no cover
     cma = None
 
 from bayeso import acquisition
@@ -20,12 +21,11 @@ from bayeso.utils import utils_covariance
 from bayeso.utils import utils_common
 from bayeso.utils import utils_logger
 
-logger = utils_logger.get_logger('utils_bo')
+logger = utils_logger.get_logger("utils_bo")
 
 
 @utils_common.validate_types
-def normalize_min_max(Y: np.ndarray
-) -> np.ndarray:
+def normalize_min_max(Y: np.ndarray) -> np.ndarray:
     """
     It normalizes `Y` by min-max normalization.
 
@@ -46,9 +46,10 @@ def normalize_min_max(Y: np.ndarray
         Y = (Y - np.min(Y)) / (np.max(Y) - np.min(Y)) * constants.MULTIPLIER_RESPONSE
     return Y
 
+
 @utils_common.validate_types
-def get_best_acquisition_by_evaluation(initials: np.ndarray,
-    fun_objective: constants.TYPING_CALLABLE
+def get_best_acquisition_by_evaluation(
+    initials: np.ndarray, fun_objective: constants.TYPING_CALLABLE
 ) -> np.ndarray:
     """
     It returns the best acquisition with respect to values of `fun_objective`.
@@ -80,8 +81,10 @@ def get_best_acquisition_by_evaluation(initials: np.ndarray,
     initial_best = initial_best[np.newaxis, ...]
     return initial_best
 
+
 @utils_common.validate_types
-def get_best_acquisition_by_history(X: np.ndarray, Y: np.ndarray
+def get_best_acquisition_by_history(
+    X: np.ndarray, Y: np.ndarray
 ) -> constants.TYPING_TUPLE_ARRAY_FLOAT:
     """
     It returns the best acquisition that has shown minimum result, and its minimum result.
@@ -111,9 +114,10 @@ def get_best_acquisition_by_history(X: np.ndarray, Y: np.ndarray
 
     return bx_best, y_best
 
+
 @utils_common.validate_types
-def get_next_best_acquisition(points: np.ndarray, acquisitions: np.ndarray,
-    points_evaluated: np.ndarray
+def get_next_best_acquisition(
+    points: np.ndarray, acquisitions: np.ndarray, points_evaluated: np.ndarray
 ) -> np.ndarray:
     """
     It returns the next best acquired sample.
@@ -142,8 +146,10 @@ def get_next_best_acquisition(points: np.ndarray, acquisitions: np.ndarray,
     assert points.shape[1] == points_evaluated.shape[1]
 
     for cur_point in points_evaluated:
-        ind_same, = np.where(np.linalg.norm(points - cur_point,
-            axis=1) < constants.TOLERANCE_DUPLICATED_ACQ)
+        (ind_same,) = np.where(
+            np.linalg.norm(points - cur_point, axis=1)
+            < constants.TOLERANCE_DUPLICATED_ACQ
+        )
         points = np.delete(points, ind_same, axis=0)
         acquisitions = np.delete(acquisitions, ind_same)
     cur_best = np.inf
@@ -158,8 +164,11 @@ def get_next_best_acquisition(points: np.ndarray, acquisitions: np.ndarray,
         next_point = points_evaluated[-1]
     return next_point
 
+
 @utils_common.validate_types
-def check_optimizer_method_bo(str_optimizer_method_bo: str, dim: int, debug: bool) -> str:
+def check_optimizer_method_bo(
+    str_optimizer_method_bo: str, dim: int, debug: bool
+) -> str:
     """
     It checks the availability of optimization methods.
     It helps to run Bayesian optimization, even though additional
@@ -184,24 +193,30 @@ def check_optimizer_method_bo(str_optimizer_method_bo: str, dim: int, debug: boo
     assert isinstance(str_optimizer_method_bo, str)
     assert isinstance(dim, int)
     assert isinstance(debug, bool)
-    assert str_optimizer_method_bo in constants.ALLOWED_OPTIMIZER_METHOD_BO \
+    assert (
+        str_optimizer_method_bo
+        in constants.ALLOWED_OPTIMIZER_METHOD_BO
         + constants.ALLOWED_OPTIMIZER_METHOD_BO_TREES
+    )
 
-    if str_optimizer_method_bo == 'DIRECT' and directminimize is None: # pragma: no cover
-        logger.warning('DIRECT is selected, but it is not installed.')
-        str_optimizer_method_bo = 'L-BFGS-B'
-    elif str_optimizer_method_bo == 'CMA-ES' and cma is None: # pragma: no cover
-        logger.warning('CMA-ES is selected, but it is not installed.')
-        str_optimizer_method_bo = 'L-BFGS-B'
+    if (
+        str_optimizer_method_bo == "DIRECT" and directminimize is None
+    ):  # pragma: no cover
+        logger.warning("DIRECT is selected, but it is not installed.")
+        str_optimizer_method_bo = "L-BFGS-B"
+    elif str_optimizer_method_bo == "CMA-ES" and cma is None:  # pragma: no cover
+        logger.warning("CMA-ES is selected, but it is not installed.")
+        str_optimizer_method_bo = "L-BFGS-B"
     # TODO: It should be checked.
-    elif str_optimizer_method_bo == 'CMA-ES' and dim == 1: # pragma: no cover
-        logger.warning('CMA-ES is selected, but a dimension of bounds is 1.')
-        str_optimizer_method_bo = 'L-BFGS-B'
+    elif str_optimizer_method_bo == "CMA-ES" and dim == 1:  # pragma: no cover
+        logger.warning("CMA-ES is selected, but a dimension of bounds is 1.")
+        str_optimizer_method_bo = "L-BFGS-B"
     return str_optimizer_method_bo
+
 
 @utils_common.validate_types
 def choose_fun_acquisition(
-    str_acq: str, noise: constants.TYPING_UNION_FLOAT_NONE=None
+    str_acq: str, noise: constants.TYPING_UNION_FLOAT_NONE = None
 ) -> constants.TYPING_CALLABLE:
     """
     It chooses and returns an acquisition function.
@@ -222,32 +237,42 @@ def choose_fun_acquisition(
     assert isinstance(noise, (float, constants.TYPE_NONE))
     assert str_acq in constants.ALLOWED_BO_ACQ
 
-    if str_acq == 'pi':
+    if str_acq == "pi":
         fun_acquisition = acquisition.pi
-    elif str_acq == 'ei':
+    elif str_acq == "ei":
         fun_acquisition = acquisition.ei
-    elif str_acq == 'ucb':
+    elif str_acq == "ucb":
         fun_acquisition = acquisition.ucb
-    elif str_acq == 'aei':
+    elif str_acq == "aei":
         assert noise is not None
 
         fun_acquisition = lambda pred_mean, pred_std, Y_train: acquisition.aei(
-            pred_mean, pred_std, Y_train, noise)
-    elif str_acq == 'pure_exploit':
+            pred_mean, pred_std, Y_train, noise
+        )
+    elif str_acq == "pure_exploit":
         fun_acquisition = lambda pred_mean, pred_std, Y_train: acquisition.pure_exploit(
-            pred_mean)
-    elif str_acq == 'pure_explore':
-        fun_acquisition = lambda pred_mean, pred_std, Y_train: acquisition.pure_explore(pred_std)
+            pred_mean
+        )
+    elif str_acq == "pure_explore":
+        fun_acquisition = lambda pred_mean, pred_std, Y_train: acquisition.pure_explore(
+            pred_std
+        )
     else:
-        raise NotImplementedError('_choose_fun_acquisition: allowed str_acq,\
-            but it is not implemented.')
+        raise NotImplementedError(
+            "_choose_fun_acquisition: allowed str_acq,\
+            but it is not implemented."
+        )
 
     return fun_acquisition
 
+
 @utils_common.validate_types
-def check_hyps_convergence(list_hyps: constants.TYPING_LIST[dict], hyps: dict,
-    str_cov: str, fix_noise: bool,
-    ratio_threshold: float=0.05
+def check_hyps_convergence(
+    list_hyps: constants.TYPING_LIST[dict],
+    hyps: dict,
+    str_cov: str,
+    fix_noise: bool,
+    ratio_threshold: float = 0.05,
 ) -> bool:
     """
     It checks convergence of hyperparameters for Gaussian process regression.
@@ -278,18 +303,21 @@ def check_hyps_convergence(list_hyps: constants.TYPING_LIST[dict], hyps: dict,
 
     converged = False
     if len(list_hyps) > 0:
-        hyps_converted = utils_covariance.convert_hyps(str_cov, hyps, fix_noise=fix_noise)
-        target_hyps_converted = utils_covariance.convert_hyps(str_cov, list_hyps[-1],
-            fix_noise=fix_noise)
+        hyps_converted = utils_covariance.convert_hyps(
+            str_cov, hyps, fix_noise=fix_noise
+        )
+        target_hyps_converted = utils_covariance.convert_hyps(
+            str_cov, list_hyps[-1], fix_noise=fix_noise
+        )
 
         threshold = np.linalg.norm(target_hyps_converted) * ratio_threshold
         if np.linalg.norm(hyps_converted - target_hyps_converted, ord=2) < threshold:
             converged = True
     return converged
 
+
 @utils_common.validate_types
-def check_points_in_bounds(points: np.ndarray, bounds: np.ndarray
-) -> np.ndarray:
+def check_points_in_bounds(points: np.ndarray, bounds: np.ndarray) -> np.ndarray:
     """
     It checks whether every instance of `points` is located in `bounds`.
 

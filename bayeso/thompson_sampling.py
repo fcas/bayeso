@@ -14,16 +14,18 @@ from bayeso.utils import utils_bo
 from bayeso.utils import utils_common
 from bayeso.utils import utils_logger
 
-logger = utils_logger.get_logger('thompson_sampling')
+logger = utils_logger.get_logger("thompson_sampling")
 
 
 @utils_common.validate_types
-def thompson_sampling_gp_iteration(range_X: np.ndarray,
-    X: np.ndarray, Y: np.ndarray,
-    normalize_Y: bool=constants.NORMALIZE_RESPONSE,
-    str_sampling_method: str='sobol',
-    num_samples: int=200,
-    debug: bool=False,
+def thompson_sampling_gp_iteration(
+    range_X: np.ndarray,
+    X: np.ndarray,
+    Y: np.ndarray,
+    normalize_Y: bool = constants.NORMALIZE_RESPONSE,
+    str_sampling_method: str = "sobol",
+    num_samples: int = 200,
+    debug: bool = False,
 ) -> np.ndarray:
     """
     It chooses the next query point via Thompson sampling.
@@ -64,23 +66,29 @@ def thompson_sampling_gp_iteration(range_X: np.ndarray,
     assert range_X.shape[0] == X.shape[1]
     assert range_X.shape[1] == 2
 
-    str_cov = 'matern52'
+    str_cov = "matern52"
     prior_mu = None
-    str_optimizer_method_gp = 'BFGS'
-#    use_ard = True
+    str_optimizer_method_gp = "BFGS"
+    #    use_ard = True
 
     if normalize_Y:
         if debug:
-            logger.debug('Responses are normalized.')
+            logger.debug("Responses are normalized.")
 
         Y = utils_bo.normalize_min_max(Y)
 
     model_bo = bo.BOwGP(range_X)
     X_test = model_bo.get_samples(str_sampling_method, num_samples=num_samples)
 
-    mu_Xs, _, Sigma_Xs = gp.predict_with_optimized_hyps(X, Y, X_test,
-        str_cov=str_cov, str_optimizer_method=str_optimizer_method_gp,
-        prior_mu=prior_mu, debug=debug)
+    mu_Xs, _, Sigma_Xs = gp.predict_with_optimized_hyps(
+        X,
+        Y,
+        X_test,
+        str_cov=str_cov,
+        str_optimizer_method=str_optimizer_method_gp,
+        prior_mu=prior_mu,
+        debug=debug,
+    )
     mu_Xs = np.squeeze(mu_Xs, axis=1)
 
     Y_sampled = None
@@ -92,24 +100,27 @@ def thompson_sampling_gp_iteration(range_X: np.ndarray,
             Y_sampled = gp.sample_functions(mu_Xs, Sigma_Xs_, num_samples=1)
 
             break
-        except ValueError: # pragma: no cover
+        except ValueError:  # pragma: no cover
             pass
 
-    if Y_sampled is None: # pragma: no cover
-        raise ValueError('jitter_cov is not large enough.')
+    if Y_sampled is None:  # pragma: no cover
+        raise ValueError("jitter_cov is not large enough.")
 
     ind_min = np.argmin(Y_sampled[:, 0])
     next_point = X_test[ind_min]
 
     return next_point
 
-def thompson_sampling_gp(range_X: np.ndarray,
+
+def thompson_sampling_gp(
+    range_X: np.ndarray,
     fun_target: callable,
-    num_init: int, num_iter: int,
-    normalize_Y: bool=constants.NORMALIZE_RESPONSE,
-    str_sampling_method: str='uniform',
-    num_samples: int=200,
-    debug: bool=False,
+    num_init: int,
+    num_iter: int,
+    normalize_Y: bool = constants.NORMALIZE_RESPONSE,
+    str_sampling_method: str = "uniform",
+    num_samples: int = 200,
+    debug: bool = False,
 ) -> constants.TYPING_TUPLE_TWO_ARRAYS:
     """
     It chooses `num_iter` query points via Thompson sampling
@@ -160,10 +171,11 @@ def thompson_sampling_gp(range_X: np.ndarray,
     Y = np.reshape(Y, (X.shape[0], 1))
 
     for ind_iter in range(0, num_iter):
-        print(f'{ind_iter+1} iteration')
+        print(f"{ind_iter+1} iteration")
 
-        next_point = thompson_sampling_gp_iteration(range_X, X, Y,
-            normalize_Y, str_sampling_method, num_samples, debug)
+        next_point = thompson_sampling_gp_iteration(
+            range_X, X, Y, normalize_Y, str_sampling_method, num_samples, debug
+        )
 
         X = np.concatenate((X, [next_point]), axis=0)
         Y = np.vstack((Y, fun_target(next_point)))

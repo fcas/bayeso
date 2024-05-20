@@ -17,14 +17,16 @@ def main(path_save):
     time_start = time.time()
 
     np.random.seed(42)
-    X_train = np.array([
-        [-3.0],
-        [-1.0],
-        [0.0],
-        [1.0],
-        [2.0],
-        [4.0],
-    ])
+    X_train = np.array(
+        [
+            [-3.0],
+            [-1.0],
+            [0.0],
+            [1.0],
+            [2.0],
+            [4.0],
+        ]
+    )
     Y_train = np.cos(X_train) + np.random.randn(X_train.shape[0], 1) * 0.2
     num_test = 10000
     X_test = np.linspace(-5, 5, num_test)
@@ -43,12 +45,21 @@ def main(path_save):
     mu, sigma = trees_common.predict_by_trees(X_test, trees)
 
     time_end = time.time()
-    print('time consumed: {:.4f}'.format(time_end - time_start))
+    print("time consumed: {:.4f}".format(time_end - time_start))
 
-    utils_plotting.plot_gp_via_distribution(X_train, Y_train, X_test, mu, sigma, Y_test, path_save=path_save, str_postfix='cos')
+    utils_plotting.plot_gp_via_distribution(
+        X_train,
+        Y_train,
+        X_test,
+        mu,
+        sigma,
+        Y_test,
+        path_save=path_save,
+        str_postfix="cos",
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     path_save = None
 
     if path_save is not None and not os.path.isdir(path_save):

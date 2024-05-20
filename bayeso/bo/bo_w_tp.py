@@ -8,13 +8,14 @@ with Student-:math:`t` process regression."""
 import time
 import numpy as np
 from scipy.optimize import minimize
+
 try:
     from scipydirect import minimize as directminimize
-except: # pragma: no cover
+except:  # pragma: no cover
     directminimize = None
 try:
     import cma
-except: # pragma: no cover
+except:  # pragma: no cover
     cma = None
 
 from bayeso.bo import base_bo
@@ -54,16 +55,18 @@ class BOwTP(base_bo.BaseBO):
 
     """
 
-    def __init__(self, range_X: np.ndarray,
-        str_cov: str=constants.STR_COV,
-        str_acq: str=constants.STR_BO_ACQ,
-        normalize_Y: bool=constants.NORMALIZE_RESPONSE,
-        use_ard: bool=constants.USE_ARD,
-        prior_mu: constants.TYPING_UNION_CALLABLE_NONE=None,
-        str_optimizer_method_tp: str=constants.STR_OPTIMIZER_METHOD_TP,
-        str_optimizer_method_bo: str=constants.STR_OPTIMIZER_METHOD_AO,
-        str_exp: str=None,
-        debug: bool=False
+    def __init__(
+        self,
+        range_X: np.ndarray,
+        str_cov: str = constants.STR_COV,
+        str_acq: str = constants.STR_BO_ACQ,
+        normalize_Y: bool = constants.NORMALIZE_RESPONSE,
+        use_ard: bool = constants.USE_ARD,
+        prior_mu: constants.TYPING_UNION_CALLABLE_NONE = None,
+        str_optimizer_method_tp: str = constants.STR_OPTIMIZER_METHOD_TP,
+        str_optimizer_method_bo: str = constants.STR_OPTIMIZER_METHOD_AO,
+        str_exp: str = None,
+        debug: bool = False,
     ):
         """
         Constructor method
@@ -88,11 +91,18 @@ class BOwTP(base_bo.BaseBO):
         assert str_optimizer_method_tp in constants.ALLOWED_OPTIMIZER_METHOD_TP
         assert str_optimizer_method_bo in constants.ALLOWED_OPTIMIZER_METHOD_BO
 
-        str_surrogate = 'tp'
+        str_surrogate = "tp"
         assert str_surrogate in constants.ALLOWED_SURROGATE
 
-        super().__init__(range_X, str_surrogate, str_acq,
-            str_optimizer_method_bo, normalize_Y, str_exp, debug)
+        super().__init__(
+            range_X,
+            str_surrogate,
+            str_acq,
+            str_optimizer_method_bo,
+            normalize_Y,
+            str_exp,
+            debug,
+        )
 
         self.str_cov = str_cov
         self.use_ard = use_ard
@@ -101,10 +111,12 @@ class BOwTP(base_bo.BaseBO):
 
         self.historical_hyps = []
 
-    def _optimize(self, fun_negative_acquisition: constants.TYPING_CALLABLE,
+    def _optimize(
+        self,
+        fun_negative_acquisition: constants.TYPING_CALLABLE,
         str_sampling_method: str,
         num_samples: int,
-        seed: int=None,
+        seed: int = None,
     ) -> constants.TYPING_TUPLE_TWO_ARRAYS:
         """
         It optimizes `fun_negative_function` with `self.str_optimizer_method_bo`.
@@ -128,10 +140,11 @@ class BOwTP(base_bo.BaseBO):
         """
 
         list_next_point = []
-        if self.str_optimizer_method_bo == 'L-BFGS-B':
+        if self.str_optimizer_method_bo == "L-BFGS-B":
             list_bounds = self._get_bounds()
-            initials = self.get_samples(str_sampling_method,
-                num_samples=num_samples, seed=seed)
+            initials = self.get_samples(
+                str_sampling_method, num_samples=num_samples, seed=seed
+            )
 
             for arr_initial in initials:
                 next_point = minimize(
@@ -139,15 +152,16 @@ class BOwTP(base_bo.BaseBO):
                     x0=arr_initial,
                     bounds=list_bounds,
                     method=self.str_optimizer_method_bo,
-                    options={'disp': False}
+                    options={"disp": False},
                 )
                 next_point_x = next_point.x
                 list_next_point.append(next_point_x)
                 if self.debug:
-                    self.logger.debug('acquired sample: %s',
-                        utils_logger.get_str_array(next_point_x))
-        elif self.str_optimizer_method_bo == 'DIRECT': # pragma: no cover
-            self.logger.debug('num_samples is ignored.')
+                    self.logger.debug(
+                        "acquired sample: %s", utils_logger.get_str_array(next_point_x)
+                    )
+        elif self.str_optimizer_method_bo == "DIRECT":  # pragma: no cover
+            self.logger.debug("num_samples is ignored.")
 
             list_bounds = self._get_bounds()
             next_point = directminimize(
@@ -157,34 +171,46 @@ class BOwTP(base_bo.BaseBO):
             )
             next_point_x = next_point.x
             list_next_point.append(next_point_x)
-        elif self.str_optimizer_method_bo == 'CMA-ES':
-            self.logger.debug('num_samples is ignored.')
+        elif self.str_optimizer_method_bo == "CMA-ES":
+            self.logger.debug("num_samples is ignored.")
 
             list_bounds = self._get_bounds()
             list_bounds = np.array(list_bounds)
+
             def fun_wrapper(f):
                 def g(bx):
                     return f(bx)[0]
+
                 return g
+
             initials = self.get_samples(str_sampling_method, num_samples=1, seed=seed)
             cur_sigma0 = np.mean(list_bounds[:, 1] - list_bounds[:, 0]) / 4.0
-            next_point_x = cma.fmin(fun_wrapper(fun_negative_acquisition),
-                initials[0], cur_sigma0,
+            next_point_x = cma.fmin(
+                fun_wrapper(fun_negative_acquisition),
+                initials[0],
+                cur_sigma0,
                 options={
-                    'bounds': [list_bounds[:, 0], list_bounds[:, 1]],
-                    'verbose': -1, 'maxfevals': 1e5
-                })[0]
+                    "bounds": [list_bounds[:, 0], list_bounds[:, 1]],
+                    "verbose": -1,
+                    "maxfevals": 1e5,
+                },
+            )[0]
             list_next_point.append(next_point_x)
 
         next_points = np.array(list_next_point)
         next_point = utils_bo.get_best_acquisition_by_evaluation(
-            next_points, fun_negative_acquisition)[0]
+            next_points, fun_negative_acquisition
+        )[0]
         return next_point, next_points
 
-    def compute_posteriors(self,
-        X_train: np.ndarray, Y_train: np.ndarray,
-        X_test: np.ndarray, cov_X_X: np.ndarray,
-        inv_cov_X_X: np.ndarray, hyps: dict
+    def compute_posteriors(
+        self,
+        X_train: np.ndarray,
+        Y_train: np.ndarray,
+        X_test: np.ndarray,
+        cov_X_X: np.ndarray,
+        inv_cov_X_X: np.ndarray,
+        hyps: dict,
     ) -> np.ndarray:
         """
         It returns posterior mean and standard deviation over `X_test`.
@@ -230,9 +256,15 @@ class BOwTP(base_bo.BaseBO):
         assert inv_cov_X_X.shape[0] == inv_cov_X_X.shape[1] == X_train.shape[0]
 
         _, pred_mean, pred_std, _ = tp.predict_with_cov(
-            X_train, Y_train, X_test,
-            cov_X_X, inv_cov_X_X, hyps, str_cov=self.str_cov,
-            prior_mu=self.prior_mu, debug=self.debug
+            X_train,
+            Y_train,
+            X_test,
+            cov_X_X,
+            inv_cov_X_X,
+            hyps,
+            str_cov=self.str_cov,
+            prior_mu=self.prior_mu,
+            debug=self.debug,
         )
 
         pred_mean = np.squeeze(pred_mean, axis=1)
@@ -240,9 +272,14 @@ class BOwTP(base_bo.BaseBO):
 
         return pred_mean, pred_std
 
-    def compute_acquisitions(self, X: np.ndarray,
-        X_train: np.ndarray, Y_train: np.ndarray,
-        cov_X_X: np.ndarray, inv_cov_X_X: np.ndarray, hyps: dict
+    def compute_acquisitions(
+        self,
+        X: np.ndarray,
+        X_train: np.ndarray,
+        Y_train: np.ndarray,
+        cov_X_X: np.ndarray,
+        inv_cov_X_X: np.ndarray,
+        hyps: dict,
     ) -> np.ndarray:
         """
         It computes acquisition function values over 'X',
@@ -294,11 +331,12 @@ class BOwTP(base_bo.BaseBO):
         assert cov_X_X.shape[0] == cov_X_X.shape[1] == X_train.shape[0]
         assert inv_cov_X_X.shape[0] == inv_cov_X_X.shape[1] == X_train.shape[0]
 
-        fun_acquisition = utils_bo.choose_fun_acquisition(self.str_acq, hyps.get('noise', None))
+        fun_acquisition = utils_bo.choose_fun_acquisition(
+            self.str_acq, hyps.get("noise", None)
+        )
 
         pred_mean, pred_std = self.compute_posteriors(
-            X_train, Y_train, X,
-            cov_X_X, inv_cov_X_X, hyps
+            X_train, Y_train, X, cov_X_X, inv_cov_X_X, hyps
         )
 
         acquisitions = fun_acquisition(
@@ -308,10 +346,13 @@ class BOwTP(base_bo.BaseBO):
 
         return acquisitions
 
-    def optimize(self, X_train: np.ndarray, Y_train: np.ndarray,
-        str_sampling_method: str=constants.STR_SAMPLING_METHOD_AO,
-        num_samples: int=constants.NUM_SAMPLES_AO,
-        seed: int=None,
+    def optimize(
+        self,
+        X_train: np.ndarray,
+        Y_train: np.ndarray,
+        str_sampling_method: str = constants.STR_SAMPLING_METHOD_AO,
+        num_samples: int = constants.NUM_SAMPLES_AO,
+        seed: int = None,
     ) -> constants.TYPING_TUPLE_ARRAY_DICT:
         """
         It computes acquired example, candidates of acquired examples,
@@ -356,18 +397,20 @@ class BOwTP(base_bo.BaseBO):
 
         if self.normalize_Y:
             if self.debug:
-                self.logger.debug('Responses are normalized.')
+                self.logger.debug("Responses are normalized.")
 
             Y_train = utils_bo.normalize_min_max(Y_train)
 
         time_start_surrogate = time.time()
 
         cov_X_X, inv_cov_X_X, hyps = tp_kernel.get_optimized_kernel(
-            X_train, Y_train,
-            self.prior_mu, self.str_cov,
+            X_train,
+            Y_train,
+            self.prior_mu,
+            self.str_cov,
             str_optimizer_method=self.str_optimizer_method_tp,
             use_ard=self.use_ard,
-            debug=self.debug
+            debug=self.debug,
         )
 
         self.historical_hyps.append(hyps)
@@ -378,15 +421,19 @@ class BOwTP(base_bo.BaseBO):
         fun_negative_acquisition = lambda X_test: -1.0 * self.compute_acquisitions(
             X_test, X_train, Y_train, cov_X_X, inv_cov_X_X, hyps
         )
-        next_point, next_points = self._optimize(fun_negative_acquisition,
+        next_point, next_points = self._optimize(
+            fun_negative_acquisition,
             str_sampling_method=str_sampling_method,
             num_samples=num_samples,
-            seed=seed)
+            seed=seed,
+        )
 
         next_point = utils_bo.check_points_in_bounds(
-            next_point[np.newaxis, ...], np.array(self._get_bounds()))[0]
+            next_point[np.newaxis, ...], np.array(self._get_bounds())
+        )[0]
         next_points = utils_bo.check_points_in_bounds(
-            next_points, np.array(self._get_bounds()))
+            next_points, np.array(self._get_bounds())
+        )
 
         time_end_acq = time.time()
 
@@ -394,19 +441,21 @@ class BOwTP(base_bo.BaseBO):
         time_end = time.time()
 
         dict_info = {
-            'next_points': next_points,
-            'acquisitions': acquisitions,
-            'Y_original': Y_train_orig,
-            'Y_normalized': Y_train,
-            'cov_X_X': cov_X_X,
-            'inv_cov_X_X': inv_cov_X_X,
-            'hyps': hyps,
-            'time_surrogate': time_end_surrogate - time_start_surrogate,
-            'time_acq': time_end_acq - time_start_acq,
-            'time_overall': time_end - time_start,
+            "next_points": next_points,
+            "acquisitions": acquisitions,
+            "Y_original": Y_train_orig,
+            "Y_normalized": Y_train,
+            "cov_X_X": cov_X_X,
+            "inv_cov_X_X": inv_cov_X_X,
+            "hyps": hyps,
+            "time_surrogate": time_end_surrogate - time_start_surrogate,
+            "time_acq": time_end_acq - time_start_acq,
+            "time_overall": time_end - time_start,
         }
 
         if self.debug:
-            self.logger.debug('overall time consumed to acquire: %.4f sec.', time_end - time_start)
+            self.logger.debug(
+                "overall time consumed to acquire: %.4f sec.", time_end - time_start
+            )
 
         return next_point, dict_info

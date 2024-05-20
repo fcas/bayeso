@@ -16,12 +16,16 @@ from bayeso.utils import utils_common
 
 
 @utils_common.validate_types
-def neg_log_ml(X_train: np.ndarray, Y_train: np.ndarray, hyps: np.ndarray,
-    str_cov: str, prior_mu_train: np.ndarray,
-    use_ard: bool=constants.USE_ARD,
-    fix_noise: bool=constants.FIX_GP_NOISE,
-    use_gradient: bool=True,
-    debug: bool=False
+def neg_log_ml(
+    X_train: np.ndarray,
+    Y_train: np.ndarray,
+    hyps: np.ndarray,
+    str_cov: str,
+    prior_mu_train: np.ndarray,
+    use_ard: bool = constants.USE_ARD,
+    fix_noise: bool = constants.FIX_GP_NOISE,
+    use_gradient: bool = True,
+    debug: bool = False,
 ) -> constants.TYPING_UNION_FLOAT_FA:
     """
     This function computes a negative log marginal likelihood.
@@ -62,18 +66,23 @@ def neg_log_ml(X_train: np.ndarray, Y_train: np.ndarray, hyps: np.ndarray,
     assert isinstance(use_gradient, bool)
     assert len(prior_mu_train.shape) == 2
     assert X_train.shape[0] == Y_train.shape[0] == prior_mu_train.shape[0]
-    utils_covariance.check_str_cov('neg_log_ml', str_cov, X_train.shape)
+    utils_covariance.check_str_cov("neg_log_ml", str_cov, X_train.shape)
 
     num_X = float(X_train.shape[0])
-    hyps = utils_covariance.restore_hyps(str_cov, hyps,
-        use_ard=use_ard,
-        fix_noise=fix_noise, use_gp=False)
+    hyps = utils_covariance.restore_hyps(
+        str_cov, hyps, use_ard=use_ard, fix_noise=fix_noise, use_gp=False
+    )
     new_Y_train = Y_train - prior_mu_train
-    nu = hyps['dof']
+    nu = hyps["dof"]
 
-    cov_X_X, inv_cov_X_X, grad_cov_X_X = covariance.get_kernel_inverse(X_train,
-        hyps, str_cov, fix_noise=fix_noise, use_gradient=use_gradient,
-        debug=debug)
+    cov_X_X, inv_cov_X_X, grad_cov_X_X = covariance.get_kernel_inverse(
+        X_train,
+        hyps,
+        str_cov,
+        fix_noise=fix_noise,
+        use_gradient=use_gradient,
+        debug=debug,
+    )
 
     alpha = np.dot(inv_cov_X_X, new_Y_train)
     beta = np.squeeze(np.dot(np.dot(new_Y_train.T, inv_cov_X_X), new_Y_train))
@@ -82,12 +91,14 @@ def neg_log_ml(X_train: np.ndarray, Y_train: np.ndarray, hyps: np.ndarray,
     sign_second_term, second_term = np.linalg.slogdet(cov_X_X)
 
     # TODO: it should be checked.
-    if sign_second_term <= 0: # pragma: no cover
+    if sign_second_term <= 0:  # pragma: no cover
         second_term = 0.0
 
     second_term = -0.5 * second_term
 
-    third_term = np.log(scipy.special.gamma((nu + num_X) / 2.0) / scipy.special.gamma(nu / 2.0))
+    third_term = np.log(
+        scipy.special.gamma((nu + num_X) / 2.0) / scipy.special.gamma(nu / 2.0)
+    )
     fourth_term = -0.5 * (nu + num_X) * np.log(1.0 + beta / (nu - 2.0))
 
     log_ml_ = np.squeeze(first_term + second_term + third_term + fourth_term)
@@ -97,12 +108,16 @@ def neg_log_ml(X_train: np.ndarray, Y_train: np.ndarray, hyps: np.ndarray,
         assert grad_cov_X_X is not None
         grad_log_ml_ = np.zeros(grad_cov_X_X.shape[2] + 1)
 
-        first_term_grad = ((nu + num_X) / (nu + beta - 2.0) * np.dot(alpha, alpha.T) - inv_cov_X_X)
-        nu_grad = -num_X / (2.0 * (nu - 2.0))\
-            + scipy.special.digamma((nu + num_X) / 2.0)\
-            - scipy.special.digamma(nu / 2.0)\
-            - 0.5 * np.log(1.0 + beta / (nu - 2.0))\
-            + (nu + num_X) * beta / (2.0 * (nu - 2.0)**2 + 2.0 * beta * (nu - 2.0))
+        first_term_grad = (nu + num_X) / (nu + beta - 2.0) * np.dot(
+            alpha, alpha.T
+        ) - inv_cov_X_X
+        nu_grad = (
+            -num_X / (2.0 * (nu - 2.0))
+            + scipy.special.digamma((nu + num_X) / 2.0)
+            - scipy.special.digamma(nu / 2.0)
+            - 0.5 * np.log(1.0 + beta / (nu - 2.0))
+            + (nu + num_X) * beta / (2.0 * (nu - 2.0) ** 2 + 2.0 * beta * (nu - 2.0))
+        )
 
         if fix_noise:
             grad_log_ml_[0] = nu_grad

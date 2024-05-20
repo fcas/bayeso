@@ -60,6 +60,7 @@ dev = [
     "wheel",
     "build",
     "twine",
+    "black",
 ]
 
 optional = [

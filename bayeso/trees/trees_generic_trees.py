@@ -12,7 +12,8 @@ from bayeso.utils import utils_common
 
 @utils_common.validate_types
 def get_generic_trees(
-    X: np.ndarray, Y: np.ndarray,
+    X: np.ndarray,
+    Y: np.ndarray,
     num_trees: int,
     depth_max: int,
     size_min_leaf: int,
@@ -75,7 +76,9 @@ def get_generic_trees(
         X_, Y_ = trees_common.subsample(X, Y, ratio_sampling, replace_samples)
 
         root = trees_common._split(X_, Y_, num_features, split_random_location)
-        trees_common.split(root, depth_max, size_min_leaf, num_features, split_random_location, 1)
+        trees_common.split(
+            root, depth_max, size_min_leaf, num_features, split_random_location, 1
+        )
 
         list_trees.append(root)
 
