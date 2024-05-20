@@ -161,8 +161,8 @@ def test_get_samples():
     )
     assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
 
-    arr_initials_ = model_bo.get_samples("sobol", num_samples=3)
-    arr_initials = model_bo.get_samples("sobol", num_samples=3, seed=42)
+    arr_initials_ = model_bo.get_samples("sobol", num_samples=4)
+    arr_initials = model_bo.get_samples("sobol", num_samples=4, seed=42)
 
     print("sobol")
     for elem_1 in arr_initials:
@@ -177,14 +177,19 @@ def test_get_samples():
                 3.06412766687572,
             ],
             [
-                8.698135614395142,
-                -0.250022292137146,
-                -0.012653172016143799,
+                8.69813535362482,
+                -0.2500223182141781,
+                -0.012653125450015068,
             ],
             [
-                5.779154300689697,
-                0.04064440727233887,
-                2.2647011280059814,
+                5.779154505580664,
+                0.04064444452524185,
+                2.2647008765488863,
+            ],
+            [
+                1.3686652854084969,
+                -1.0451578684151173,
+                -4.681709306314588,
             ],
         ]
     )
@@ -291,8 +296,8 @@ def test_get_initials():
     with pytest.raises(AssertionError) as error:
         model_bo.get_initials("abc", 10)
 
-    arr_initials = model_bo.get_initials("sobol", 3)
-    arr_initials = model_bo.get_initials("sobol", 3, seed=42)
+    arr_initials = model_bo.get_initials("sobol", 4)
+    arr_initials = model_bo.get_initials("sobol", 4, seed=42)
 
     print("sobol")
     for elem_1 in arr_initials:
@@ -307,14 +312,19 @@ def test_get_initials():
                 3.06412766687572,
             ],
             [
-                8.698135614395142,
-                -0.250022292137146,
-                -0.012653172016143799,
+                8.69813535362482,
+                -0.2500223182141781,
+                -0.012653125450015068,
             ],
             [
-                5.779154300689697,
-                0.04064440727233887,
-                2.2647011280059814,
+                5.779154505580664,
+                0.04064444452524185,
+                2.2647008765488863,
+            ],
+            [
+                1.3686652854084969,
+                -1.0451578684151173,
+                -4.681709306314588,
             ],
         ]
     )
@@ -761,7 +771,7 @@ def test_compute_posteriors():
 
     cov_X_X, inv_cov_X_X, _ = covariance.get_kernel_inverse(X, hyps, model_bo.str_cov)
 
-    X_test = model_bo.get_samples("sobol", num_samples=10, seed=111)
+    X_test = model_bo.get_samples("sobol", num_samples=16, seed=111)
 
     with pytest.raises(AssertionError) as error:
         model_bo.compute_posteriors(1, Y, X_test, cov_X_X, inv_cov_X_X, hyps)
@@ -875,7 +885,7 @@ def test_compute_acquisitions():
 
     cov_X_X, inv_cov_X_X, _ = covariance.get_kernel_inverse(X, hyps, model_bo.str_cov)
 
-    X_test = model_bo.get_samples("sobol", num_samples=10, seed=111)
+    X_test = model_bo.get_samples("sobol", num_samples=8, seed=111)
 
     truth_X_test = np.array(
         [
@@ -919,16 +929,6 @@ def test_compute_acquisitions():
                 0.5484802722930908,
                 -0.9542649984359741,
             ],
-            [
-                4.554623663425446,
-                -1.7126559913158417,
-                1.575535535812378,
-            ],
-            [
-                6.998107433319092,
-                1.1039907932281494,
-                -0.24655908346176147,
-            ],
         ]
     )
 
@@ -969,8 +969,6 @@ def test_compute_acquisitions():
             0.634886228604709,
             0.6350134713825293,
             0.6263764526122838,
-            0.6444373090088434,
-            0.6348254001303183,
         ]
     )
 

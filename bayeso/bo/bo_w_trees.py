@@ -109,8 +109,8 @@ class BOwTrees(base_bo.BaseBO):
         assert isinstance(num_trees, int)
         assert isinstance(depth_max, int)
         assert isinstance(size_min_leaf, int)
-        assert len(X_train.shape) == 2
-        assert len(Y_train.shape) == 2
+        assert X_train.ndim == 2
+        assert Y_train.ndim == 2
         assert X_train.shape[0] == Y_train.shape[0]
         assert Y_train.shape[1] == 1
 
@@ -282,9 +282,10 @@ class BOwTrees(base_bo.BaseBO):
             next_points, np.array(self._get_bounds())
         )
 
-        fun_negative_acquisition = lambda X_test: -1.0 * self.compute_acquisitions(
-            X_test, X_train, Y_train, trees
-        )
+        def fun_negative_acquisition(X_test):
+            return -1.0 * self.compute_acquisitions(
+                X_test, X_train, Y_train, trees
+            )
         acquisitions = fun_negative_acquisition(next_points)
         ind_next_point = np.argmin(acquisitions)
         next_point = next_points[ind_next_point]

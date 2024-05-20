@@ -246,17 +246,22 @@ def choose_fun_acquisition(
     elif str_acq == "aei":
         assert noise is not None
 
-        fun_acquisition = lambda pred_mean, pred_std, Y_train: acquisition.aei(
-            pred_mean, pred_std, Y_train, noise
-        )
+        def fun_acquisition(pred_mean, pred_std, Y_train):
+            return acquisition.aei(
+                pred_mean, pred_std, Y_train, noise
+            )
     elif str_acq == "pure_exploit":
-        fun_acquisition = lambda pred_mean, pred_std, Y_train: acquisition.pure_exploit(
-            pred_mean
-        )
+        def fun_acquisition(pred_mean, pred_std, Y_train):
+            _, _ = pred_std, Y_train
+            return acquisition.pure_exploit(
+                pred_mean
+            )
     elif str_acq == "pure_explore":
-        fun_acquisition = lambda pred_mean, pred_std, Y_train: acquisition.pure_explore(
-            pred_std
-        )
+        def fun_acquisition(pred_mean, pred_std, Y_train):
+            _, _ = pred_mean, Y_train
+            return acquisition.pure_explore(
+                pred_std
+            )
     else:
         raise NotImplementedError(
             "_choose_fun_acquisition: allowed str_acq,\
