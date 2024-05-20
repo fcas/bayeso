@@ -65,11 +65,11 @@ dev = [
 
 optional = [
     "scipydirect",
-    "matplotlib",
     "bayeso-benchmarks",
 ]
 
 examples = [
     "xgboost",
     "scikit-learn",
+    "matplotlib",
 ]
