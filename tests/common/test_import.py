@@ -105,10 +105,6 @@ def test_import_utils_utils_covariance():
     import bayeso.utils.utils_covariance
 
 
-def test_import_utils_utils_plotting():
-    import bayeso.utils.utils_plotting
-
-
 def test_import_utils_utils_logger():
     import bayeso.utils.utils_logger
 
