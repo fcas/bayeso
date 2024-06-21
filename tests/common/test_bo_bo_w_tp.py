@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 16, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: June 21, 2024
 #
 """test_bo_bo_w_tp"""
 
@@ -15,7 +15,6 @@ from bayeso.utils import utils_covariance
 
 
 BO = package_target.BOwTP
-TEST_EPSILON = 1e-5
 
 
 def test_load_bo():
@@ -125,7 +124,7 @@ def test_get_samples():
             [0.000, -2.000, -5.000],
         ]
     )
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials = model_bo.get_samples("grid", num_samples=3)
     truth_arr_initials = np.array(
@@ -159,7 +158,7 @@ def test_get_samples():
             [10.000, 2.000, 5.000],
         ]
     )
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials_ = model_bo.get_samples("sobol", num_samples=4)
     arr_initials = model_bo.get_samples("sobol", num_samples=4, seed=42)
@@ -193,8 +192,7 @@ def test_get_samples():
             ],
         ]
     )
-
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials_ = model_bo.get_samples("halton", num_samples=3)
     arr_initials = model_bo.get_samples("halton", num_samples=3, seed=42)
@@ -244,8 +242,7 @@ def test_get_samples():
                 ],
             ]
         )
-
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials_ = model_bo.get_samples("uniform", num_samples=3)
     arr_initials = model_bo.get_samples("uniform", num_samples=3, seed=42)
@@ -256,7 +253,7 @@ def test_get_samples():
             [0.58083612, 1.46470458, 1.01115012],
         ]
     )
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials_ = model_bo.get_samples("gaussian", num_samples=3)
     arr_initials = model_bo.get_samples("gaussian", num_samples=3, seed=42)
@@ -267,7 +264,7 @@ def test_get_samples():
             [8.948032038768478, 0.7674347291529088, -1.1736859648373803],
         ]
     )
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
 
 def test_get_initials():
@@ -328,8 +325,7 @@ def test_get_initials():
             ],
         ]
     )
-
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials = model_bo.get_initials("uniform", 3, seed=42)
     truth_arr_initials = np.array(
@@ -339,7 +335,7 @@ def test_get_initials():
             [0.58083612, 1.46470458, 1.01115012],
         ]
     )
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
 
 def test_optimize():
@@ -936,7 +932,7 @@ def test_compute_acquisitions():
         for elem_2 in elem_1:
             print(elem_2)
 
-    assert np.all(np.abs(X_test - truth_X_test) < TEST_EPSILON)
+    np.testing.assert_allclose(X_test, truth_X_test)
 
     with pytest.raises(AssertionError) as error:
         model_bo.compute_acquisitions(1, X, Y, cov_X_X, inv_cov_X_X, hyps)
@@ -975,7 +971,7 @@ def test_compute_acquisitions():
     assert isinstance(acqs, np.ndarray)
     assert len(acqs.shape) == 1
     assert X_test.shape[0] == acqs.shape[0]
-    assert np.all(np.abs(acqs - truth_acqs) < TEST_EPSILON)
+    np.testing.assert_allclose(acqs, truth_acqs)
 
 
 def test_compute_acquisitions_set():
