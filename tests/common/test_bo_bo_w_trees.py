@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 16, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: June 21, 2024
 #
 """test_bo_bo_w_trees"""
 
@@ -14,7 +14,6 @@ from bayeso.utils import utils_bo
 
 
 BO = package_target.BOwTrees
-TEST_EPSILON = 1e-5
 
 
 def test_load_bo():
@@ -229,8 +228,7 @@ def test_get_samples():
                 ],
             ]
         )
-
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials_ = model_bo.get_samples("uniform", num_samples=3)
     arr_initials = model_bo.get_samples("uniform", num_samples=3, seed=42)
@@ -241,7 +239,7 @@ def test_get_samples():
             [0.58083612, 1.46470458, 1.01115012],
         ]
     )
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials_ = model_bo.get_samples("gaussian", num_samples=3)
     arr_initials = model_bo.get_samples("gaussian", num_samples=3, seed=42)
@@ -252,7 +250,7 @@ def test_get_samples():
             [8.948032038768478, 0.7674347291529088, -1.1736859648373803],
         ]
     )
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
 
 def test_get_initials():
@@ -312,8 +310,7 @@ def test_get_initials():
             ],
         ]
     )
-
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
     arr_initials = model_bo.get_initials("uniform", 3, seed=42)
     truth_arr_initials = np.array(
@@ -323,7 +320,7 @@ def test_get_initials():
             [0.58083612, 1.46470458, 1.01115012],
         ]
     )
-    assert (np.abs(arr_initials - truth_arr_initials) < TEST_EPSILON).all()
+    np.testing.assert_allclose(arr_initials, truth_arr_initials)
 
 
 def test_optimize():
