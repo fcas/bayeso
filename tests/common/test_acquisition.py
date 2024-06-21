@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: November 29, 2022
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: June 21, 2024
 #
 """test_acquisition"""
 
@@ -9,9 +9,6 @@ import pytest
 import numpy as np
 
 from bayeso import acquisition as package_target
-
-
-TEST_EPSILON = 1e-5
 
 
 def test_pi_typing():
@@ -59,7 +56,7 @@ def test_pi():
     )
     print(val_acq)
 
-    assert (np.abs(val_acq - truth_val_acq) < TEST_EPSILON).all()
+    np.testing.assert_allclose(val_acq, truth_val_acq)
 
 
 def test_ei_typing():
@@ -105,7 +102,8 @@ def test_ei():
             1.22477876e-20,
         ]
     )
-    assert (np.abs(val_acq - truth_val_acq) < TEST_EPSILON).all()
+
+    np.testing.assert_allclose(val_acq, truth_val_acq)
 
 
 def test_ucb_typing():
@@ -156,11 +154,13 @@ def test_ucb():
             -5.41648106,
         ]
     )
-    assert (np.abs(val_acq - truth_val_acq) < TEST_EPSILON).all()
+
+    np.testing.assert_allclose(val_acq, truth_val_acq)
 
     val_acq = package_target.ucb(np.arange(0, 10), np.ones(10))
     truth_val_acq = np.array([2.0, 1.0, 0.0, -1.0, -2.0, -3.0, -4.0, -5.0, -6.0, -7.0])
-    assert (np.abs(val_acq - truth_val_acq) < TEST_EPSILON).all()
+
+    np.testing.assert_allclose(val_acq, truth_val_acq)
 
 
 def test_aei_typing():
@@ -208,7 +208,8 @@ def test_aei():
             3.58729395e-21,
         ]
     )
-    assert (np.abs(val_acq - truth_val_acq) < TEST_EPSILON).all()
+
+    np.testing.assert_allclose(val_acq, truth_val_acq)
 
 
 def test_pure_exploit_typing():
@@ -226,7 +227,8 @@ def test_pure_exploit():
 
     val_acq = package_target.pure_exploit(np.arange(0, 10))
     truth_val_acq = -np.arange(0, 10)
-    assert (np.abs(val_acq - truth_val_acq) < TEST_EPSILON).all()
+
+    np.testing.assert_allclose(val_acq, truth_val_acq)
 
 
 def test_pure_explore_typing():
@@ -244,4 +246,5 @@ def test_pure_explore():
 
     val_acq = package_target.pure_explore(np.arange(0, 10))
     truth_val_acq = np.arange(0, 10)
-    assert (np.abs(val_acq - truth_val_acq) < TEST_EPSILON).all()
+
+    np.testing.assert_allclose(val_acq, truth_val_acq)
