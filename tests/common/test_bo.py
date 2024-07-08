@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: October 8, 2021
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: July 8, 2024
 #
 """test_bo"""
 
