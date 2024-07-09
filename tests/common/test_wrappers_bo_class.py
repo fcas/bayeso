@@ -11,9 +11,6 @@ from bayeso import constants
 from bayeso.wrappers import wrappers_bo_class as package_target
 
 
-TEST_EPSILON = 1e-5
-
-
 def test_load_bayesian_optimization():
     # legitimate cases
     range_1 = np.array(

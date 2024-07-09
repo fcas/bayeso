@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: October 13, 2021
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: July 9, 2024
 #
 """test_trees"""
 

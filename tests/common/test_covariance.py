@@ -1,6 +1,6 @@
 #
 # author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
-# last updated: July 8, 2024
+# last updated: July 9, 2024
 #
 """test_covariance"""
 
@@ -10,9 +10,6 @@ import numpy as np
 
 from bayeso import covariance as package_target
 from bayeso.utils import utils_covariance
-
-
-TEST_EPSILON = 1e-7
 
 
 def test_choose_fun_cov_typing():
@@ -258,7 +255,7 @@ def test_cov_se():
     cov_ = package_target.cov_se(X, Xp, cur_hyps["lengthscales"], cur_hyps["signal"])
     print(cov_)
     truth_cov_ = 0.22313016014842987
-    np.testing.assert_allclose(cov_[0], truth_cov_)
+    np.testing.assert_allclose(cov_[0, 0], truth_cov_)
 
     X = np.array([[1.0, 2.0, 0.0]])
     Xp = np.array([[2.0, 1.0, 1.0], [0.0, 0.0, 0.0]])
@@ -363,7 +360,7 @@ def test_cov_matern32():
     )
     print(cov_)
     truth_cov_ = 0.19914827347145583
-    np.testing.assert_allclose(cov_[0], truth_cov_)
+    np.testing.assert_allclose(cov_[0, 0], truth_cov_)
 
     X = np.array([[1.0, 2.0, 0.0]])
     Xp = np.array([[2.0, 1.0, 1.0], [0.0, 0.0, 0.0]])
@@ -481,13 +478,7 @@ def test_cov_matern52():
         package_target.cov_matern52(
             np.zeros((1, 2)), np.zeros((1, 2)), np.array([1.0, 1.0]), 1
         )
-    assert (
-        np.abs(
-            package_target.cov_matern52(np.zeros((1, 2)), np.zeros((1, 2)), 1.0, 0.1)[0]
-            - 0.01
-        )
-        < TEST_EPSILON
-    )
+    np.testing.assert_allclose(package_target.cov_matern52(np.zeros((1, 2)), np.zeros((1, 2)), 1.0, 0.1)[0, 0], 0.01)
 
     X = np.array([[1.0, 2.0, 0.0]])
     Xp = np.array([[2.0, 1.0, 1.0]])
@@ -497,7 +488,7 @@ def test_cov_matern52():
     )
     print(cov_)
     truth_cov_ = 0.20532087608359792
-    assert np.abs(cov_[0] - truth_cov_) < TEST_EPSILON
+    np.testing.assert_allclose(cov_[0, 0], truth_cov_)
 
     X = np.array([[1.0, 2.0, 0.0]])
     Xp = np.array([[2.0, 1.0, 1.0], [0.0, 0.0, 0.0]])
@@ -508,7 +499,7 @@ def test_cov_matern52():
     )
     print(cov_)
     truth_cov_ = np.array([[0.20532088, 0.09657724]])
-    assert np.all(np.abs(cov_[0] - truth_cov_) < TEST_EPSILON)
+    np.testing.assert_allclose(cov_, truth_cov_)
 
 
 def test_grad_cov_matern52_typing():
@@ -568,8 +559,7 @@ def test_grad_cov_matern52():
             [[0.0, 1.04798822, 0.57644039, 0.0], [0.02, 2.00002, 0.0, 0.0]],
         ]
     )
-
-    assert np.all(np.abs(truth_grad_cov_ - grad_cov_) < TEST_EPSILON)
+    np.testing.assert_allclose(grad_cov_, truth_grad_cov_)
 
     num_hyps = X_train.shape[1] + 1
     grad_cov_ = package_target.grad_cov_matern52(
@@ -586,8 +576,7 @@ def test_grad_cov_matern52():
             [[1.04798822, 0.57644039, 0.0], [2.00002, 0.0, 0.0]],
         ]
     )
-
-    assert np.all(np.abs(truth_grad_cov_ - grad_cov_) < TEST_EPSILON)
+    np.testing.assert_allclose(grad_cov_, truth_grad_cov_)
 
 
 def test_cov_set_typing():
@@ -653,19 +642,7 @@ def test_cov_set():
             np.array([1.0, 1.0, 1.0]),
             1,
         )
-    assert (
-        np.abs(
-            package_target.cov_set(
-                str_cov,
-                np.zeros((num_instances, num_dim)),
-                np.zeros((num_instances, num_dim)),
-                1.0,
-                0.1,
-            )
-            - 0.01
-        )
-        < TEST_EPSILON
-    )
+    np.testing.assert_allclose(package_target.cov_set(str_cov, np.zeros((num_instances, num_dim)), np.zeros((num_instances, num_dim)), 1.0, 0.1), 0.01)
 
     bx = np.array([[1.0, 2.0, 0.0], [2.0, 1.0, 0.0]])
     bxp = np.array([[2.0, 1.0, 1.0], [2.0, 2.0, 2.0]])
@@ -675,7 +652,7 @@ def test_cov_set():
     )
     print(cov_)
     truth_cov_ = 0.23061736638896702
-    assert np.abs(cov_ - truth_cov_) < TEST_EPSILON
+    np.testing.assert_allclose(cov_, truth_cov_)
 
 
 def test_cov_main_typing():
@@ -891,7 +868,7 @@ def test_grad_cov_main():
 
     print(grad_cov_)
     truth_grad_cov_ = np.array([[[2.00002, 0.0, 0.0]]])
-    assert np.all(np.abs(grad_cov_ - truth_grad_cov_) < TEST_EPSILON)
+    np.testing.assert_allclose(grad_cov_, truth_grad_cov_)
 
     grad_cov_ = package_target.grad_cov_main(
         "se", np.ones((1, 2)), np.ones((1, 2)), cur_hyps, False
@@ -899,7 +876,7 @@ def test_grad_cov_main():
 
     print(grad_cov_)
     truth_grad_cov_ = np.array([[[0.02, 2.00002, 0.0, 0.0]]])
-    assert np.all(np.abs(grad_cov_ - truth_grad_cov_) < TEST_EPSILON)
+    np.testing.assert_allclose(grad_cov_, truth_grad_cov_)
 
     cur_hyps["lengthscales"] = 1.0
     grad_cov_ = package_target.grad_cov_main(
@@ -908,7 +885,7 @@ def test_grad_cov_main():
 
     print(grad_cov_)
     truth_grad_cov_ = np.array([[[0.02, 0.73577888, 0.73577888]]])
-    assert np.all(np.abs(grad_cov_ - truth_grad_cov_) < TEST_EPSILON)
+    np.testing.assert_allclose(grad_cov_, truth_grad_cov_)
 
     grad_cov_ = package_target.grad_cov_main(
         "matern32", np.ones((1, 2)), np.zeros((1, 2)), cur_hyps, False
@@ -916,7 +893,7 @@ def test_grad_cov_main():
 
     print(grad_cov_)
     truth_grad_cov_ = np.array([[[0.02, 0.59566154, 0.51802578]]])
-    assert np.all(np.abs(grad_cov_ - truth_grad_cov_) < TEST_EPSILON)
+    np.testing.assert_allclose(grad_cov_, truth_grad_cov_)
 
     grad_cov_ = package_target.grad_cov_main(
         "matern32", np.ones((1, 2)), np.zeros((1, 2)), cur_hyps, True
@@ -924,7 +901,7 @@ def test_grad_cov_main():
 
     print(grad_cov_)
     truth_grad_cov_ = np.array([[[0.59566154, 0.51802578]]])
-    assert np.all(np.abs(grad_cov_ - truth_grad_cov_) < TEST_EPSILON)
+    np.testing.assert_allclose(grad_cov_, truth_grad_cov_)
 
     grad_cov_ = package_target.grad_cov_main(
         "matern52", np.ones((1, 2)), np.zeros((1, 2)), cur_hyps, False
@@ -935,4 +912,4 @@ def test_grad_cov_main():
     print(np.squeeze(grad_cov_)[1])
     print(np.squeeze(grad_cov_)[2])
     truth_grad_cov_ = np.array([[[0.02, 0.6345867279080876, 0.5872865507000906]]])
-    assert np.all(np.abs(grad_cov_ - truth_grad_cov_) < TEST_EPSILON)
+    np.testing.assert_allclose(grad_cov_, truth_grad_cov_)
