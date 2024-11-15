@@ -345,34 +345,54 @@ def test__split():
     assert dict_split["value"] == 35.0
 
     assert np.all(dict_split["left_right"][0][0][0] == np.array([0, 1, 2, 3]))
-    np.testing.assert_allclose(dict_split["left_right"][0][0][1], np.array([0.49671415]))
+    np.testing.assert_allclose(
+        dict_split["left_right"][0][0][1], np.array([0.49671415])
+    )
 
     assert np.all(dict_split["left_right"][0][1][0] == np.array([4, 5, 6, 7]))
-    np.testing.assert_allclose(dict_split["left_right"][0][1][1], np.array([-0.1382643]))
+    np.testing.assert_allclose(
+        dict_split["left_right"][0][1][1], np.array([-0.1382643])
+    )
 
     assert np.all(dict_split["left_right"][0][2][0] == np.array([8, 9, 10, 11]))
-    np.testing.assert_allclose(dict_split["left_right"][0][2][1], np.array([0.64768854]))
+    np.testing.assert_allclose(
+        dict_split["left_right"][0][2][1], np.array([0.64768854])
+    )
 
     assert np.all(dict_split["left_right"][0][3][0] == np.array([12, 13, 14, 15]))
-    np.testing.assert_allclose(dict_split["left_right"][0][3][1], np.array([1.52302986]))
+    np.testing.assert_allclose(
+        dict_split["left_right"][0][3][1], np.array([1.52302986])
+    )
 
     assert np.all(dict_split["left_right"][0][4][0] == np.array([16, 17, 18, 19]))
-    np.testing.assert_allclose(dict_split["left_right"][0][4][1], np.array([-0.23415337]))
+    np.testing.assert_allclose(
+        dict_split["left_right"][0][4][1], np.array([-0.23415337])
+    )
 
     assert np.all(dict_split["left_right"][0][5][0] == np.array([20, 21, 22, 23]))
-    np.testing.assert_allclose(dict_split["left_right"][0][5][1], np.array([-0.23413696]))
+    np.testing.assert_allclose(
+        dict_split["left_right"][0][5][1], np.array([-0.23413696])
+    )
 
     assert np.all(dict_split["left_right"][0][6][0] == np.array([24, 25, 26, 27]))
-    np.testing.assert_allclose(dict_split["left_right"][0][6][1], np.array([1.57921282]))
+    np.testing.assert_allclose(
+        dict_split["left_right"][0][6][1], np.array([1.57921282])
+    )
 
     assert np.all(dict_split["left_right"][0][7][0] == np.array([28, 29, 30, 31]))
-    np.testing.assert_allclose(dict_split["left_right"][0][7][1], np.array([0.76743473]))
+    np.testing.assert_allclose(
+        dict_split["left_right"][0][7][1], np.array([0.76743473])
+    )
 
     assert np.all(dict_split["left_right"][0][8][0] == np.array([32, 33, 34, 35]))
-    np.testing.assert_allclose(dict_split["left_right"][0][8][1], np.array([-0.46947439]))
+    np.testing.assert_allclose(
+        dict_split["left_right"][0][8][1], np.array([-0.46947439])
+    )
 
     assert np.all(dict_split["left_right"][1][0][0] == np.array([36, 37, 38, 39]))
-    np.testing.assert_allclose(dict_split["left_right"][1][0][1], np.array([0.54256004]))
+    np.testing.assert_allclose(
+        dict_split["left_right"][1][0][1], np.array([0.54256004])
+    )
 
     dict_split = package_target._split(X, Y, num_features, True)
     print(dict_split)

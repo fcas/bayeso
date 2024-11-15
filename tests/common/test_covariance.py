@@ -247,7 +247,9 @@ def test_cov_se():
         package_target.cov_se(
             np.zeros((1, 2)), np.zeros((1, 2)), np.array([1.0, 1.0]), 1
         )
-    np.testing.assert_allclose(package_target.cov_se(np.zeros((1, 2)), np.zeros((1, 2)), 1.0, 0.1)[0, 0], 0.01)
+    np.testing.assert_allclose(
+        package_target.cov_se(np.zeros((1, 2)), np.zeros((1, 2)), 1.0, 0.1)[0, 0], 0.01
+    )
 
     X = np.array([[1.0, 2.0, 0.0]])
     Xp = np.array([[2.0, 1.0, 1.0]])
@@ -350,7 +352,10 @@ def test_cov_matern32():
         package_target.cov_matern32(
             np.zeros((1, 2)), np.zeros((1, 2)), np.array([1.0, 1.0]), 1
         )
-    np.testing.assert_allclose(package_target.cov_matern32(np.zeros((1, 2)), np.zeros((1, 2)), 1.0, 0.1)[0, 0], 0.01)
+    np.testing.assert_allclose(
+        package_target.cov_matern32(np.zeros((1, 2)), np.zeros((1, 2)), 1.0, 0.1)[0, 0],
+        0.01,
+    )
 
     X = np.array([[1.0, 2.0, 0.0]])
     Xp = np.array([[2.0, 1.0, 1.0]])
@@ -478,7 +483,10 @@ def test_cov_matern52():
         package_target.cov_matern52(
             np.zeros((1, 2)), np.zeros((1, 2)), np.array([1.0, 1.0]), 1
         )
-    np.testing.assert_allclose(package_target.cov_matern52(np.zeros((1, 2)), np.zeros((1, 2)), 1.0, 0.1)[0, 0], 0.01)
+    np.testing.assert_allclose(
+        package_target.cov_matern52(np.zeros((1, 2)), np.zeros((1, 2)), 1.0, 0.1)[0, 0],
+        0.01,
+    )
 
     X = np.array([[1.0, 2.0, 0.0]])
     Xp = np.array([[2.0, 1.0, 1.0]])
@@ -642,7 +650,16 @@ def test_cov_set():
             np.array([1.0, 1.0, 1.0]),
             1,
         )
-    np.testing.assert_allclose(package_target.cov_set(str_cov, np.zeros((num_instances, num_dim)), np.zeros((num_instances, num_dim)), 1.0, 0.1), 0.01)
+    np.testing.assert_allclose(
+        package_target.cov_set(
+            str_cov,
+            np.zeros((num_instances, num_dim)),
+            np.zeros((num_instances, num_dim)),
+            1.0,
+            0.1,
+        ),
+        0.01,
+    )
 
     bx = np.array([[1.0, 2.0, 0.0], [2.0, 1.0, 0.0]])
     bxp = np.array([[2.0, 1.0, 1.0], [2.0, 2.0, 2.0]])
