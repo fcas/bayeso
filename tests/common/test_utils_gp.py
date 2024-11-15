@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: December 29, 2020
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 15, 2024
 #
 """test_utils_gp"""
 
@@ -9,8 +9,6 @@ import pytest
 import numpy as np
 
 from bayeso.utils import utils_gp as package_target
-
-TEST_EPSILON = 1e-7
 
 
 def test_get_prior_mu_typing():

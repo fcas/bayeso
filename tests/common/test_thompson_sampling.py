@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: December 19, 2021
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 15, 2024
 #
 """test_thompson_sampling"""
 
@@ -9,9 +9,6 @@ import numpy as np
 
 from bayeso import thompson_sampling as package_target
 from bayeso import constants
-
-
-TEST_EPSILON = 1e-5
 
 
 def test_thompson_sampling_gp_iteration_typing():

@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: March 22, 2021
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 15, 2024
 #
 """test_tp_kernel"""
 
@@ -8,12 +8,7 @@ import typing
 import pytest
 import numpy as np
 
-from bayeso import constants
 from bayeso.tp import tp_kernel as package_target
-from bayeso.utils import utils_covariance
-
-
-TEST_EPSILON = 1e-7
 
 
 def test_get_optimized_kernel_typing():

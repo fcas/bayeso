@@ -1,5 +1,5 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
 # last updated: August 17, 2023
 # Note that we referred to https://github.com/JaxGaussianProcesses/GPJax/blob/main/tests/integration_tests.py for implementing this test.
 #

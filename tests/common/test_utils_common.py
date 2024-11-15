@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: December 15, 2022
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 15, 2024
 #
 """test_utils_common"""
 
@@ -9,9 +9,6 @@ import pytest
 import numpy as np
 
 from bayeso.utils import utils_common as package_target
-
-
-TEST_EPSILON = 1e-5
 
 
 def test_validate_types_typing():
@@ -270,8 +267,8 @@ def test_get_time():
 
     cur_time = package_target.get_time(arr_time, int_init, is_initial)
     truth_cur_time = np.array([0.0, 0.8, 1.2, 2.6])
-    assert (np.abs(cur_time - truth_cur_time) < TEST_EPSILON).all()
+    np.testing.assert_allclose(cur_time, truth_cur_time)
 
     cur_time = package_target.get_time(arr_time, int_init, False)
     truth_cur_time = np.array([0.0, 1.06666667, 1.5, 2.3, 2.7, 4.1])
-    assert (np.abs(cur_time - truth_cur_time) < TEST_EPSILON).all()
+    np.testing.assert_allclose(cur_time, truth_cur_time)
