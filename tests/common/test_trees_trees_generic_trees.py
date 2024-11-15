@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 20, 2021
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 15, 2024
 #
 """test_trees_trees_generic_trees"""
 
@@ -10,9 +10,6 @@ import numpy as np
 
 from bayeso import constants
 from bayeso.trees import trees_generic_trees as package_target
-
-
-TEST_EPSILON = 1e-7
 
 
 def test_get_generic_trees_typing():
