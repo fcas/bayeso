@@ -1,16 +1,14 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 16, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 
 import numpy as np
-import os
 
 from bayeso.gp import gp
-from bayeso.utils import utils_plotting
 
 
-def main(scale, path_save, str_postfix):
+def main(scale):
     X_train = np.array(
         [
             [-3.0],
@@ -30,22 +28,10 @@ def main(scale, path_save, str_postfix):
     mu, sigma, Sigma = gp.predict_with_optimized_hyps(
         X_train, Y_train, X_test, fix_noise=False, debug=True
     )
-    utils_plotting.plot_gp_via_distribution(
-        X_train,
-        Y_train,
-        X_test,
-        mu,
-        sigma,
-        Y_test,
-        path_save,
-        "test_optimized_{}_y".format(str_postfix),
-    )
+
+    print(scale, mu.shape, sigma.shape, Sigma.shape)
 
 
 if __name__ == "__main__":
-    path_save = None
-
-    if path_save is not None and not os.path.isdir(path_save):
-        os.makedirs(path_save)
-    main(0.01, path_save, "small")
-    main(100000.0, path_save, "large")
+    main(0.01)
+    main(100000.0)

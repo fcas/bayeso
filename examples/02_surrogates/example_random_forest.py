@@ -1,19 +1,16 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 16, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 
 import numpy as np
-import os
 import time
 
 from bayeso.trees import trees_random_forest
 from bayeso.trees import trees_common
-from bayeso.utils import utils_common
-from bayeso.utils import utils_plotting
 
 
-def main(path_save):
+def main():
     time_start = time.time()
 
     np.random.seed(42)
@@ -46,22 +43,8 @@ def main(path_save):
 
     time_end = time.time()
     print("time consumed: {:.4f}".format(time_end - time_start))
-
-    utils_plotting.plot_gp_via_distribution(
-        X_train,
-        Y_train,
-        X_test,
-        mu,
-        sigma,
-        Y_test,
-        path_save=path_save,
-        str_postfix="cos",
-    )
+    print(mu.shape, sigma.shape)
 
 
 if __name__ == "__main__":
-    path_save = None
-
-    if path_save is not None and not os.path.isdir(path_save):
-        os.makedirs(path_save)
-    main(path_save)
+    main()

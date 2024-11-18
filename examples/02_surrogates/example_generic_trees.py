@@ -1,18 +1,15 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 16, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 
 import numpy as np
-import os
 
 from bayeso.trees import trees_generic_trees
 from bayeso.trees import trees_common
-from bayeso.utils import utils_common
-from bayeso.utils import utils_plotting
 
 
-def main(path_save):
+def main():
     np.random.seed(42)
     X_train = np.array(
         [
@@ -52,21 +49,6 @@ def main(path_save):
 
     mu, sigma = trees_common.predict_by_trees(X_test, trees)
 
-    utils_plotting.plot_gp_via_distribution(
-        X_train,
-        Y_train,
-        X_test,
-        mu,
-        sigma,
-        Y_test,
-        path_save=path_save,
-        str_postfix="cos",
-    )
-
 
 if __name__ == "__main__":
-    path_save = None
-
-    if path_save is not None and not os.path.isdir(path_save):
-        os.makedirs(path_save)
-    main(path_save)
+    main()

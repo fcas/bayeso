@@ -30,3 +30,5 @@ hyps = {
     "noise": 0.02,
 }
 mu, sigma, Sigma = gp.predict_with_hyps(X_train, Y_train, X_test, hyps)
+
+print(mu.shape, sigma.shape, Sigma.shape)

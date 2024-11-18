@@ -1,10 +1,9 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 16, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 
 import numpy as np
-import os
 
 from bayeso.gp import gp_kernel
 from bayeso_benchmarks import Branin

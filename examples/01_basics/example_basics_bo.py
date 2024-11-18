@@ -51,3 +51,5 @@ for ind_ in range(1, num_iter + 1):
 
     X_train = np.vstack((X_train, next_x))
     Y_train = fun_target(X_train)
+
+print(X_train.shape, Y_train.shape)

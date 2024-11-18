@@ -1,20 +1,17 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 16, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 
 import numpy as np
-import os
 
 from bayeso.gp import gp
-from bayeso.utils import utils_common
-from bayeso.utils import utils_plotting
 
 
 list_str_covs = ["se", "eq", "matern32", "matern52"]
 
 
-def main(str_cov, path_save):
+def main(str_cov):
     np.random.seed(42)
     X_train = np.array(
         [
@@ -34,22 +31,10 @@ def main(str_cov, path_save):
     mu, sigma, Sigma = gp.predict_with_optimized_hyps(
         X_train, Y_train, X_test, str_cov=str_cov, fix_noise=False, debug=True
     )
-    utils_plotting.plot_gp_via_distribution(
-        X_train,
-        Y_train,
-        X_test,
-        mu,
-        sigma,
-        Y_test,
-        path_save=path_save,
-        str_postfix="cos_" + str_cov,
-    )
+
+    print(str_cov, mu.shape, sigma.shape, Sigma.shape)
 
 
 if __name__ == "__main__":
-    path_save = None
-
-    if path_save is not None and not os.path.isdir(path_save):
-        os.makedirs(path_save)
     for str_cov in list_str_covs:
-        main(str_cov, path_save)
+        main(str_cov)
