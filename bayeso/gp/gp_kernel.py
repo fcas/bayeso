@@ -93,6 +93,7 @@ def get_optimized_kernel(
         raise ValueError
 
     if str_modelselection_method == "ml":
+
         def neg_log_ml_(hyps):
             return gp_likelihood.neg_log_ml(
                 X_train,

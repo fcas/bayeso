@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: February 4, 2022
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 """It is utilities for Bayesian optimization."""
 
@@ -247,21 +247,20 @@ def choose_fun_acquisition(
         assert noise is not None
 
         def fun_acquisition(pred_mean, pred_std, Y_train):
-            return acquisition.aei(
-                pred_mean, pred_std, Y_train, noise
-            )
+            return acquisition.aei(pred_mean, pred_std, Y_train, noise)
+
     elif str_acq == "pure_exploit":
+
         def fun_acquisition(pred_mean, pred_std, Y_train):
             _, _ = pred_std, Y_train
-            return acquisition.pure_exploit(
-                pred_mean
-            )
+            return acquisition.pure_exploit(pred_mean)
+
     elif str_acq == "pure_explore":
+
         def fun_acquisition(pred_mean, pred_std, Y_train):
             _, _ = pred_mean, Y_train
-            return acquisition.pure_explore(
-                pred_std
-            )
+            return acquisition.pure_explore(pred_std)
+
     else:
         raise NotImplementedError(
             "_choose_fun_acquisition: allowed str_acq,\

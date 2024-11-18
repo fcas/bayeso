@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: September 24, 2020
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 """It defines wrappers for Bayesian optimization."""
 

@@ -1,10 +1,11 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: February 22, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 """It defines an abstract class of Bayesian optimization."""
 
 import abc
+import typing
 import numpy as np
 import scipy.stats.qmc as scsqmc
 
@@ -163,7 +164,7 @@ class BaseBO(abc.ABC):
         """
 
         assert isinstance(num_samples, int)
-        assert isinstance(seed, (int, constants.TYPE_NONE))
+        assert isinstance(seed, (int, type(None)))
 
         state_random = self._get_random_state(seed)
 
@@ -177,7 +178,7 @@ class BaseBO(abc.ABC):
         return initials
 
     def _get_samples_gaussian(
-        self, num_samples: int, seed: constants.TYPING_UNION_INT_NONE = None
+        self, num_samples: int, seed: typing.Optional[int] = None
     ) -> np.ndarray:
         """
         It returns `num_samples` examples sampled from Gaussian distribution.
@@ -195,7 +196,7 @@ class BaseBO(abc.ABC):
         """
 
         assert isinstance(num_samples, int)
-        assert isinstance(seed, (int, constants.TYPE_NONE))
+        assert isinstance(seed, (int, type(None)))
 
         state_random = self._get_random_state(seed)
 

@@ -1,6 +1,6 @@
 #
 # author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
-# last updated: August 17, 2023
+# last updated: November 18, 2024
 # Note that we referred to https://github.com/JaxGaussianProcesses/GPJax/blob/main/tests/integration_tests.py for implementing this test.
 #
 
@@ -35,8 +35,7 @@ class Result:
         new_lines = []
 
         for line in lines:
-            if "utils_plotting" not in line:
-                new_lines.append(line)
+            new_lines.append(line)
         lines = new_lines
 
         contents = "\n".join([line for line in lines])

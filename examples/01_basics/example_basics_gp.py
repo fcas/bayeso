@@ -1,20 +1,12 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 21, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 
 import numpy as np
-import os
 
 from bayeso.gp import gp
-from bayeso.utils import utils_common
-from bayeso.utils import utils_plotting
 
-
-path_save = None
-
-if path_save is not None and not os.path.isdir(path_save):
-    os.makedirs(path_save)
 
 np.random.seed(42)
 
@@ -38,16 +30,3 @@ hyps = {
     "noise": 0.02,
 }
 mu, sigma, Sigma = gp.predict_with_hyps(X_train, Y_train, X_test, hyps)
-
-str_postfix = f"cos" if path_save is not None else None
-
-utils_plotting.plot_gp_via_distribution(
-    X_train,
-    Y_train,
-    X_test,
-    mu,
-    sigma,
-    Y_test,
-    path_save=path_save,
-    str_postfix=str_postfix,
-)
