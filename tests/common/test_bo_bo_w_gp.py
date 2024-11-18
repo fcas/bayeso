@@ -607,7 +607,32 @@ def test_optimize_str_optimize_method_bo():
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
 
-    # TODO: add DIRECT test, now it causes an error.
+    model_bo = BO(arr_range_1, str_optimizer_method_bo="DIRECT")
+    next_point, dict_info = model_bo.optimize(X, Y)
+    next_points = dict_info["next_points"]
+    acquisitions = dict_info["acquisitions"]
+    cov_X_X = dict_info["cov_X_X"]
+    inv_cov_X_X = dict_info["inv_cov_X_X"]
+    hyps = dict_info["hyps"]
+    time_overall = dict_info["time_overall"]
+    time_surrogate = dict_info["time_surrogate"]
+    time_acq = dict_info["time_acq"]
+
+    assert isinstance(next_point, np.ndarray)
+    assert isinstance(next_points, np.ndarray)
+    assert isinstance(acquisitions, np.ndarray)
+    assert isinstance(cov_X_X, np.ndarray)
+    assert isinstance(inv_cov_X_X, np.ndarray)
+    assert isinstance(hyps, dict)
+    assert isinstance(time_overall, float)
+    assert isinstance(time_surrogate, float)
+    assert isinstance(time_acq, float)
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
+    assert next_point.shape[0] == dim_X
+    assert next_points.shape[1] == dim_X
+    assert next_points.shape[0] == acquisitions.shape[0]
 
     model_bo = BO(arr_range_1, str_optimizer_method_bo="CMA-ES")
     next_point, dict_info = model_bo.optimize(X, Y)

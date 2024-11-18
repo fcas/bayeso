@@ -397,9 +397,9 @@ def test_optimize():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -439,9 +439,9 @@ def test_optimize_str_acq():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -466,9 +466,9 @@ def test_optimize_str_acq():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -493,9 +493,9 @@ def test_optimize_str_acq():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -520,9 +520,9 @@ def test_optimize_str_acq():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -547,9 +547,9 @@ def test_optimize_str_acq():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -589,14 +589,39 @@ def test_optimize_str_optimize_method_bo():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
 
-    # TODO: add DIRECT test, now it causes an error.
+    model_bo = BO(arr_range_1, str_optimizer_method_bo="DIRECT")
+    next_point, dict_info = model_bo.optimize(X, Y)
+    next_points = dict_info["next_points"]
+    acquisitions = dict_info["acquisitions"]
+    cov_X_X = dict_info["cov_X_X"]
+    inv_cov_X_X = dict_info["inv_cov_X_X"]
+    hyps = dict_info["hyps"]
+    time_overall = dict_info["time_overall"]
+    time_surrogate = dict_info["time_surrogate"]
+    time_acq = dict_info["time_acq"]
+
+    assert isinstance(next_point, np.ndarray)
+    assert isinstance(next_points, np.ndarray)
+    assert isinstance(acquisitions, np.ndarray)
+    assert isinstance(cov_X_X, np.ndarray)
+    assert isinstance(inv_cov_X_X, np.ndarray)
+    assert isinstance(hyps, dict)
+    assert isinstance(time_overall, float)
+    assert isinstance(time_surrogate, float)
+    assert isinstance(time_acq, float)
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
+    assert next_point.shape[0] == dim_X
+    assert next_points.shape[1] == dim_X
+    assert next_points.shape[0] == acquisitions.shape[0]
 
     model_bo = BO(arr_range_1, str_optimizer_method_bo="CMA-ES")
     next_point, dict_info = model_bo.optimize(X, Y)
@@ -618,9 +643,9 @@ def test_optimize_str_optimize_method_bo():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -660,9 +685,9 @@ def test_optimize_use_ard():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
@@ -703,14 +728,14 @@ def test_optimize_use_ard():
     assert isinstance(time_overall, float)
     assert isinstance(time_surrogate, float)
     assert isinstance(time_acq, float)
-    assert len(next_point.shape) == 1
-    assert len(next_points.shape) == 2
-    assert len(acquisitions.shape) == 1
+    assert next_point.ndim == 1
+    assert next_points.ndim == 2
+    assert acquisitions.ndim == 1
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
     assert isinstance(hyps["lengthscales"], np.ndarray)
-    assert len(hyps["lengthscales"].shape) == 1
+    assert hyps["lengthscales"].ndim == 1
     assert hyps["lengthscales"].shape[0] == 3
 
 
@@ -790,8 +815,8 @@ def test_compute_posteriors():
         X, Y, X_test, cov_X_X, inv_cov_X_X, hyps
     )
 
-    assert len(pred_mean.shape) == 1
-    assert len(pred_std.shape) == 1
+    assert pred_mean.ndim == 1
+    assert pred_std.ndim == 1
     assert pred_mean.shape[0] == pred_mean.shape[0] == X_test.shape[0]
 
 
@@ -855,8 +880,8 @@ def test_compute_posteriors_set():
     pred_mean, pred_std = model_bo.compute_posteriors(
         X, Y, X_test[:, :, :dim_X], cov_X_X, inv_cov_X_X, hyps
     )
-    assert len(pred_mean.shape) == 1
-    assert len(pred_std.shape) == 1
+    assert pred_mean.ndim == 1
+    assert pred_std.ndim == 1
     assert pred_mean.shape[0] == pred_mean.shape[0] == X_test.shape[0]
 
 
@@ -969,7 +994,7 @@ def test_compute_acquisitions():
     )
 
     assert isinstance(acqs, np.ndarray)
-    assert len(acqs.shape) == 1
+    assert acqs.ndim == 1
     assert X_test.shape[0] == acqs.shape[0]
     np.testing.assert_allclose(acqs, truth_acqs)
 
