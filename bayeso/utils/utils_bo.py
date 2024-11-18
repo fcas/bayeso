@@ -7,10 +7,6 @@
 import numpy as np
 
 try:
-    from scipydirect import minimize as directminimize
-except:  # pragma: no cover
-    directminimize = None
-try:
     import cma
 except:  # pragma: no cover
     cma = None
@@ -199,12 +195,7 @@ def check_optimizer_method_bo(
         + constants.ALLOWED_OPTIMIZER_METHOD_BO_TREES
     )
 
-    if (
-        str_optimizer_method_bo == "DIRECT" and directminimize is None
-    ):  # pragma: no cover
-        logger.warning("DIRECT is selected, but it is not installed.")
-        str_optimizer_method_bo = "L-BFGS-B"
-    elif str_optimizer_method_bo == "CMA-ES" and cma is None:  # pragma: no cover
+    if str_optimizer_method_bo == "CMA-ES" and cma is None:  # pragma: no cover
         logger.warning("CMA-ES is selected, but it is not installed.")
         str_optimizer_method_bo = "L-BFGS-B"
     # TODO: It should be checked.

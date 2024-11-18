@@ -6,6 +6,7 @@
 with tree-based surrogate models."""
 
 import time
+import typing
 import numpy as np
 
 from bayeso.bo import base_bo
@@ -220,7 +221,8 @@ class BOwTrees(base_bo.BaseBO):
         Y_train: np.ndarray,
         str_sampling_method: str = constants.STR_SAMPLING_METHOD_AO_TREES,
         num_samples: int = constants.NUM_SAMPLES_AO_TREES,
-        seed: int = None,
+        str_mlm_method: type(None) = None,
+        seed: typing.Optional[int] = None,
     ) -> constants.TYPING_TUPLE_ARRAY_DICT:
         """
         It computes acquired example, candidates of acquired examples,
@@ -247,6 +249,7 @@ class BOwTrees(base_bo.BaseBO):
 
         """
 
+        assert str_mlm_method is None
         assert isinstance(X_train, np.ndarray)
         assert isinstance(Y_train, np.ndarray)
         assert isinstance(str_sampling_method, str)

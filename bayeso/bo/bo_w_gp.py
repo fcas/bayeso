@@ -6,6 +6,7 @@
 with Gaussian process regression."""
 
 import time
+import typing
 import numpy as np
 import scipy.optimize as scio
 
@@ -121,7 +122,7 @@ class BOwGP(base_bo.BaseBO):
         fun_negative_acquisition: constants.TYPING_CALLABLE,
         str_sampling_method: str,
         num_samples: int,
-        seed: int = None,
+        seed: typing.Optional[int] = None,
     ) -> constants.TYPING_TUPLE_TWO_ARRAYS:
         """
         It optimizes `fun_negative_function` with `self.str_optimizer_method_bo`.
@@ -360,7 +361,7 @@ class BOwGP(base_bo.BaseBO):
         str_sampling_method: str = constants.STR_SAMPLING_METHOD_AO,
         num_samples: int = constants.NUM_SAMPLES_AO,
         str_mlm_method: str = constants.STR_MLM_METHOD,
-        seed: int = None,
+        seed: typing.Optional[int] = None,
     ) -> constants.TYPING_TUPLE_ARRAY_DICT:
         """
         It computes acquired example, candidates of acquired examples,

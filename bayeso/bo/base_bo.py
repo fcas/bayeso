@@ -372,7 +372,15 @@ class BaseBO(abc.ABC):
         """
 
     @abc.abstractmethod
-    def optimize(self):  # pragma: no cover
+    def optimize(
+        self,
+        X_train: np.ndarray,
+        Y_train: np.ndarray,
+        str_sampling_method: str,
+        num_samples: int,
+        str_mlm_method: typing.Optional[str],
+        seed: typing.Optional[int],
+    ):  # pragma: no cover
         """
         It is an abstract method.
 
