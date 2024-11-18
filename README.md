@@ -47,7 +47,7 @@ To use editable development mode, command the following in the `bayeso` root.
 pip install -e .
 ```
 
-If you want to install the packages required for optional features, development, and examples, you can simply add `[optional]`, `[dev]`, and `[examples]`.
+If you want to install the packages required for development and examples, you can simply add `[dev]` and `[examples]`.
 For example, `pip install .[dev]` or `pip install -e .[dev]`.
 
 * Uninstallation

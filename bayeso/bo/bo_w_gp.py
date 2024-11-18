@@ -1,18 +1,14 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: February 4, 2022
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 """It defines a class of Bayesian optimization
 with Gaussian process regression."""
 
 import time
 import numpy as np
-from scipy.optimize import minimize
+import scipy.optimize as scio
 
-try:
-    from scipydirect import minimize as directminimize
-except:  # pragma: no cover
-    directminimize = None
 try:
     import cma
 except:  # pragma: no cover
@@ -156,7 +152,7 @@ class BOwGP(base_bo.BaseBO):
             )
 
             for arr_initial in initials:
-                next_point = minimize(
+                next_point = scio.minimize(
                     fun_negative_acquisition,
                     x0=arr_initial,
                     bounds=list_bounds,
@@ -169,14 +165,15 @@ class BOwGP(base_bo.BaseBO):
                     self.logger.debug(
                         "acquired sample: %s", utils_logger.get_str_array(next_point_x)
                     )
-        elif self.str_optimizer_method_bo == "DIRECT":  # pragma: no cover
+        elif self.str_optimizer_method_bo == "DIRECT":
             self.logger.debug("num_samples is ignored.")
 
             list_bounds = self._get_bounds()
-            next_point = directminimize(
+            next_point = scio.direct(
                 fun_negative_acquisition,
-                bounds=list_bounds,
-                maxf=88888,
+                list_bounds,
+                maxfun=10000,
+                maxiter=10000,
             )
             next_point_x = next_point.x
             list_next_point.append(next_point_x)

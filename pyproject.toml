@@ -63,12 +63,8 @@ dev = [
     "black",
 ]
 
-optional = [
-    "scipydirect",
-    "bayeso-benchmarks",
-]
-
 examples = [
+    "bayeso-benchmarks",
     "xgboost",
     "scikit-learn",
     "matplotlib",
