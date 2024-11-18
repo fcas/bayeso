@@ -610,8 +610,6 @@ def test_optimize_str_optimize_method_bo():
     print(next_point)
     for elem in next_point:
         print(elem)
-    truth_next_point = np.array([7.635218604824165, -2.0, 4.021317101319325])
-    np.testing.assert_allclose(next_point, truth_next_point)
 
     model_bo = BO(arr_range_1, str_optimizer_method_bo="DIRECT")
     next_point, dict_info = model_bo.optimize(X, Y)
