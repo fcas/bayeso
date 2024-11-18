@@ -570,7 +570,7 @@ def test_optimize_str_optimize_method_bo():
     Y = np.random.randn(num_X, 1)
 
     model_bo = BO(arr_range_1, str_optimizer_method_bo="L-BFGS-B")
-    next_point, dict_info = model_bo.optimize(X, Y)
+    next_point, dict_info = model_bo.optimize(X, Y, seed=42)
     next_points = dict_info["next_points"]
     acquisitions = dict_info["acquisitions"]
     cov_X_X = dict_info["cov_X_X"]
@@ -595,6 +595,12 @@ def test_optimize_str_optimize_method_bo():
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
+
+    print(next_point)
+    for elem in next_point:
+        print(elem)
+    truth_next_point = np.array([7.638093905542978, -2.0, 3.9619470988529613])
+    np.testing.assert_allclose(next_point, truth_next_point)
 
     model_bo = BO(arr_range_1, str_optimizer_method_bo="DIRECT")
     next_point, dict_info = model_bo.optimize(X, Y)
@@ -623,6 +629,10 @@ def test_optimize_str_optimize_method_bo():
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
 
+    print(next_point)
+    for elem in next_point:
+        print(elem)
+
     model_bo = BO(arr_range_1, str_optimizer_method_bo="CMA-ES")
     next_point, dict_info = model_bo.optimize(X, Y)
     next_points = dict_info["next_points"]
@@ -649,6 +659,10 @@ def test_optimize_str_optimize_method_bo():
     assert next_point.shape[0] == dim_X
     assert next_points.shape[1] == dim_X
     assert next_points.shape[0] == acquisitions.shape[0]
+
+    print(next_point)
+    for elem in next_point:
+        print(elem)
 
 
 def test_optimize_use_ard():
