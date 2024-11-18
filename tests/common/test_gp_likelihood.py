@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: March 22, 2021
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 """test_gp_likelihood"""
 
@@ -11,9 +11,6 @@ import numpy as np
 from bayeso import constants
 from bayeso.gp import gp_likelihood as package_target
 from bayeso.utils import utils_covariance
-
-
-TEST_EPSILON = 1e-7
 
 
 def test_neg_log_ml_typing():
@@ -85,7 +82,7 @@ def test_neg_log_ml():
     )
     print(neg_log_ml_)
     truth_log_ml_ = 21.916650988532854
-    assert np.abs(neg_log_ml_ - truth_log_ml_) < TEST_EPSILON
+    np.testing.assert_allclose(neg_log_ml_, truth_log_ml_)
 
     neg_log_ml_ = package_target.neg_log_ml(
         X,
@@ -99,7 +96,7 @@ def test_neg_log_ml():
     )
     print(neg_log_ml_)
     truth_log_ml_ = 21.91665090519953
-    assert np.abs(neg_log_ml_ - truth_log_ml_) < TEST_EPSILON
+    np.testing.assert_allclose(neg_log_ml_, truth_log_ml_)
 
     neg_log_ml_ = package_target.neg_log_ml(
         X,
@@ -113,7 +110,7 @@ def test_neg_log_ml():
     )
     print(neg_log_ml_)
     truth_log_ml_ = 21.91665090519953
-    assert np.abs(neg_log_ml_ - truth_log_ml_) < TEST_EPSILON
+    np.testing.assert_allclose(neg_log_ml_, truth_log_ml_)
 
     neg_log_ml_, neg_grad_log_ml_ = package_target.neg_log_ml(
         X,
@@ -141,8 +138,8 @@ def test_neg_log_ml():
             -0.00029606081917620415,
         ]
     )
-    assert np.abs(neg_log_ml_ - truth_log_ml_) < TEST_EPSILON
-    assert np.all(np.abs(neg_grad_log_ml_ - truth_grad_log_ml_) < TEST_EPSILON)
+    np.testing.assert_allclose(neg_log_ml_, truth_log_ml_)
+    np.testing.assert_allclose(neg_grad_log_ml_, truth_grad_log_ml_)
 
 
 def test_neg_log_pseudo_l_loocv_typing():
@@ -211,4 +208,4 @@ def test_neg_log_pseudo_l_loocv():
     )
     print(neg_log_pseudo_l_)
     truth_log_pseudo_l_ = 21.916822991658695
-    assert np.abs(neg_log_pseudo_l_ - truth_log_pseudo_l_) < TEST_EPSILON
+    np.testing.assert_allclose(neg_log_pseudo_l_, truth_log_pseudo_l_)
