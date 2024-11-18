@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: March 22, 2021
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 18, 2024
 #
 """test_tp_likelihood"""
 
@@ -11,9 +11,6 @@ import numpy as np
 from bayeso import constants
 from bayeso.tp import tp_likelihood as package_target
 from bayeso.utils import utils_covariance
-
-
-TEST_EPSILON = 1e-7
 
 
 def test_neg_log_ml_typing():
@@ -78,7 +75,7 @@ def test_neg_log_ml():
     )
     print(neg_log_ml_)
     truth_log_ml_ = 5.634155417555853
-    assert np.abs(neg_log_ml_ - truth_log_ml_) < TEST_EPSILON
+    np.testing.assert_allclose(neg_log_ml_, truth_log_ml_)
 
     neg_log_ml_, neg_grad_log_ml_ = package_target.neg_log_ml(
         X, Y, arr_hyps, str_cov, prior_mu_X, fix_noise=fix_noise, use_gradient=True
@@ -100,8 +97,8 @@ def test_neg_log_ml():
             -1.836237221888097e-05,
         ]
     )
-    assert np.abs(neg_log_ml_ - truth_log_ml_) < TEST_EPSILON
-    assert np.all(np.abs(neg_grad_log_ml_ - truth_grad_log_ml_) < TEST_EPSILON)
+    np.testing.assert_allclose(neg_log_ml_, truth_log_ml_)
+    np.testing.assert_allclose(neg_grad_log_ml_, truth_grad_log_ml_)
 
     dict_hyps = utils_covariance.get_hyps(str_cov, dim_X, use_gp=use_gp)
     arr_hyps = utils_covariance.convert_hyps(
