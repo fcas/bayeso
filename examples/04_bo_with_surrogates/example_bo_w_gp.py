@@ -1,27 +1,16 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 21, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 20, 2024
 #
 
 import numpy as np
-import os
 
 from bayeso.bo import bo_w_gp
-from bayeso.gp import gp
-from bayeso.utils import utils_plotting
-
-
-STR_FUN_TARGET = "bo_w_gp"
 
 
 def fun_target(X):
     return 4.0 * np.cos(X) + 0.1 * X + 2.0 * np.sin(X) + 0.4 * (X - 0.5) ** 2
 
-
-path_save = None
-
-if path_save is not None and not os.path.isdir(path_save):
-    os.makedirs(path_save)
 
 str_acq = "ei"
 num_iter = 10
@@ -65,39 +54,7 @@ for ind_ in range(1, num_iter + 1):
     X_train = np.vstack((X_train, next_x))
     Y_train = fun_target(X_train)
 
-    utils_plotting.plot_bo_step(
-        X_train,
-        Y_train,
-        X_test,
-        fun_target(X_test),
-        mu_test,
-        sigma_test,
-        path_save=path_save,
-        str_postfix="bo_{}_".format(str_acq) + str(ind_),
-        num_init=num_init,
-    )
-    utils_plotting.plot_bo_step_with_acq(
-        X_train,
-        Y_train,
-        X_test,
-        fun_target(X_test),
-        mu_test,
-        sigma_test,
-        acq_test,
-        path_save=path_save,
-        str_postfix="bo_{}_".format(str_acq) + str(ind_),
-        num_init=num_init,
-    )
-
 Y_train = np.squeeze(Y_train)
 Y_train = np.array([[Y_train]])
 
 print(X_train.shape, Y_train.shape)
-utils_plotting.plot_minimum_vs_iter(
-    Y_train,
-    [STR_FUN_TARGET],
-    num_init,
-    True,
-    path_save=path_save,
-    str_postfix=STR_FUN_TARGET,
-)
