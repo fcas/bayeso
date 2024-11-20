@@ -1,19 +1,15 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: August 17, 2023
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: November 20, 2024
 #
 
 import numpy as np
 
 from bayeso import bo
-from bayeso import acquisition
 from bayeso.gp import gp
 from bayeso.utils import utils_common
-from bayeso.utils import utils_plotting
 from bayeso_benchmarks.two_dim_branin import Branin
 
-
-STR_FUN_TARGET = "branin"
 
 obj_fun = Branin()
 
