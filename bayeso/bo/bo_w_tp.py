@@ -80,7 +80,7 @@ class BOwTP(base_bo.BaseBO):
         assert isinstance(str_exp, (type(None), str))
         assert isinstance(debug, bool)
         assert callable(prior_mu) or prior_mu is None
-        assert len(range_X.shape) == 2
+        assert range_X.ndim == 2
         assert range_X.shape[1] == 2
         assert (range_X[:, 0] <= range_X[:, 1]).all()
         assert str_cov in constants.ALLOWED_COV
@@ -239,14 +239,14 @@ class BOwTP(base_bo.BaseBO):
         assert isinstance(cov_X_X, np.ndarray)
         assert isinstance(inv_cov_X_X, np.ndarray)
         assert isinstance(hyps, dict)
-        assert len(X_train.shape) == 2 or len(X_train.shape) == 3
-        assert len(Y_train.shape) == 2
-        assert len(X_test.shape) == 2 or len(X_test.shape) == 3
-        assert len(cov_X_X.shape) == 2
-        assert len(inv_cov_X_X.shape) == 2
+        assert X_train.ndim == 2 or X_train.ndim == 3
+        assert Y_train.ndim == 2
+        assert X_test.ndim == 2 or X_test.ndim == 3
+        assert cov_X_X.ndim == 2
+        assert inv_cov_X_X.ndim == 2
         assert Y_train.shape[1] == 1
         assert X_train.shape[0] == Y_train.shape[0]
-        if len(X_train.shape) == 2:
+        if X_train.ndim == 2:
             assert X_test.shape[1] == X_train.shape[1] == self.num_dim
         else:
             assert X_test.shape[2] == X_train.shape[2] == self.num_dim
@@ -310,18 +310,18 @@ class BOwTP(base_bo.BaseBO):
         assert isinstance(cov_X_X, np.ndarray)
         assert isinstance(inv_cov_X_X, np.ndarray)
         assert isinstance(hyps, dict)
-        assert len(X.shape) == 1 or len(X.shape) == 2 or len(X.shape) == 3
-        assert len(X_train.shape) == 2 or len(X_train.shape) == 3
-        assert len(Y_train.shape) == 2
-        assert len(cov_X_X.shape) == 2
-        assert len(inv_cov_X_X.shape) == 2
+        assert X.ndim == 1 or X.ndim == 2 or X.ndim == 3
+        assert X_train.ndim == 2 or X_train.ndim == 3
+        assert Y_train.ndim == 2
+        assert cov_X_X.ndim == 2
+        assert inv_cov_X_X.ndim == 2
         assert Y_train.shape[1] == 1
         assert X_train.shape[0] == Y_train.shape[0]
 
-        if len(X.shape) == 1:
+        if X.ndim == 1:
             X = np.atleast_2d(X)
 
-        if len(X_train.shape) == 2:
+        if X_train.ndim == 2:
             assert X.shape[1] == X_train.shape[1] == self.num_dim
         else:
             assert X.shape[2] == X_train.shape[2] == self.num_dim
@@ -384,8 +384,8 @@ class BOwTP(base_bo.BaseBO):
         assert isinstance(str_sampling_method, str)
         assert isinstance(num_samples, int)
         assert isinstance(seed, (type(None), int))
-        assert len(X_train.shape) == 2
-        assert len(Y_train.shape) == 2
+        assert X_train.ndim == 2
+        assert Y_train.ndim == 2
         assert Y_train.shape[1] == 1
         assert X_train.shape[0] == Y_train.shape[0]
         assert X_train.shape[1] == self.num_dim

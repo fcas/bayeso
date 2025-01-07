@@ -59,7 +59,7 @@ class BOwTrees(base_bo.BaseBO):
         assert isinstance(str_optimizer_method_bo, str)
         assert isinstance(str_exp, (type(None), str))
         assert isinstance(debug, bool)
-        assert len(range_X.shape) == 2
+        assert range_X.ndim == 2
         assert range_X.shape[1] == 2
         assert (range_X[:, 0] <= range_X[:, 1]).all()
         assert str_surrogate in constants.ALLOWED_SURROGATE_TREES
@@ -151,7 +151,7 @@ class BOwTrees(base_bo.BaseBO):
 
         assert isinstance(X, np.ndarray)
         assert isinstance(trees, list)
-        assert len(X.shape) == 2
+        assert X.ndim == 2
         assert X.shape[1] == self.num_dim
 
         pred_mean, pred_std = trees_common.predict_by_trees(X, trees)
@@ -191,13 +191,13 @@ class BOwTrees(base_bo.BaseBO):
         assert isinstance(X, np.ndarray)
         assert isinstance(X_train, np.ndarray)
         assert isinstance(Y_train, np.ndarray)
-        assert len(X.shape) == 1 or len(X.shape) == 2 or len(X.shape) == 3
-        assert len(X_train.shape) == 2 or len(X_train.shape) == 3
-        assert len(Y_train.shape) == 2
+        assert X.ndim == 1 or X.ndim == 2 or X.ndim == 3
+        assert X_train.ndim == 2 or X_train.ndim == 3
+        assert Y_train.ndim == 2
         assert Y_train.shape[1] == 1
         assert X_train.shape[0] == Y_train.shape[0]
 
-        if len(X.shape) == 1:
+        if X.ndim == 1:
             X = np.atleast_2d(X)
 
         assert X.shape[1] == X_train.shape[1] == self.num_dim
@@ -255,8 +255,8 @@ class BOwTrees(base_bo.BaseBO):
         assert isinstance(str_sampling_method, str)
         assert isinstance(num_samples, int)
         assert isinstance(seed, (type(None), int))
-        assert len(X_train.shape) == 2
-        assert len(Y_train.shape) == 2
+        assert X_train.ndim == 2
+        assert Y_train.ndim == 2
         assert Y_train.shape[1] == 1
         assert X_train.shape[0] == Y_train.shape[0]
         assert X_train.shape[1] == self.num_dim
