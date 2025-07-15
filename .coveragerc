@@ -1,11 +1,10 @@
 [run]
-relative_files = True
 source =
-    */bayeso/*
+    bayeso
 
 [paths]
 source =
-    src/
+    src/bayeso
 
 [report]
 exclude_lines =
