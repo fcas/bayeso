@@ -25,7 +25,7 @@ jobs:
           pip list
       - name: Run pytest
         run: |
-          PYTHONPATH=src coverage run -m pytest tests/common
+          coverage run -m pytest tests/common
       - uses: AndreMiras/coveralls-python-action@develop
         with:
           parallel: true
