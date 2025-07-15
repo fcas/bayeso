@@ -1,6 +1,8 @@
 [run]
+branch = True
+relative_files = True
 source =
-    .
+    bayeso
 
 [paths]
 source =
@@ -13,3 +15,6 @@ source =
 exclude_lines =
     pragma: no cover
     raise NotImplementedError
+
+[xml]
+output = coverage.xml

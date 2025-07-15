@@ -25,16 +25,11 @@ jobs:
           pip list
       - name: Run pytest
         run: |
-          pytest --cov=bayeso --cov-report=xml --cov-config=.coveragerc tests/common
-      - uses: AndreMiras/coveralls-python-action@develop
+          coverage run -m pytest tests/common
+          coverage report
+          coverage xml
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
         with:
-          parallel: true
-          flag-name: python-${{ matrix.python-version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-  coverage-finish:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: AndreMiras/coveralls-python-action@develop
-        with:
-          parallel-finished: true
+          path-to-lcov: coverage.xml
