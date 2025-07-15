@@ -29,10 +29,11 @@ jobs:
         run: |
           PYTHONPATH=src pytest --cov=bayeso --cov-report=xml tests/common
         shell: bash
-      - name: Upload to Coveralls
-        run: coveralls --root=$(pwd)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: AndreMiras/coveralls-python-action@develop
+        with:
+          parallel: true
+          flag-name: python-${{ matrix.python-version }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
   coverage-finish:
     needs: test
     runs-on: ubuntu-latest
