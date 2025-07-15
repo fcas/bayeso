@@ -5,7 +5,7 @@ source =
 
 [paths]
 source =
-    src/bayeso
+    src/
 
 [report]
 exclude_lines =
