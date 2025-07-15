@@ -21,11 +21,11 @@ jobs:
       - name: Install this project and its dependencies
         run: |
           pip install --upgrade pip
-          pip install .[dev]
+          pip install -e .[dev]
           pip list
       - name: Run pytest
         run: |
-          coverage run -m pytest tests/common
+          PYTHONPATH=src coverage run -m pytest tests/common
         shell: bash
       - uses: AndreMiras/coveralls-python-action@develop
         with:
