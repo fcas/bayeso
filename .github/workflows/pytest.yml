@@ -21,19 +21,16 @@ jobs:
       - name: Install this project and its dependencies
         run: |
           pip install --upgrade pip
-          pip install -e .[dev]
+          pip install .[dev]
           pip list
-        working-directory: ./bayeso
       - name: Run pytest
         run: |
-          PYTHONPATH=src pytest --cov=bayeso --cov-report=xml tests/common
-        working-directory: ./bayeso
+          PYTHONPATH=src coverage run -m pytest tests/common
       - uses: AndreMiras/coveralls-python-action@develop
         with:
           parallel: true
           flag-name: python-${{ matrix.python-version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: ./bayeso
   coverage-finish:
     needs: test
     runs-on: ubuntu-latest
