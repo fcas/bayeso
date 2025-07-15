@@ -1,6 +1,6 @@
 [run]
 source =
-    bayeso
+    .
 
 [paths]
 source =

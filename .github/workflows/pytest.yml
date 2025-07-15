@@ -23,7 +23,7 @@ jobs:
           pip install --upgrade pip
           pip install .[dev]
           pip list
-      - name: Run pytest with coverage
+      - name: Run pytest
         run: |
           pytest --cov=bayeso --cov-report=xml --cov-config=.coveragerc tests/common
       - uses: AndreMiras/coveralls-python-action@develop
