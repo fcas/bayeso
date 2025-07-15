@@ -15,6 +15,7 @@ packages = [
     "bayeso.wrappers",
     "bayeso.utils",
 ]
+package-dir = {"" = "src"}
 
 [project]
 name = "bayeso"
