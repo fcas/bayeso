@@ -15,15 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: .
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install this project and its dependencies
         run: |
           pip install --upgrade pip
-          pip install -e .[dev]
+          pip install .[dev]
           pip list
       - name: Run pytest
         run: |
