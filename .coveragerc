@@ -1,7 +1,7 @@
 [run]
 relative_files = True
 source =
-    bayeso
+    src/bayeso
 
 [report]
 exclude_lines =
