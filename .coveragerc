@@ -2,6 +2,7 @@
 relative_files = True
 source =
     src/bayeso
+include = src/*
 
 [report]
 exclude_lines =
