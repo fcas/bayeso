@@ -21,7 +21,7 @@ jobs:
       - name: Install this project and its dependencies
         run: |
           pip install --upgrade pip
-          pip install -e .[dev]
+          pip install .[dev]
           pip list
       - name: Run pytest
         run: |
