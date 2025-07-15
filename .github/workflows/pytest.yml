@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: .
+          path: bayeso
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
@@ -28,7 +28,6 @@ jobs:
       - name: Run pytest
         run: |
           PYTHONPATH=src pytest --cov=bayeso --cov-report=xml tests/common
-        shell: bash
       - uses: AndreMiras/coveralls-python-action@develop
         with:
           parallel: true
