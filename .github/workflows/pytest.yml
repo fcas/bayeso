@@ -23,7 +23,7 @@ jobs:
           pip install --upgrade pip
           pip install .[dev]
           pip list
-      - name: Run pytest
+      - name: Run pytest with coverage
         run: |
           coverage run -m pytest tests/common
           coverage report
