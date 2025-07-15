@@ -27,14 +27,8 @@ jobs:
           pip list
       - name: Run pytest
         run: |
-          PYTHONPATH=src coverage run -m pytest tests/common
+          PYTHONPATH=src pytest --cov=bayeso --cov-report=xml tests/common
         shell: bash
-      - name: Generate coverage files
-        run: |
-          coverage combine
-          coverage xml
-          coverage report
-          coverage debug data
       - name: Upload to Coveralls
         run: coveralls --root=$(pwd)
         env:
