@@ -7,7 +7,7 @@ source =
     src/bayeso
     */src/bayeso
     */bayeso/src/bayeso
-    */site-packages/bayeso
+    */site-packages
 
 [report]
 exclude_lines =
