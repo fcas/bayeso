@@ -6,6 +6,7 @@ source =
 [paths]
 source =
     src/
+    */site-packages
 
 [report]
 exclude_lines =
