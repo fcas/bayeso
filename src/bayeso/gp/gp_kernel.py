@@ -89,7 +89,7 @@ def get_optimized_kernel(
     elif str_cov in constants.ALLOWED_COV_SET:
         num_dim = X_train.shape[2]
         use_gradient = False
-    else:
+    else:  # pragma: no cover
         raise ValueError
 
     if str_modelselection_method == "ml":
