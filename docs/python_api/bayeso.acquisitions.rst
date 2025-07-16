@@ -11,6 +11,7 @@ bayeso.acquisitions
 
    bayeso.acquisitions.probability_of_improvement
    bayeso.acquisitions.expected_improvement
+   bayeso.acquisitions.log_expected_improvement
    bayeso.acquisitions.gaussian_process_upper_confidence_bound
    bayeso.acquisitions.augmented_expected_improvement
    bayeso.acquisitions.pure_exploitation
