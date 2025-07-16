@@ -253,7 +253,12 @@ def test_run_single_round():
 
     X_final, Y_final, time_all_final, time_surrogate_final, time_acq_final = (
         package_target.run_single_round(
-            model_bo, fun_target, num_X, num_iter, str_initial_method_bo="uniform"
+            model_bo,
+            fun_target,
+            num_X,
+            num_iter,
+            str_initial_method_bo="uniform",
+            verbose=True,
         )
     )
     assert len(X_final.shape) == 2

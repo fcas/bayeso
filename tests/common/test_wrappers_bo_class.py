@@ -293,9 +293,15 @@ def test_optimize_str_surrogate():
     fun_target = lambda x: 2.0 * x + 1.0
 
     debug = False
+    verbose = True
 
     model_bo = package_target.BayesianOptimization(
-        range_, fun_target, num_iter, str_surrogate="gp", debug=debug
+        range_,
+        fun_target,
+        num_iter,
+        str_surrogate="gp",
+        debug=debug,
+        verbose=verbose,
     )
 
     X_, Y_, time_all_, time_surrogate_, time_acq_ = model_bo.optimize(num_init)
@@ -312,7 +318,12 @@ def test_optimize_str_surrogate():
     assert time_surrogate_.shape[0] == time_acq_.shape[0] == num_iter
 
     model_bo = package_target.BayesianOptimization(
-        range_, fun_target, num_iter, str_surrogate="tp", debug=debug
+        range_,
+        fun_target,
+        num_iter,
+        str_surrogate="tp",
+        debug=debug,
+        verbose=verbose,
     )
 
     X_, Y_, time_all_, time_surrogate_, time_acq_ = model_bo.optimize(num_init)
@@ -335,6 +346,7 @@ def test_optimize_str_surrogate():
         str_surrogate="rf",
         str_optimizer_method_bo="random_search",
         debug=debug,
+        verbose=verbose,
     )
 
     X_, Y_, time_all_, time_surrogate_, time_acq_ = model_bo.optimize(num_init)
