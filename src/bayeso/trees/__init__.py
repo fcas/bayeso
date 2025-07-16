@@ -1,5 +1,5 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
 # last updated: October 13, 2021
 #
 """These files are written to implement tree-based regression models."""

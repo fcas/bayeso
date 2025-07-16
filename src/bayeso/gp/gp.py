@@ -1,5 +1,5 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
 # last updated: March 22, 2021
 #
 """It defines Gaussian process regression."""

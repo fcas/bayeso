@@ -1,5 +1,5 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
 # last updated: July 8, 2021
 #
 """It defines covariance functions and their associated functions.
