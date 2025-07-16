@@ -107,6 +107,54 @@ def test_ei():
     np.testing.assert_allclose(val_acq, truth_val_acq)
 
 
+def test_log_ei_typing():
+    annos = package_target.log_ei.__annotations__
+
+    assert annos["pred_mean"] == np.ndarray
+    assert annos["pred_std"] == np.ndarray
+    assert annos["Y_train"] == np.ndarray
+    assert annos["jitter"] == float
+    assert annos["return"] == np.ndarray
+
+
+def test_log_ei():
+    with pytest.raises(AssertionError) as error:
+        package_target.log_ei("abc", np.ones(10), np.zeros((5, 1)))
+    with pytest.raises(AssertionError) as error:
+        package_target.log_ei(np.ones(10), "abc", np.zeros((5, 1)))
+    with pytest.raises(AssertionError) as error:
+        package_target.log_ei(np.ones(10), np.ones(10), "abc")
+    with pytest.raises(AssertionError) as error:
+        package_target.log_ei(np.ones(10), np.ones(10), np.zeros((5, 1)), 1)
+    with pytest.raises(AssertionError) as error:
+        package_target.log_ei(np.ones(5), np.ones(10), np.zeros((5, 1)))
+    with pytest.raises(AssertionError) as error:
+        package_target.log_ei(np.ones(10), np.ones(10), np.zeros(5))
+    with pytest.raises(AssertionError) as error:
+        package_target.log_ei(np.ones(10), np.ones((10, 1)), np.zeros((5, 1)))
+    with pytest.raises(AssertionError) as error:
+        package_target.log_ei(np.ones((10, 1)), np.ones(10), np.zeros((5, 1)))
+
+    val_acq = package_target.log_ei(np.arange(0, 10), np.ones(10), np.zeros((5, 1)))
+    truth_val_acq = np.array(
+        [
+            -0.91893853,
+            -2.48512103,
+            -4.76878352,
+            -7.86968606,
+            -11.84906158,
+            -16.74430116,
+            -22.57887939,
+            -29.36810718,
+            -37.12236426,
+            -45.84894129,
+        ]
+    )
+    print(val_acq)
+
+    np.testing.assert_allclose(val_acq, truth_val_acq)
+
+
 def test_ucb_typing():
     annos = package_target.ucb.__annotations__
 

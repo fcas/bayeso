@@ -45,6 +45,10 @@ def test_import_acquisitions_gaussian_process_upper_confidence_bound():
     import bayeso.acquisitions.gaussian_process_upper_confidence_bound
 
 
+def test_import_acquisitions_log_expected_improvement():
+    import bayeso.acquisitions.log_expected_improvement
+
+
 def test_import_acquisitions_probability_of_improvement():
     import bayeso.acquisitions.probability_of_improvement
 
