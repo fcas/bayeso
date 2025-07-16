@@ -1,6 +1,6 @@
 #
 # author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
-# last updated: December 20, 2021
+# last updated: July 16, 2025
 #
 """This file declares various default constants.
 If you would like to see the details, check out
@@ -68,7 +68,7 @@ ALLOWED_OPTIMIZER_METHOD_BO_TREES = ["random_search"]
 ALLOWED_COV_BASE = ["eq", "se", "matern32", "matern52"]
 ALLOWED_COV_SET = ["set_" + str_cov for str_cov in ALLOWED_COV_BASE]
 ALLOWED_COV = ALLOWED_COV_BASE + ALLOWED_COV_SET
-ALLOWED_BO_ACQ = ["pi", "ei", "ucb", "aei", "pure_exploit", "pure_explore"]
+ALLOWED_BO_ACQ = ["pi", "ei", "log_ei", "ucb", "aei", "pure_exploit", "pure_explore"]
 ALLOWED_INITIALIZING_METHOD_BO = ["uniform", "gaussian", "sobol", "halton"]
 ALLOWED_SAMPLING_METHOD = ALLOWED_INITIALIZING_METHOD_BO + ["grid"]
 ALLOWED_MLM_METHOD = ["regular", "combined", "converged"]

@@ -232,6 +232,8 @@ def choose_fun_acquisition(
         fun_acquisition = acquisition.pi
     elif str_acq == "ei":
         fun_acquisition = acquisition.ei
+    elif str_acq == "log_ei":
+        fun_acquisition = acquisition.log_ei
     elif str_acq == "ucb":
         fun_acquisition = acquisition.ucb
     elif str_acq == "aei":

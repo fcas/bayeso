@@ -166,6 +166,14 @@ def test_choose_fun_acquisition():
     with pytest.raises(AssertionError) as error:
         package_target.choose_fun_acquisition("pi", 1)
 
+    package_target.choose_fun_acquisition("pi", 1e-5)
+    package_target.choose_fun_acquisition("ei", 1e-5)
+    package_target.choose_fun_acquisition("log_ei", 1e-5)
+    package_target.choose_fun_acquisition("aei", 1e-5)
+    package_target.choose_fun_acquisition("ucb", 1e-5)
+    package_target.choose_fun_acquisition("pure_exploit", 1e-5)
+    package_target.choose_fun_acquisition("pure_explore", 1e-5)
+
 
 def test_check_hyps_convergence_typing():
     annos = package_target.check_hyps_convergence.__annotations__
