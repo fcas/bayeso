@@ -33,6 +33,30 @@ def test_import_acquisition():
     import bayeso.acquisition
 
 
+def test_import_acquisitions_augmented_expected_improvement():
+    import bayeso.acquisitions.augmented_expected_improvement
+
+
+def test_import_acquisitions_expected_improvement():
+    import bayeso.acquisitions.expected_improvement
+
+
+def test_import_acquisitions_gaussian_process_upper_confidence_bound():
+    import bayeso.acquisitions.gaussian_process_upper_confidence_bound
+
+
+def test_import_acquisitions_probability_of_improvement():
+    import bayeso.acquisitions.probability_of_improvement
+
+
+def test_import_acquisitions_pure_exploitation():
+    import bayeso.acquisitions.pure_exploitation
+
+
+def test_import_acquisitions_pure_exploration():
+    import bayeso.acquisitions.pure_exploration
+
+
 def test_import_constants():
     import bayeso.constants
 
