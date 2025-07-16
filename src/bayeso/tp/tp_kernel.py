@@ -115,7 +115,6 @@ def get_optimized_kernel(
             method=str_optimizer_method,
             bounds=bounds,
             jac=use_gradient,
-            options={"disp": False},
         )
 
         if debug:

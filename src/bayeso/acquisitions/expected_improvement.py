@@ -46,8 +46,8 @@ def acq_fun(
     assert Y_train.ndim == 2
     assert pred_mean.shape[0] == pred_std.shape[0]
 
-    with np.errstate(divide="ignore"):
-        val_z = (np.min(Y_train) - pred_mean) / (pred_std + jitter)
-    return (np.min(Y_train) - pred_mean) * scis.norm.cdf(
-        val_z
-    ) + pred_std * scis.norm.pdf(val_z)
+    pred_std = np.maximum(pred_std, jitter)
+    val_z = (np.min(Y_train) - pred_mean) / pred_std
+
+    return (np.min(Y_train) - pred_mean) \
+        * scis.norm.cdf(val_z) + pred_std * scis.norm.pdf(val_z)

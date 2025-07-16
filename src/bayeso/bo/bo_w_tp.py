@@ -149,7 +149,6 @@ class BOwTP(base_bo.BaseBO):
                     x0=arr_initial,
                     bounds=list_bounds,
                     method=self.str_optimizer_method_bo,
-                    options={"disp": False},
                 )
                 next_point_x = next_point.x
                 list_next_point.append(next_point_x)

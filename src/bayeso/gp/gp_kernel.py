@@ -138,7 +138,6 @@ def get_optimized_kernel(
             hyps_converted,
             method=str_optimizer_method,
             jac=use_gradient,
-            options={"disp": False},
         )
 
         if debug:
@@ -159,7 +158,6 @@ def get_optimized_kernel(
             method=str_optimizer_method,
             bounds=bounds,
             jac=use_gradient,
-            options={"disp": False},
         )
 
         if debug:
@@ -171,7 +169,6 @@ def get_optimized_kernel(
             neg_log_ml_,
             hyps_converted,
             method=str_optimizer_method,
-            options={"disp": False},
         )
 
         if debug:
