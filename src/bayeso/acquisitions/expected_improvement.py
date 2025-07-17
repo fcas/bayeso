@@ -4,7 +4,7 @@
 #
 """It defines an expected improvement acquisition function.
 
-(i) $\v{S}$altenis, V. R. (1971). One Method of Multiextremum
+(i) Šaltenis, V. R. (1971). One Method of Multiextremum
 Optimization. Avtomatika i Vychislitel'naya Tekhnika (Automatic
 Control and Computer Sciences), 5(3), pp. 33--38.
 
