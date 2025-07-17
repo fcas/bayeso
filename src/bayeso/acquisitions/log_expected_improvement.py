@@ -2,7 +2,9 @@
 # author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
 # last updated: July 15, 2025
 #
-"""It defines a log expected improvement acquisition function."""
+"""It defines a log expected improvement acquisition function.
+
+(i) Ament, S., Daulton, S., Eriksson, D., Balandat, M., & Bakshy, E. (2023). Unexpected Improvements to Expected Improvement for Bayesian Optimization. In Advances in Neural Information Processing Systems, 36, pp. 20577--20612."""
 
 import numpy as np
 import scipy.stats as scist

@@ -1,9 +1,10 @@
 #
 # author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
-# last updated: October 13, 2021
+# last updated: July 17, 2025
 #
 """These files are for implementing Bayesian optimization classes.
-"""
+
+(i) Garnett, R. (2023). Bayesian Optimization. Cambridge University Press."""
 
 from bayeso.bo import bo_w_gp
 from bayeso.bo import bo_w_tp
