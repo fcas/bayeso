@@ -4,7 +4,8 @@
 #
 """These files are for implementing Bayesian optimization classes.
 
-(i) Garnett, R. (2023). Bayesian Optimization. Cambridge University Press."""
+(i) Garnett, R. (2023). Bayesian Optimization. Cambridge University
+Press."""
 
 from bayeso.bo import bo_w_gp
 from bayeso.bo import bo_w_tp
