@@ -10,5 +10,5 @@ Regression for Machine Learning. MIT Press.
 
 (ii) Shah, A., Wilson, A. G., & Ghahramani, Z. (2014). Student-t Processes
 as Alternatives to Gaussian Processes. In Proceedings of the 17th
-International Conference on Artificial Intelligence and Statistics
-(pp. 877-885)."""
+International Conference on Artificial Intelligence and Statistics,
+pp. 877--885."""
