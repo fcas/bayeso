@@ -6,11 +6,11 @@
 
 (i) Kushner, H. J. (1962). A Versatile Stochastic Model of a
 Function of Unknown and Time Varying Form. Journal of Mathematical
-Analysis and Applications 5(1), pp. 150--167.
+Analysis and Applications, 5(1), pp. 150--167.
 
 (ii) Kushner, H. J. (1964). A New Method of Locating the Maximum
 Point of an Arbitrary Multipeak Curve in the Presence of Noise.
-Journal of Basic Engineering 86(1), pp. 97--106."""
+Journal of Basic Engineering, 86(1), pp. 97--106."""
 
 import numpy as np
 import scipy.stats as scis

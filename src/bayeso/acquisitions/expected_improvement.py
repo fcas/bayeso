@@ -4,13 +4,13 @@
 #
 """It defines an expected improvement acquisition function.
 
-(i) \v{S}altenis, V. R. (1971). One Method of Multiextremum
+(i) $\v{S}$altenis, V. R. (1971). One Method of Multiextremum
 Optimization. Avtomatika i Vychislitel'naya Tekhnika (Automatic
-Control and Computer Sciences) 5(3), pp. 33--38.
+Control and Computer Sciences), 5(3), pp. 33--38.
 
 (ii) Mockus, J. (1972). Bayesian Methods of Search for an Extremum.
 Avtomatika i Vychislitel'naya Tekhnika (Automatic Control and
-Computer Sciences) 6(3), pp. 53--62."""
+Computer Sciences), 6(3), pp. 53--62."""
 
 import numpy as np
 import scipy.stats as scis
