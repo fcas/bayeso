@@ -4,9 +4,9 @@
 #
 """It defines a Gaussian process upper confidence bound acquisition function.
 
-(i) Srinivas, N., Krause, A., Kakade, S. M. & Seeger, M. (2010). Gaussian\
-Process Optimization in the Bandit Setting: No Regret and Experimental Design.\
-In Proceedings of the 27th International Conference on International Conference\
+(i) Srinivas, N., Krause, A., Kakade, S. M. & Seeger, M. (2010). Gaussian \
+Process Optimization in the Bandit Setting: No Regret and Experimental Design. \
+In Proceedings of the 27th International Conference on International Conference \
 on Machine Learning, pp. 1015--1022."""
 
 import typing
