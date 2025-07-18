@@ -81,18 +81,20 @@ def test_acq_fun():
         package_target.acq_fun(random_state.randn(4), pred_std, Y_train)
 
     val_acq = package_target.acq_fun(pred_mean, pred_std, Y_train)
-    truth_val_acq = np.array([
-        -63.20290871,
-        -31.16940939,
-        -29.20683632,
-        -20.87946532,
-        -7.87453097,
-        -13.47734946,
-        -16.75476422,
-        -131.89468679,
-        -10.08565436,
-        -19.79594326,
-    ])
+    truth_val_acq = np.array(
+        [
+            -63.20290871,
+            -31.16940939,
+            -29.20683632,
+            -20.87946532,
+            -7.87453097,
+            -13.47734946,
+            -16.75476422,
+            -131.89468679,
+            -10.08565436,
+            -19.79594326,
+        ]
+    )
     print(val_acq)
 
     assert val_acq.ndim == 1
@@ -119,6 +121,6 @@ def test_compare_log_ei_to_ei():
             print(elem_1, elem_2)
             count += 1
 
-    print('')
-    print(f'count {count}')
+    print("")
+    print(f"count {count}")
     np.testing.assert_allclose(np.exp(val_acq_log_ei), val_acq_ei)

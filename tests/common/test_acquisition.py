@@ -245,7 +245,6 @@ def test_aei():
     val_acq = package_target.aei(np.arange(0, 10), np.ones(10), np.zeros((5, 1)), 1.0)
     truth_val_acq = np.array(
         [
-
             1.16847489e-01,
             2.44025364e-02,
             2.48686922e-03,

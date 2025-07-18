@@ -75,11 +75,18 @@ def acq_fun(
     )
 
     indices = np.logical_and(-1 / np.sqrt(eps) < val_z, val_z <= -1)
-    term_first[indices] = -val_z[indices]**2 / 2 - c_1 \
-        + log1mexp(np.log(erfcx(-val_z[indices] / np.sqrt(2)) * np.abs(val_z[indices])) + c_2)
+    term_first[indices] = (
+        -val_z[indices] ** 2 / 2
+        - c_1
+        + log1mexp(
+            np.log(erfcx(-val_z[indices] / np.sqrt(2)) * np.abs(val_z[indices])) + c_2
+        )
+    )
 
     indices = val_z <= -1 / np.sqrt(eps)
-    term_first[indices] = -val_z[indices]**2 / 2 - c_1 - 2 * np.log(np.abs(val_z[indices]))
+    term_first[indices] = (
+        -val_z[indices] ** 2 / 2 - c_1 - 2 * np.log(np.abs(val_z[indices]))
+    )
 
     term_second = np.log(pred_std)
 

@@ -57,8 +57,9 @@ def acq_fun(
     pred_std = np.maximum(pred_std, jitter)
     val_z = (np.min(Y_train) - pred_mean) / pred_std
 
-    val_ei = (np.min(Y_train) - pred_mean) \
-        * scis.norm.cdf(val_z) + pred_std * scis.norm.pdf(val_z)
+    val_ei = (np.min(Y_train) - pred_mean) * scis.norm.cdf(
+        val_z
+    ) + pred_std * scis.norm.pdf(val_z)
     val_aei = val_ei * (1.0 - noise / np.sqrt(pred_std**2 + noise**2))
 
     return val_aei

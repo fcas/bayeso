@@ -57,5 +57,6 @@ def acq_fun(
     pred_std = np.maximum(pred_std, jitter)
     val_z = (np.min(Y_train) - pred_mean) / pred_std
 
-    return (np.min(Y_train) - pred_mean) \
-        * scis.norm.cdf(val_z) + pred_std * scis.norm.pdf(val_z)
+    return (np.min(Y_train) - pred_mean) * scis.norm.cdf(
+        val_z
+    ) + pred_std * scis.norm.pdf(val_z)
