@@ -6,7 +6,7 @@
 
 (i) Huang, D., Allen, T. T., Notz, W. I., & Zeng, N. (2006). Global \
 Optimization of Stochastic Black-Box Systems via Sequential Kriging \
-Meta-Models. Journal of Global Optimization, 34(3), pp. 441--466."""
+Meta-Models. *Journal of Global Optimization*, 34(3), pp. 441--466."""
 
 import numpy as np
 import scipy.stats as scis
