@@ -191,8 +191,8 @@ class BOwTrees(base_bo.BaseBO):
         assert isinstance(X, np.ndarray)
         assert isinstance(X_train, np.ndarray)
         assert isinstance(Y_train, np.ndarray)
-        assert X.ndim == 1 or X.ndim == 2 or X.ndim == 3
-        assert X_train.ndim == 2 or X_train.ndim == 3
+        assert X.ndim in [1, 2, 3]
+        assert X_train.ndim in [2, 3]
         assert Y_train.ndim == 2
         assert Y_train.shape[1] == 1
         assert X_train.shape[0] == Y_train.shape[0]
