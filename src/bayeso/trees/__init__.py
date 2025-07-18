@@ -11,7 +11,8 @@ pp. 123--140.
 for Constructing Ensembles of Decision Trees: Bagging, Boosting, and
 Randomization. Machine Learning, 40(2), pp. 139--157.
 
-(iii) Breiman, L. (2001). Random Forests. Machine Learning, 45(1), pp. 5--32."""
+(iii) Breiman, L. (2001). Random Forests. Machine Learning, 45(1),
+pp. 5--32."""
 
 from bayeso.trees import trees_generic_trees
 from bayeso.trees import trees_random_forest
