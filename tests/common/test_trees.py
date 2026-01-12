@@ -1,6 +1,6 @@
 #
-# author: Jungtaek Kim (jtkim@postech.ac.kr)
-# last updated: October 13, 2021
+# author: Jungtaek Kim (jungtaek.kim.mail@gmail.com)
+# last updated: July 9, 2024
 #
 """test_trees"""
 
@@ -11,6 +11,7 @@ def test_import_get_generic_trees():
 
     print(get_generic_trees)
     print(bayeso.trees.get_generic_trees)
+
 
 def test_import_get_random_forest():
     from bayeso.trees import get_random_forest

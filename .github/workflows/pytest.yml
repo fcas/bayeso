@@ -7,15 +7,15 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - '3.7'
           - '3.8'
           - '3.9'
           - '3.10'
           - '3.11'
+          - '3.12'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install this project and its dependencies
@@ -23,19 +23,13 @@ jobs:
           pip install --upgrade pip
           pip install .[dev]
           pip list
-      - name: Run pytest
+      - name: Run pytest with coverage
         run: |
-          pytest tests/common --cov
-        shell: bash
-      - uses: AndreMiras/coveralls-python-action@v20201129
+          coverage run -m pytest tests/common
+          coverage report
+          coverage xml
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
         with:
-          parallel: true
-          flag-name: python-${{ matrix.python-version }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-  coverage-finish:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: AndreMiras/coveralls-python-action@v20201129
-        with:
-          parallel-finished: true
+          path-to-lcov: coverage.xml
