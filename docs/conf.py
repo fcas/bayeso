@@ -20,11 +20,11 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'BayesO'
-copyright = '2017-2024, Jungtaek Kim and Seungjin Choi'
+copyright = '2017-2026, Jungtaek Kim and Seungjin Choi'
 author = 'Jungtaek Kim and Seungjin Choi'
 
 # The short X.Y version
-version = '0.6.0'
+version = '0.6.1'
 # The full version, including alpha/beta/rc tags
 release = '{} alpha'.format(version)
 

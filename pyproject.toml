@@ -7,6 +7,7 @@ requires = [
 [tool.setuptools]
 packages = [
     "bayeso",
+    "bayeso.acquisitions",
     "bayeso.bo",
     "bayeso.gp",
     "bayeso.tp",
@@ -14,16 +15,17 @@ packages = [
     "bayeso.wrappers",
     "bayeso.utils",
 ]
+package-dir = {"" = "src"}
 
 [project]
 name = "bayeso"
-version = "0.6.0"
+version = "0.6.1"
 authors = [
     {name = "Jungtaek Kim", email = "jungtaek.kim.mail@gmail.com"},
 ]
 description = "Simple, but essential Bayesian optimization package"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dependencies = [
     "numpy",
     "scipy",
@@ -60,15 +62,12 @@ dev = [
     "wheel",
     "build",
     "twine",
-]
-
-optional = [
-    "scipydirect",
-    "matplotlib",
-    "bayeso-benchmarks",
+    "black",
 ]
 
 examples = [
+    "bayeso-benchmarks",
     "xgboost",
     "scikit-learn",
+    "matplotlib",
 ]
